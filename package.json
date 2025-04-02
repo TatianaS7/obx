@@ -1,0 +1,14 @@
+{
+  "name": "obx",
+  "scripts": {
+    "client-dev": "parcel client/index.html --open",
+    "build": "parcel build client/index.html",
+    "start": "concurrently \"python server/app.py\" \"PORT=3000 npm run client-dev\""
+  },
+  "dependencies": {
+    "axios": "^1.8.4",
+    "concurrently": "^9.1.2",
+    "parcel": "^2.14.4",
+    "react-dom": "^19.1.0"
+  }
+}
