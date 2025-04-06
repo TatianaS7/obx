@@ -1,0 +1,38 @@
+[
+  {
+    "id": 1,
+    "name": "Refill Exchange Program",
+    "description": "10% off when customers return eligible bottles for refills.",
+    "code": "REFILL10",
+    "percentage_off": 0.10,
+    "is_active": True,
+    "expires_at": None
+  },
+  {
+    "id": 2,
+    "name": "Birthday Discount",
+    "description": "15% off a single purchase during the customer’s birthday month.",
+    "code": "BIRTHDAY15",
+    "percentage_off": 0.15,
+    "is_active": True,
+    "expires_at": None
+  },
+  {
+    "id": 3,
+    "name": "Rewards Program Signup",
+    "code": "WELCOME15",
+    "description": "15% off first purchase when signing up for the rewards program.",
+    "percentage_off": 0.15,
+    "is_active": True,
+    "expires_at": None
+  },
+  {
+    "id": 4,
+    "name": "Employee Discount",
+    "code": "EMPLOYEE20",
+    "description": "20% off all regular priced items for employees.",
+    "percentage_off": 0.20,
+    "is_active": True,
+    "expires_at": None
+  }
+]

@@ -3,7 +3,6 @@ from flask import Flask, request, jsonify
 from connection import db
 from flask_jwt_extended import JWTManager
 import os
-# from seed_data import seedData
 
 
 def create_app():
@@ -28,9 +27,6 @@ def create_app():
     with app.app_context():
         db.drop_all()
         db.create_all()
-
-        # Seed Data
-        # seedData()
 
     return app
 
