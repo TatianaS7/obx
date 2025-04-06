@@ -15,7 +15,9 @@ idna
 importlib-metadata
 itsdangerous
 Jinja2
+marshmallow
 MarkupSafe
+pytest
 pycparser
 PyJWT
 python-dotenv

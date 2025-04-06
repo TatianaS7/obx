@@ -3,7 +3,8 @@
   "scripts": {
     "client-dev": "parcel client/index.html --open",
     "build": "parcel build client/index.html",
-    "start": "concurrently \"python server/app.py\" \"PORT=3000 npm run client-dev\""
+    "start": "concurrently \"python server/app.py\" \"PORT=3000 npm run client-dev\"",
+    "test": "pytest server/utils/tests"
   },
   "dependencies": {
     "axios": "^1.8.4",
