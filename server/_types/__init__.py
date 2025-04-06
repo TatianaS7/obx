@@ -1,1 +1,1 @@
-from .blends import BlendCategory, BlendType, BottleSize, BottleType 
+from .blends import BlendCategory, ProductType, BottleSize, BottleType 

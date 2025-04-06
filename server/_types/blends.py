@@ -1,7 +1,7 @@
 from enum import Enum
 from marshmallow import Schema, fields
 
-class BlendType(Enum):
+class ProductType(Enum):
     HAIR = "hair",
     FRAGRANCE = "fragrance"
 
