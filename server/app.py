@@ -19,14 +19,21 @@ def create_app():
     db.init_app(app)
 
     # Import routes
-    from routes import auth
+    from routes import auth, oils, discounts
 
     # Register Blueprints
     app.register_blueprint(auth, url_prefix='/api/auth')
+    app.register_blueprint(oils, url_prefix='/api/oils')
+    app.register_blueprint(discounts, url_prefix='/api/discounts')
 
     with app.app_context():
         db.drop_all()
         db.create_all()
+
+        # Populate database with initial data
+        from data.populate import populate_oils, populate_discounts
+        populate_oils()
+        populate_discounts()
 
     return app
 

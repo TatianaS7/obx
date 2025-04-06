@@ -16,4 +16,13 @@ class Oil(db.Model):
         self.category = category
         self.is_active = is_active
 
+    def serialize(self):
+        return {
+            'id': self.id,
+            'name': self.name,
+            'description': self.description,
+            'category': self.category.value,
+            'is_active': self.is_active,
+            'created_at': self.created_at.isoformat()
+        }
     

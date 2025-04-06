@@ -11,7 +11,7 @@ class BlendCard(db.Model):
     blend_name = db.Column(db.String(100), nullable=True)
     blend_description = db.Column(db.String(500), nullable=True)
 
-    product_type = db.column(db.Enum(ProductType), nullable=False)
+    product_type = db.Column(db.Enum(ProductType), nullable=False)
     blend_category = db.Column(db.Enum(BlendCategory), nullable=False)
     bottle_size = db.Column(db.Enum(BottleSize), nullable=False)
     bottle_type = db.Column(db.Enum(BottleType), nullable=False)
@@ -39,3 +39,20 @@ class BlendCard(db.Model):
         self.is_deleted = is_deleted
         self.created_at = created_at if created_at else db.func.current_timestamp()
 
+    def serialize(self):
+        return {
+            'id': self.id,
+            'created_by': self.created_by,
+            'blend_name': self.blend_name,
+            'blend_description': self.blend_description,
+            'product_type': self.product_type.value,
+            'blend_category': self.blend_category.value,
+            'bottle_size': self.bottle_size.value,
+            'bottle_type': self.bottle_type.value,
+            'base_oils': self.base_oils,
+            'secondary_oils': self.secondary_oils,
+            'premium_addons': self.premium_addons,
+            'other_addons': self.other_addons,
+            'is_deleted': self.is_deleted,
+            'created_at': str(self.created_at)
+        }
