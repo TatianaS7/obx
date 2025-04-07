@@ -1,7 +1,30 @@
 from models.Oil import Oil
-from flask import Blueprint, jsonify
+from flask import Blueprint, jsonify, request
+from flask_jwt_extended import jwt_required, get_jwt_identity
+from connection import db
+from _types import OilType
 
 oils = Blueprint('oils', __name__)
+
+
+# Create an Oil
+@oils.route('/create', methods=['POST'])
+# @jwt_required()
+def create_oil():
+    try:
+        data = request.get_json()
+        oil = Oil(
+            name=data['name'],
+            description=data['description'],
+            oil_type=OilType(data['oil_type']),
+            is_active=data.get('is_active', True),
+        )
+        db.session.add(oil)
+        db.session.commit()
+        return jsonify(oil.serialize()), 201
+    except Exception as e:
+        return jsonify({'error': str(e)}), 400
+
 
 # Get all oils
 @oils.route('/all', methods=['GET'])
@@ -23,3 +46,24 @@ def get_oil(oil_id):
         return jsonify(oil.serialize()), 200
     except Exception as e:
         return jsonify({'error': str(e)}), 500
+    
+
+# Update an oil
+@oils.route('/<int:oil_id>/update', methods=['PUT'])
+# @jwt_required()
+def update_oil(oil_id):
+    try:
+        data = request.get_json()
+        oil = Oil.query.get(oil_id)
+        if not oil:
+            return jsonify({'message': 'Oil not found'}), 404
+
+        oil.name = data['name'] if 'name' in data else oil.name
+        oil.description = data['description'] if 'description' in data else oil.description
+        oil.oil_type = OilType(data['oil_type']) if 'oil_type' in data else oil.oil_type
+        oil.is_active = data.get('is_active', True) if 'is_active' in data else oil.is_active
+
+        db.session.commit()
+        return jsonify(oil.serialize()), 200
+    except Exception as e:
+        return jsonify({'error': str(e)}), 400

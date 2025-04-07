@@ -12,7 +12,7 @@ def populate_oils():
                 oil = Oil(
                     name=oil_data['name'],
                     description=oil_data['description'],
-                    category=oil_data['category'],
+                    oil_type=oil_data['oil_type'],
                     is_active=oil_data['is_active']
                 )
                 db.session.add(oil)
