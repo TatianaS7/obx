@@ -46,5 +46,6 @@ class BlendCard(db.Model):
             'bottle_type': self.bottle_type.value,
             'is_premade': self.is_premade,
             'is_deleted': self.is_deleted,
-            'created_at': str(self.created_at)
+            'created_at': str(self.created_at),
+            'oils': [oil.serialize() for oil in self.oils] 
         }

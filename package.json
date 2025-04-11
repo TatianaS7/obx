@@ -4,7 +4,8 @@
     "client-dev": "parcel client/index.html --open",
     "build": "parcel build client/index.html",
     "start": "concurrently \"python server/app.py\" \"npm run client-dev\"",
-    "test": "pytest server/utils/tests"
+    "test": "pytest server/tests",
+    "server": "python server/app.py"
   },
   "dependencies": {
     "axios": "^1.8.4",
