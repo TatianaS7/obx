@@ -1,11 +1,11 @@
 {
   "name": "obx",
   "scripts": {
-    "client-dev": "parcel client/index.html --open",
-    "build": "parcel build client/index.html",
-    "start": "concurrently \"python server/app.py\" \"npm run client-dev\"",
-    "test": "pytest server/tests",
-    "server": "python server/app.py"
+    "client": "parcel client/index.html --open",
+    "build": "npm run test && npm run server",
+    "start": "concurrently \"npm run server\" \"npm run client\"",
+    "test": "pytest",
+    "server": "python -m server.app"
   },
   "dependencies": {
     "axios": "^1.8.4",

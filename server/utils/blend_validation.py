@@ -1,5 +1,5 @@
 from marshmallow import ValidationError
-from _types import BottleSize, BottleType, BlendCategory
+from .._types import BottleSize, BottleType, BlendCategory
 
 base_custom_specs = {
         BottleSize.SMALL.value: {"unit": "mL", "capacity": 60, "base_pct": 0.8, "secondary_pct": 0.2, "max_secondary_count": 1, "max_add_ons": 1, "add_on_volume": 1},

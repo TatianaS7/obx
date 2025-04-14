@@ -1,4 +1,4 @@
-from connection import db
+from ..connection import db
 
 class OrderItem(db.Model):
     id = db.Column(db.Integer, primary_key=True)

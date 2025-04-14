@@ -1,4 +1,4 @@
-from models.Discount import Discount
+from server.models import Discount
 from flask import Blueprint, jsonify
 
 discounts = Blueprint('discounts', __name__)

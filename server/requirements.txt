@@ -7,6 +7,7 @@ charset-normalizer
 click
 cryptography
 flask_jwt_extended
+freezegun
 Flask
 Flask-Cors
 Flask-SQLAlchemy

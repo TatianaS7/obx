@@ -1,4 +1,4 @@
-from connection import db
+from ..connection import db
 from datetime import datetime
 
 class Order(db.Model):

@@ -1,9 +1,9 @@
 from flask import Blueprint, jsonify, request
 from flask_jwt_extended import jwt_required, get_jwt_identity
-from models import BlendCard, BlendCardOil
-from _types import ProductType, BlendCategory, BottleSize, BottleType, OilType
-from connection import db
-from utils import calculate_volume
+from server.models import BlendCard, BlendCardOil
+from server._types import ProductType, BlendCategory, BottleSize, BottleType, OilType
+from server.connection import db
+from server.utils import calculate_volume
 from marshmallow.exceptions import ValidationError
 
 blend_cards = Blueprint('blend_cards', __name__)

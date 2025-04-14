@@ -1,6 +1,6 @@
-from connection import db
+from ..connection import db
 from enum import Enum
-from _types import OilType
+from .._types import OilType
 
 
 class BlendCardOil(db.Model):

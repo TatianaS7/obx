@@ -1,6 +1,6 @@
-from connection import db
+from ..connection import db
 from enum import Enum
-from _types import ProductType, BlendCategory, BottleSize, BottleType
+from .._types import ProductType, BlendCategory, BottleSize, BottleType
 
 
 class BlendCard(db.Model):

@@ -1,8 +1,8 @@
-from models.Oil import Oil
+from server.models import Oil
 from flask import Blueprint, jsonify, request
 from flask_jwt_extended import jwt_required, get_jwt_identity
-from connection import db
-from _types import OilType
+from server.connection import db
+from server._types import OilType
 
 oils = Blueprint('oils', __name__)
 

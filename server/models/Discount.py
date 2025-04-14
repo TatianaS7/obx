@@ -1,6 +1,6 @@
-from connection import db
+from ..connection import db
 from enum import Enum
-from _types import DiscountCode
+from .._types import DiscountCode
 
 class Discount(db.Model):
     id = db.Column(db.Integer, primary_key=True)

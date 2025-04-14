@@ -1,6 +1,6 @@
-from models import Oil, Discount
+from server.models import Oil, Discount
 from datetime import datetime
-from connection import db
+from server.connection import db
 import json
 
 

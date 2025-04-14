@@ -1,6 +1,6 @@
 from flask_cors import CORS
 from flask import Flask, request, jsonify
-from connection import db
+from .connection import db
 from flask_jwt_extended import JWTManager
 import os
 
@@ -19,7 +19,7 @@ def create_app():
     db.init_app(app)
 
     # Import routes
-    from routes import auth, oils, discounts, blend_cards
+    from server.routes import auth, oils, discounts, blend_cards
 
     # Register Blueprints
     app.register_blueprint(auth, url_prefix='/api/auth')
@@ -32,7 +32,7 @@ def create_app():
         db.create_all()
 
         # Populate database with initial data
-        from data.populate import populate_oils, populate_discounts
+        from server.data.populate import populate_oils, populate_discounts
         populate_oils()
         populate_discounts()
 
