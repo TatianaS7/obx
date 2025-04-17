@@ -1,22 +1,26 @@
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 import { ApiProvider, useApi } from "../api/ApiContext";
 
 // Import Components
+import Navbar from "./Navbar";
 import Home from "../pages/Home";
-import OilSelection from "./OilSelection";
+import BrowseOils from "../pages/BrowseOils";
+import StartOrder from "../pages/StartOrder";
 
-function App() {
-  // const { browseOils } = useApi();
-  const [browseOils, setBrowseOils] = useState(false);
-
+export default function App() {
   return (
     <main>
       <ApiProvider>
-        <Home browseOils={browseOils} setBrowseOils={setBrowseOils} />
-        {browseOils && <OilSelection />}
+        <Router>
+          <Navbar />
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/browse-oils" element={<BrowseOils />} />
+            <Route path="/start-order" element={<StartOrder />} />
+          </Routes>
+        </Router>
       </ApiProvider>
     </main>
   );
 }
-
-export default App;
