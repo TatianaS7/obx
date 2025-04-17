@@ -2,126 +2,126 @@
   {
     "id": 1,
     "name": "Sweet Almond",
-    "description": "",
+    "description": "Lightweight and rich in vitamins A and E, this oil is great for moisturizing and soothing the skin.",
     "oil_type": "BASE",
     "is_active": true
   },
   {
     "id": 2,
     "name": "Grapeseed",
-    "description": "",
+    "description": "Fast-absorbing and rich in linoleic acid, this oil helps balance oil production while offering light hydration.",
     "oil_type": "BASE",
     "is_active": true
   },
   {
     "id": 3,
     "name": "Jamaican Black Castor",
-    "description": "",
+    "description": "Thick and nourishing, this oil is known for its ability to promote hair growth and strengthen follicles.",
     "oil_type": "BASE",
     "is_active": true
   },
   {
     "id": 4,
     "name": "Avocado",
-    "description": "",
+    "description": "Thick and deeply moisturizing, this oil is rich in vitamins and great for dry or damaged hair and skin.",
     "oil_type": "BASE",
     "is_active": true
   },
   {
     "id": 5,
     "name": "Sunflower",
-    "description": "",
+    "description": "A mild, non-irritating oil that is high in vitamin E, making it great for sensitive skin and easily absorbed without leaving a greasy feel.",
     "oil_type": "BASE",
     "is_active": true
   },
   {
     "id": 6,
     "name": "Olive",
-    "description": "",
+    "description": "Deeply moisturizing, packed with antioxidants, great for dry skin, scalp nourishment, and natural conditioning.",
     "oil_type": "BASE",
     "is_active": true
   },
   {
     "id": 7,
     "name": "Argan",
-    "description": "",
+    "description": "Often called liquid gold, this oil is rich in fatty acids and vitamin E, making it perfect for hair and skin hydration.",
     "oil_type": "SECONDARY",
     "is_active": true
   },
   {
     "id": 8,
     "name": "Jojoba",
-    "description": "",
+    "description": "Structurally similar to the skin's natural sebu, this oil helps regulate moisture and is great for all skin types.",
     "oil_type": "SECONDARY",
     "is_active": true
   },
   {
     "id": 9,
     "name": "Coconut",
-    "description": "",
+    "description": "A classic multi-tasker with antimicrobial benefits, this oil provides deep hydration and leaves a protective barrier on skin and hair.",
     "oil_type": "SECONDARY",
     "is_active": true
   },
   {
     "id": 10,
     "name": "Hempseed",
-    "description": "",
+    "description": "Non-comedogenic and high in omega-3 & 6, this lightweight oil is great for calming inflammation and balancing oily skin.",
     "oil_type": "SECONDARY",
     "is_active": true
   },
   {
     "id": 11,
     "name": "Flaxseed",
-    "description": "",
+    "description": "Loaded with omega-3 fatty acids, this oil helps calm and soothe skin, while supporting hydration and elasticity.",
     "oil_type": "SECONDARY",
     "is_active": true
   },
   {
     "id": 12,
     "name": "Rosehip",
-    "description": "",
+    "description": "Known for it's regenerative properties, this oil supports skin repair and is rich in vitamins A and C.",
     "oil_type": "PREMIUM",
     "is_active": true
   },
   {
     "id": 13,
     "name": "Baobab",
-    "description": "",
+    "description": "Rich in omega fatty acids, this oil is deepy hydrating and helps improve skin elasticity.",
     "oil_type": "PREMIUM",
     "is_active": true
   },
   {
     "id": 14,
     "name": "Marula",
-    "description": "",
+    "description": "A luxurious, fast-absorbing oil packed with antioxidants, ideal for hydrating and protecting skin and hair.",
     "oil_type": "PREMIUM",
     "is_active": true
   },
   {
     "id": 15,
     "name": "Amla",
-    "description": "",
+    "description": "Traditionally used in Ayurvedic care, amla oil helps strengthen hair, reduce breakage, and nourish the scalp.",
     "oil_type": "PREMIUM",
     "is_active": true
   },
   {
     "id": 16,
     "name": "Tea Tree",
-    "description": "",
+    "description": "A naturally purifying oil with antimicrobial properties, tea tree is commonly used to help clarify skin and support scalp health.",
     "oil_type": "OTHER",
     "is_active": true
   },
   {
     "id": 17,
     "name": "Rosemary",
-    "description": "",
+    "description": "An invigorating oil often used to stimulate circulation and promotte hair and scalp vitality.",
     "oil_type": "OTHER",
     "is_active": true
   },
   {
     "id": 18,
     "name": "Peppermint",
-    "description": "",
+    "description": "Refreshing and cooling, this oil is commonly used for its stimulating scent and soothing properties.",
     "oil_type": "OTHER",
     "is_active": true
   }
