@@ -1,0 +1,10 @@
+.user-information-container {
+    margin: 0 2em;
+}
+
+.action-buttons {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 1.5em;
+}

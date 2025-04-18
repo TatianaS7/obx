@@ -25,7 +25,7 @@ interface ApiProviderProps {
 }
 
 export const ApiProvider = ({ children }: ApiProviderProps) => {
-  const [loading, setLoading] = useState<boolean>(true);
+  const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const [allOils, setAllOils] = useState<any[]>([]);
   // const [browseOils, setBrowseOils] = useState<boolean>(false);
