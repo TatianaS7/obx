@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Box, TextField, Button, Divider } from "@mui/material";
-import { useApi } from "../api/ApiContext";
+import { useApi } from "../../src/api/ApiContext";
 import "../styles/UserInformation.css";
 import LoadingSpinner from "./LoadingSpinner";
 
@@ -21,8 +21,7 @@ export default function UserInformation() {
 
       {loading ? (
         <LoadingSpinner />
-      ) : (
-        isMember ? (
+      ) : isMember ? (
         <>
           <p> Sign in to receive your rewards and discounts!</p>
           <TextField
@@ -156,7 +155,7 @@ export default function UserInformation() {
             </Button>
           </div>
         </>
-      ))}
+      )}
     </div>
-)
+  );
 }

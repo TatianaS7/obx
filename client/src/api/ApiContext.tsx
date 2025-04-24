@@ -5,7 +5,7 @@ import React, {
   useEffect,
   ReactNode,
 } from "react";
-import apiURL from "../api/api.js";
+import apiURL from "./api.js";
 import axios from "axios";
 
 interface ApiContextType {
@@ -29,7 +29,6 @@ export const ApiProvider = ({ children }: ApiProviderProps) => {
   const [error, setError] = useState<string | null>(null);
   const [allOils, setAllOils] = useState<any[]>([]);
   // const [browseOils, setBrowseOils] = useState<boolean>(false);
-
 
   // Fetch all oils from the API
   const fetchOils = async () => {

@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import OilCard from "../components/OilCard";
+import OilCard from "../../../react/components/OilCard";
 import { useApi } from "../api/ApiContext";
 import { TextField } from "@mui/material";
 import "../styles/BrowseOils.css";
@@ -7,11 +7,10 @@ import "../styles/BrowseOils.css";
 export default function BrowseOils() {
   const { allOils } = useApi();
   const { fetchOils } = useApi();
-  
-    useEffect(() => {
-      fetchOils();
-    }, []);
-  
+
+  useEffect(() => {
+    fetchOils();
+  }, []);
 
   return (
     <div className="oil-selection-container">
