@@ -1,12 +1,7 @@
 import React, { useState } from "react";
-import {} from "@mui/material";
-import { useApi } from "../api/ApiContext";
 import "../styles/StartOrder.css";
 
-// Import Components
-import OrderStepper from "../components/OrderStepper";
-import ProductVisual from "../components/ProductVisual";
-import UserInformation from "../components/UserInformation";
+import OrderStepper from "../components/order/OrderStepper";
 
 interface NewBlendCard {
   name: string;
@@ -18,7 +13,7 @@ interface NewBlendCard {
 }
 
 export default function StartOrder() {
-  const [newBlendCard, setNewBlendCard] = useState({
+  const [newBlendCard, setNewBlendCard] = useState<NewBlendCard>({
     name: "",
     description: "",
     product_type: "",
@@ -28,13 +23,22 @@ export default function StartOrder() {
   });
 
   return (
-    <div className="start-order-container">
-      <OrderStepper />
+    <div className="start-order-page">
+      <header className="page-hero">
+        <span className="page-hero-eyebrow">Custom Blends</span>
+        <h1 className="page-hero-title">Start Your Order</h1>
+        <p className="page-hero-sub">
+          Build a blend tailored to your hair goals — every drop crafted just
+          for you.
+        </p>
+      </header>
 
-      <div>
-        {/* <ProductVisual newBlendCard={newBlendCard}/> */}
-        <UserInformation />
-      </div>
+      <section className="start-order-body">
+        <OrderStepper
+          newBlendCard={newBlendCard}
+          setNewBlendCard={setNewBlendCard}
+        />
+      </section>
     </div>
   );
 }

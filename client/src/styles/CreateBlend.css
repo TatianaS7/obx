@@ -1,0 +1,308 @@
+.create-blend {
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;
+}
+
+/* ── Sections ── */
+.blend-section {
+  background: #fff;
+  border: 1px solid #e8e8e8;
+  border-radius: 10px;
+  padding: 1.5rem 1.75rem;
+}
+
+.blend-section-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.35rem;
+}
+
+.blend-section-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #111;
+}
+
+.blend-section-badge {
+  font-size: 0.75rem;
+  font-weight: 600;
+  background: var(--accent-light, #f3e5f5);
+  color: var(--accent, #9c27b0);
+  padding: 0.2em 0.6em;
+  border-radius: 20px;
+  white-space: nowrap;
+}
+
+.blend-section-sub {
+  font-size: 0.84rem;
+  color: #777;
+  margin-bottom: 1rem;
+  line-height: 1.5;
+}
+
+/* ── Product specification overview ── */
+.product-spec-overview {
+  background: #fafafa;
+  border-color: #e8e8e8;
+}
+
+.product-spec-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+  margin-top: 0.9rem;
+}
+
+.product-spec-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  border: 1px solid #ececec;
+  border-radius: 8px;
+  padding: 0.65rem 0.75rem;
+  background: #fff;
+}
+
+.product-spec-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #8a8a8a;
+}
+
+.product-spec-value {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #222;
+}
+
+.product-spec-rules {
+  margin-top: 0.8rem;
+  font-size: 0.82rem;
+  color: #666;
+  line-height: 1.5;
+}
+
+/* ── Name row ── */
+.blend-name-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+@media (max-width: 600px) {
+  .blend-name-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ── Oil slot ── */
+.slot-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.slot-row .oil-slot {
+  flex: 1;
+}
+
+.oil-slot {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  margin-bottom: 0.75rem;
+}
+
+.oil-slot-label {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #333;
+}
+
+.oil-slot-optional {
+  font-weight: 400;
+  color: #999;
+}
+
+.oil-slot-select {
+  border: 1.5px solid #d6d6d6;
+  border-radius: 6px;
+  padding: 0.55rem 0.75rem;
+  font-size: 0.93rem;
+  background: #fff;
+  color: #111;
+  width: 100%;
+  outline: none;
+  transition:
+    border-color 0.18s,
+    box-shadow 0.18s;
+  font-family: inherit;
+}
+
+.oil-slot-select:focus {
+  border-color: var(--accent, #9c27b0);
+  box-shadow: 0 0 0 3px var(--accent-light, #f3e5f5);
+}
+
+.oil-slot-desc {
+  font-size: 0.79rem;
+  color: #777;
+  line-height: 1.5;
+  padding: 0.3rem 0.5rem;
+  background: #fafafa;
+  border-left: 3px solid var(--accent-light, #f3e5f5);
+  border-radius: 0 4px 4px 0;
+}
+
+/* ── Add / remove slot buttons ── */
+.slot-add-btn {
+  background: none;
+  border: 1.5px dashed var(--accent, #9c27b0);
+  color: var(--accent, #9c27b0);
+  border-radius: 6px;
+  padding: 0.45rem 1rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  width: 100%;
+  margin-top: 0.25rem;
+  transition: background 0.15s;
+}
+
+.slot-add-btn:hover {
+  background: var(--accent-light, #f3e5f5);
+}
+
+.slot-remove-btn {
+  flex-shrink: 0;
+  background: none;
+  border: 1px solid #ddd;
+  color: #999;
+  border-radius: 6px;
+  width: 30px;
+  height: 36px;
+  margin-top: 1.4rem;
+  cursor: pointer;
+  font-size: 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition:
+    color 0.15s,
+    border-color 0.15s;
+}
+
+.slot-remove-btn:hover {
+  color: #c0392b;
+  border-color: #c0392b;
+}
+
+/* ── Volume bar ── */
+.blend-section-volume {
+  border-color: var(--accent-light, #f3e5f5);
+}
+
+.full-allowed-volume {
+  font-size: 0.86rem;
+  color: #555;
+  margin-bottom: 0.75rem;
+}
+
+.full-allowed-volume strong {
+  color: var(--accent, #9c27b0);
+}
+
+.volume-bar-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.volume-visual-wrap {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0.25rem 0 0.5rem;
+}
+
+.volume-bottle-svg {
+  width: clamp(110px, 24vw, 150px);
+  height: auto;
+  filter: drop-shadow(0 8px 20px rgba(0, 0, 0, 0.1));
+}
+
+.volume-bar {
+  display: flex;
+  height: 16px;
+  border-radius: 8px;
+  overflow: hidden;
+  gap: 2px;
+  background: #f0f0f0;
+}
+
+.volume-bar-segment {
+  border-radius: 8px;
+  transition: flex 0.3s;
+}
+
+.volume-bar-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem 1.5rem;
+}
+
+.volume-legend-item {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.82rem;
+  color: #555;
+}
+
+.volume-legend-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+/* ── Placeholder (premade / unset) ── */
+.create-blend-placeholder {
+  text-align: center;
+  padding: 3rem 2rem;
+  background: #fafafa;
+  border: 1px dashed #ddd;
+  border-radius: 10px;
+  color: #666;
+}
+
+.create-blend-placeholder-icon {
+  font-size: 2.5rem;
+  display: block;
+  margin-bottom: 0.75rem;
+}
+
+.create-blend-placeholder h3 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #333;
+  margin-bottom: 0.5rem;
+}
+
+.create-blend-placeholder p {
+  font-size: 0.9rem;
+  line-height: 1.6;
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+@media (max-width: 700px) {
+  .product-spec-grid {
+    grid-template-columns: 1fr;
+  }
+}

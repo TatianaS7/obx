@@ -1,0 +1,17 @@
+.product-selection-layout {
+  display: flex;
+  gap: 2.5rem;
+  align-items: flex-start;
+}
+
+.product-selection-form {
+  flex: 2;
+  display: flex;
+  flex-direction: column;
+}
+
+@media (max-width: 700px) {
+  .product-selection-layout {
+    flex-direction: column;
+  }
+}

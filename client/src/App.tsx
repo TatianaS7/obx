@@ -3,8 +3,8 @@ import React, { useState, useEffect } from "react";
 import { ApiProvider, useApi } from "./api/ApiContext";
 
 // Import Components
-import Navbar from "./components/Navbar";
-import Footer from "./components/Footer";
+import Navbar from "./components/layout/Navbar";
+import Footer from "./components/layout/Footer";
 import Home from "./pages/Home";
 import BrowseOils from "./pages/BrowseOils";
 import StartOrder from "./pages/StartOrder";

@@ -2,8 +2,15 @@ import React from "react";
 import squeezeBottle from "../../assets/squeeze-bottle.png";
 import dropperBottle from "../../assets/dropper-bottle.png";
 
+interface NewBlendCard {
+  bottle_type: string;
+}
 
-export default function ProductVisual({ newBlendCard }: { newBlendCard: NewBlendCard }) {
+export default function ProductVisual({
+  newBlendCard,
+}: {
+  newBlendCard: NewBlendCard;
+}) {
   return (
     <div>
       {newBlendCard.bottle_type === "SQUEEZE" && (
