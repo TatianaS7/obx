@@ -1,34 +1,52 @@
-import React, { useEffect } from "react";
-import OilCard from "../../../react/components/OilCard";
+import React, { useEffect, useState } from "react";
+import OilCard from "../components/OilCard";
 import { useApi } from "../api/ApiContext";
-import { TextField } from "@mui/material";
 import "../styles/BrowseOils.css";
 
 export default function BrowseOils() {
-  const { allOils } = useApi();
-  const { fetchOils } = useApi();
+  const { allOils, fetchOils } = useApi();
+  const [search, setSearch] = useState("");
 
   useEffect(() => {
     fetchOils();
   }, []);
 
-  return (
-    <div className="oil-selection-container">
-      <div>
-        <TextField
-          id="search"
-          label="Search Oils"
-          variant="outlined"
-          fullWidth
-          margin="normal"
-        />
-      </div>
+  const filtered = allOils.filter((oil) =>
+    oil.name.toLowerCase().includes(search.toLowerCase()),
+  );
 
-      <div className="oil-selection">
-        {allOils.map((oil) => (
-          <OilCard key={oil.id} oil={oil} />
-        ))}
-      </div>
+  return (
+    <div className="browse-oils-page">
+      <header className="page-hero">
+        <span className="page-hero-eyebrow">Our Ingredients</span>
+        <h1 className="page-hero-title">Browse Oils</h1>
+        <p className="page-hero-sub">
+          Discover our curated collection of carrier and essential oils, each
+          chosen for its unique hair and scalp benefits.
+        </p>
+      </header>
+
+      <section className="browse-oils-body">
+        <div className="browse-search-bar">
+          <input
+            type="search"
+            placeholder="Search oils..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            className="browse-search-input"
+          />
+        </div>
+        <div className="oil-grid">
+          {filtered.map((oil) => (
+            <OilCard key={oil.id} oil={oil} />
+          ))}
+          {filtered.length === 0 && (
+            <p className="browse-empty">
+              No oils found for &ldquo;{search}&rdquo;.
+            </p>
+          )}
+        </div>
+      </section>
     </div>
   );
 }

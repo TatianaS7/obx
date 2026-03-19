@@ -1,9 +1,49 @@
 .oil-card {
-    border: 1pt solid rgb(155, 6, 155);
-    height: 10em;
+  background: #fff;
+  border: 1px solid #e8e8e8;
+  border-radius: 8px;
+  padding: 1.5rem 1.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  transition:
+    box-shadow 0.2s,
+    border-color 0.2s;
 }
 
-#oil-card-header {
-    background-color: rgba(251, 217, 223, 0.591);
-    border-bottom: 1pt solid rgb(155, 6, 155);
+.oil-card:hover {
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.08);
+  border-color: var(--accent);
+}
+
+.oil-card-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.oil-card-name {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #111;
+}
+
+.oil-card-type {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--accent);
+  background: var(--accent-light);
+  padding: 0.2em 0.55em;
+  border-radius: 4px;
+  white-space: nowrap;
+}
+
+.oil-card-desc {
+  font-size: 0.88rem;
+  color: #555;
+  line-height: 1.65;
 }
