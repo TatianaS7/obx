@@ -4,13 +4,14 @@ import UserInformation from "./UserInformation";
 import ProductSelection from "./ProductSelection";
 import CreateBlend, { type BlendData } from "./CreateBlend";
 import ReviewOrder from "./ReviewOrder";
+import CheckoutSubmit from "./CheckoutSubmit";
 
 const steps = [
   "User Information",
   "Select Product",
   "Create Oil Blend",
   "Review Order",
-  "Submit",
+  "Checkout",
 ];
 
 interface NewBlendCard {
@@ -75,12 +76,7 @@ export default function OrderStepper({
         );
       case 4:
         return (
-          <Box sx={{ mt: 2 }}>
-            <Typography sx={{ color: "#555" }}>
-              Submit step is ready for API wiring. Click "Finish" to complete
-              the flow.
-            </Typography>
-          </Box>
+          <CheckoutSubmit newBlendCard={newBlendCard} blendData={blendData} />
         );
       default:
         return <UserInformation />;
@@ -126,7 +122,7 @@ export default function OrderStepper({
             </button>
             <Box sx={{ flex: "1 1 auto" }} />
             <button className="btn-primary" onClick={handleNext}>
-              {activeStep === steps.length - 1 ? "Finish" : "Next"}
+              {activeStep === steps.length - 1 ? "Submit Order" : "Next"}
             </button>
           </Box>
         </React.Fragment>
