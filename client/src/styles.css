@@ -1,12 +1,55 @@
-/* * {
-    box-sizing: border-box;
-    border: 1pt dotted red;
-} */
+* {
+  /* box-sizing: border-box; */
+  margin: 0;
+  padding: 0;
+  /* border: 1pt dotted red; */
+}
 
-main {
-    height: 100vh;
-    overflow: hidden;
-    padding: 3em;
-    text-align: center;
-    background-color: rgba(255, 192, 203, 0.546);
+html,
+body,
+#root,
+button,
+input,
+select,
+textarea {
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+}
+
+:root {
+  --accent: #9c27b0;
+  --accent-dark: #7b1fa2;
+  --accent-light: #f3e5f5;
+}
+
+/* ── Shared page hero (used on Browse Oils, Start Order, etc.) ── */
+.page-hero {
+  background: #111;
+  color: #fff;
+  padding: 4rem 8vw 3.5rem;
+  text-align: center;
+}
+
+.page-hero-eyebrow {
+  display: block;
+  font-size: 0.82rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 0.75rem;
+}
+
+.page-hero-title {
+  font-size: clamp(2rem, 4.5vw, 3.2rem);
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+  margin-bottom: 0.9rem;
+}
+
+.page-hero-sub {
+  font-size: 1rem;
+  color: #bbb;
+  line-height: 1.7;
+  max-width: 520px;
+  margin: 0 auto;
 }

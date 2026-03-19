@@ -1,9 +1,17 @@
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../styles/Footer.css";
+import HairQuizModal, { type QuizAnswers } from "./HairQuizModal";
 
 export default function Footer() {
   const navigate = useNavigate();
   const year = new Date().getFullYear();
+  const [quizOpen, setQuizOpen] = useState(false);
+
+  function handleQuizBuild(quizAnswers: QuizAnswers) {
+    setQuizOpen(false);
+    navigate("/start-order", { state: { quizAnswers } });
+  }
 
   return (
     <footer className="footer">
@@ -29,6 +37,9 @@ export default function Footer() {
                 Start Order
               </button>
             </li>
+            <li>
+              <button onClick={() => setQuizOpen(true)}>Take Hair Quiz</button>
+            </li>
           </ul>
         </nav>
 
@@ -38,15 +49,6 @@ export default function Footer() {
             <li>
               <a href="mailto:hello@obx.com">hello@obx.com</a>
             </li>
-            <li>
-              <a
-                href="https://yourportfolio.com"
-                target="_blank"
-                rel="noreferrer"
-              >
-                Portfolio
-              </a>
-            </li>
           </ul>
         </div>
       </div>
@@ -54,6 +56,12 @@ export default function Footer() {
       <div className="footer-bottom">
         <span>&copy; {year} OBX. All rights reserved.</span>
       </div>
+
+      <HairQuizModal
+        open={quizOpen}
+        onClose={() => setQuizOpen(false)}
+        onBuild={handleQuizBuild}
+      />
     </footer>
   );
 }

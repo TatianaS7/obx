@@ -37,7 +37,7 @@ export default function Navbar() {
 
   return (
     <div className="navbar-wrapper background">
-      <h1>OBX</h1>
+      <h1 style={{ cursor: "pointer" }} onClick={() => navigate("/")}>OBX</h1>
       <Tabs
         value={value}
         onChange={(event, newValue) => handleChange(newValue)}
