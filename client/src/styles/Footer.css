@@ -1,0 +1,88 @@
+.footer {
+  background: #fafafa;
+  color: #444;
+  font-size: 0.9rem;
+  border-top: 1px solid #e8e8e8;
+}
+
+.footer-inner {
+  display: flex;
+  gap: 4rem;
+  flex-wrap: wrap;
+  padding: 3.5rem 8vw 2.5rem;
+  justify-content: space-between;
+}
+
+/* Brand column */
+.footer-brand {
+  flex: 1;
+  min-width: 180px;
+}
+
+.footer-logo {
+  display: block;
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: #111;
+  letter-spacing: -0.03em;
+  margin-bottom: 0.6rem;
+}
+
+.footer-brand p {
+  color: #666;
+  line-height: 1.6;
+  max-width: 220px;
+}
+
+/* Nav + Contact columns */
+.footer-nav,
+.footer-contact {
+  min-width: 140px;
+}
+
+.footer-nav h4,
+.footer-contact h4 {
+  color: #111;
+  font-size: 0.8rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  margin-bottom: 1rem;
+}
+
+.footer-nav ul,
+.footer-contact ul {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+}
+
+.footer-nav button {
+  background: none;
+  border: none;
+  color: #555;
+  font-size: 0.9rem;
+  cursor: pointer;
+  padding: 0;
+  text-align: left;
+  transition: color 0.15s;
+}
+
+.footer-nav button:hover,
+.footer-contact a:hover {
+  color: #9c27b0;
+}
+
+.footer-contact a {
+  color: #555;
+  text-decoration: none;
+  transition: color 0.15s;
+}
+
+/* Bottom bar */
+.footer-bottom {
+  border-top: 1px solid #e8e8e8;
+  padding: 1rem 8vw;
+  color: #999;
+  font-size: 0.8rem;
+}
