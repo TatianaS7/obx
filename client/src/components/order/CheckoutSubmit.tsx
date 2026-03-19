@@ -1,6 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import axios from "axios";
-import apiURL from "../../api/api";
+import apiClient from "../../api/httpClient";
 import { type BlendData } from "./CreateBlend";
 import "../../styles/CheckoutSubmit.css";
 
@@ -28,15 +27,28 @@ interface BackendDiscount {
 }
 
 const PRICING_TABLE: Record<string, Record<string, number>> = {
-  SMALL: { PREMADE: 9, BASE_CUSTOM: 11, FULLY_CUSTOM: 15 },
-  MEDIUM: { PREMADE: 13, BASE_CUSTOM: 16, FULLY_CUSTOM: 20 },
-  LARGE: { PREMADE: 18, BASE_CUSTOM: 20, FULLY_CUSTOM: 24 },
+  "60ML": { PREMADE: 9, BASE_CUSTOM: 11, FULLY_CUSTOM: 15 },
+  "120ML": { PREMADE: 13, BASE_CUSTOM: 16, FULLY_CUSTOM: 20 },
+  "240ML": { PREMADE: 18, BASE_CUSTOM: 20, FULLY_CUSTOM: 24 },
 };
 
+function normalizeBottleSize(value: string): string {
+  const normalized = value.trim().toUpperCase();
+
+  if (normalized === "SMALL") return "60ML";
+  if (normalized === "MEDIUM") return "120ML";
+  if (normalized === "LARGE") return "240ML";
+
+  return normalized.replace(/\s+/g, "");
+}
+
 function getPrice(newBlendCard: NewBlendCard): number {
-  const bySize = PRICING_TABLE[newBlendCard.bottle_size];
+  const sizeKey = normalizeBottleSize(newBlendCard.bottle_size);
+  const categoryKey = newBlendCard.category.trim().toUpperCase();
+
+  const bySize = PRICING_TABLE[sizeKey];
   if (!bySize) return 0;
-  return bySize[newBlendCard.category] ?? 0;
+  return bySize[categoryKey] ?? 0;
 }
 
 function formatSpecValue(value: string) {
@@ -65,7 +77,7 @@ export default function CheckoutSubmit({
     async function fetchDiscounts() {
       setDiscountsLoading(true);
       try {
-        const res = await axios.get(`${apiURL}/discounts/all`);
+        const res = await apiClient.get("/discounts/all");
         if (!isMounted) return;
         setDiscounts(Array.isArray(res.data) ? res.data : []);
       } catch (error) {

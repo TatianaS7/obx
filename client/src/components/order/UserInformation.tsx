@@ -7,12 +7,38 @@ import RegisterForm from "../auth/RegisterForm";
 
 export default function UserInformation() {
   const [isMember, setIsMember] = useState(false);
-  const { loading, setLoading } = useApi();
+  const [authError, setAuthError] = useState("");
+  const { loading, currentUser, registerUser, loginUser } = useApi();
 
-  function handleSubmit() {
-    setLoading(true);
-    // Perform submission logic here
-    setLoading(false);
+  async function handleRegister(payload: {
+    first_name: string;
+    last_name: string;
+    email: string;
+    phone_number: string;
+    password: string;
+  }) {
+    setAuthError("");
+    try {
+      await registerUser(payload);
+    } catch (err) {
+      const message =
+        err instanceof Error ? err.message : "Registration failed.";
+      setAuthError(message);
+    }
+  }
+
+  async function handleLogin(payload: {
+    email?: string;
+    phone_number?: string;
+    password: string;
+  }) {
+    setAuthError("");
+    try {
+      await loginUser(payload);
+    } catch (err) {
+      const message = err instanceof Error ? err.message : "Sign in failed.";
+      setAuthError(message);
+    }
   }
 
   return (
@@ -20,15 +46,36 @@ export default function UserInformation() {
       <h1>OBX Rewards</h1>
       {loading ? (
         <LoadingSpinner />
+      ) : currentUser ? (
+        <div>
+          <p>
+            Signed in as <strong>{currentUser.first_name}</strong> (
+            {currentUser.email})
+          </p>
+          <p>
+            Your rewards and discount eligibility can now be applied at
+            checkout.
+          </p>
+        </div>
       ) : isMember ? (
         <SignInForm
-          onSubmit={handleSubmit}
-          onSwitchToRegister={() => setIsMember(false)}
+          onSubmit={handleLogin}
+          onSwitchToRegister={() => {
+            setAuthError("");
+            setIsMember(false);
+          }}
+          isSubmitting={loading}
+          errorMessage={authError}
         />
       ) : (
         <RegisterForm
-          onSubmit={handleSubmit}
-          onSwitchToSignIn={() => setIsMember(true)}
+          onSubmit={handleRegister}
+          onSwitchToSignIn={() => {
+            setAuthError("");
+            setIsMember(true);
+          }}
+          isSubmitting={loading}
+          errorMessage={authError}
         />
       )}
     </div>

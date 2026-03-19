@@ -1,6 +1,7 @@
 import { useState } from "react";
 import SignInForm from "./SignInForm";
 import RegisterForm from "./RegisterForm";
+import { useApi } from "../../api/ApiContext";
 import "../../styles/AuthModal.css";
 
 type AuthView = "signin" | "register";
@@ -15,10 +16,40 @@ export default function AuthModal({
   onClose,
 }: AuthModalProps) {
   const [view, setView] = useState<AuthView>(initialView);
+  const [authError, setAuthError] = useState("");
+  const { loading, registerUser, loginUser } = useApi();
 
-  function handleSubmit() {
-    // TODO: wire to auth backend
-    onClose();
+  async function handleSignInSubmit(payload: {
+    email?: string;
+    phone_number?: string;
+    password: string;
+  }) {
+    setAuthError("");
+    try {
+      await loginUser(payload);
+      onClose();
+    } catch (err) {
+      const message = err instanceof Error ? err.message : "Sign in failed.";
+      setAuthError(message);
+    }
+  }
+
+  async function handleRegisterSubmit(payload: {
+    first_name: string;
+    last_name: string;
+    email: string;
+    phone_number: string;
+    password: string;
+  }) {
+    setAuthError("");
+    try {
+      await registerUser(payload);
+      onClose();
+    } catch (err) {
+      const message =
+        err instanceof Error ? err.message : "Registration failed.";
+      setAuthError(message);
+    }
   }
 
   return (
@@ -44,13 +75,23 @@ export default function AuthModal({
 
         {view === "signin" ? (
           <SignInForm
-            onSubmit={handleSubmit}
-            onSwitchToRegister={() => setView("register")}
+            onSubmit={handleSignInSubmit}
+            onSwitchToRegister={() => {
+              setAuthError("");
+              setView("register");
+            }}
+            isSubmitting={loading}
+            errorMessage={authError}
           />
         ) : (
           <RegisterForm
-            onSubmit={handleSubmit}
-            onSwitchToSignIn={() => setView("signin")}
+            onSubmit={handleRegisterSubmit}
+            onSwitchToSignIn={() => {
+              setAuthError("");
+              setView("signin");
+            }}
+            isSubmitting={loading}
+            errorMessage={authError}
           />
         )}
       </div>
