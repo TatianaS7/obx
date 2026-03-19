@@ -4,11 +4,15 @@ import Tab from "@mui/material/Tab";
 import { useNavigate } from "react-router-dom";
 import logo from "../assets/dropper-bottle.png";
 import "../styles/Navbar.css";
+import AuthModal from "./AuthModal";
+
+type AuthView = "signin" | "register" | null;
 
 export default function Navbar() {
   const navigate = useNavigate();
   const [value, setValue] = useState("home");
   const [menuOpen, setMenuOpen] = useState(false);
+  const [authModal, setAuthModal] = useState<AuthView>(null);
   const hideTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   function handleChange(value: string) {
@@ -68,11 +72,31 @@ export default function Navbar() {
             onMouseEnter={openMenu}
             onMouseLeave={closeMenu}
           >
-            <button className="navbar-dropdown-item">Sign In</button>
-            <button className="navbar-dropdown-item">Register</button>
+            <button
+              className="navbar-dropdown-item"
+              onClick={() => {
+                setMenuOpen(false);
+                setAuthModal("signin");
+              }}
+            >
+              Sign In
+            </button>
+            <button
+              className="navbar-dropdown-item"
+              onClick={() => {
+                setMenuOpen(false);
+                setAuthModal("register");
+              }}
+            >
+              Register
+            </button>
           </div>
         )}
       </div>
+
+      {authModal && (
+        <AuthModal initialView={authModal} onClose={() => setAuthModal(null)} />
+      )}
     </div>
   );
 }
