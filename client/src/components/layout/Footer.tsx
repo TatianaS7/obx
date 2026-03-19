@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "../styles/Footer.css";
-import HairQuizModal, { type QuizAnswers } from "./HairQuizModal";
+import "../../styles/Footer.css";
+import HairQuizModal, { type QuizAnswers } from "../quiz/HairQuizModal";
 
 export default function Footer() {
   const navigate = useNavigate();

@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import { useApi } from "../../src/api/ApiContext";
-import "../styles/UserInformation.css";
+import { useApi } from "../../api/ApiContext";
+import "../../styles/UserInformation.css";
 import LoadingSpinner from "./LoadingSpinner";
-import SignInForm from "./SignInForm";
-import RegisterForm from "./RegisterForm";
+import SignInForm from "../auth/SignInForm";
+import RegisterForm from "../auth/RegisterForm";
 
 export default function UserInformation() {
   const [isMember, setIsMember] = useState(false);

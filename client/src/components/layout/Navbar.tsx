@@ -2,9 +2,9 @@ import { useState, useRef } from "react";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import { useNavigate } from "react-router-dom";
-import logo from "../assets/dropper-bottle.png";
-import "../styles/Navbar.css";
-import AuthModal from "./AuthModal";
+import logo from "../../assets/dropper-bottle.png";
+import "../../styles/Navbar.css";
+import AuthModal from "../auth/AuthModal";
 
 type AuthView = "signin" | "register" | null;
 
@@ -37,7 +37,9 @@ export default function Navbar() {
 
   return (
     <div className="navbar-wrapper background">
-      <h1 style={{ cursor: "pointer" }} onClick={() => navigate("/")}>OBX</h1>
+      <h1 style={{ cursor: "pointer" }} onClick={() => navigate("/")}>
+        OBX
+      </h1>
       <Tabs
         value={value}
         onChange={(event, newValue) => handleChange(newValue)}

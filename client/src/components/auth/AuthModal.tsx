@@ -1,7 +1,7 @@
 import { useState } from "react";
 import SignInForm from "./SignInForm";
 import RegisterForm from "./RegisterForm";
-import "../styles/AuthModal.css";
+import "../../styles/AuthModal.css";
 
 type AuthView = "signin" | "register";
 

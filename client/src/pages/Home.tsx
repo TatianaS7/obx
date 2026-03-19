@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import HairQuizModal, { type QuizAnswers } from "../components/HairQuizModal";
+import HairQuizModal, {
+  type QuizAnswers,
+} from "../components/quiz/HairQuizModal";
 import "../styles/Home.css";
 
 const FEATURES = [
@@ -72,7 +74,7 @@ export default function Home() {
               className="btn-ghost"
               onClick={() => navigate("/browse-oils")}
             >
-              Browse Ingredients
+              Browse Oils
             </button>
           </div>
           <p className="home-hero-quiz">
