@@ -1,5 +1,5 @@
 import { useState } from "react";
-import "../styles/HairQuizModal.css";
+import "../../styles/HairQuizModal.css";
 
 const HAIR_TYPES = [
   {

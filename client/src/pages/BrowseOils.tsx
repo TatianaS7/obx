@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import OilCard from "../components/OilCard";
+import OilCard from "../components/catalog/OilCard";
 import { useApi } from "../api/ApiContext";
 import "../styles/BrowseOils.css";
 

@@ -1,5 +1,5 @@
-import OilSchema from "../../../server/schemas";
-import "../styles/OilCard.css";
+import OilSchema from "../../../../server/schemas";
+import "../../styles/OilCard.css";
 
 interface OilCardProps {
   oil: OilSchema;
