@@ -28,45 +28,45 @@ function BottleFillVisual({
     heightPercent: number;
   }>;
 }) {
-  if (bottleType === "SQUEEZE") {
-    return (
-      <svg
-        className="volume-bottle-svg"
-        viewBox="0 0 160 270"
-        role="img"
-        aria-label="Squeeze bottle volume breakdown"
-      >
-        <defs>
-          <clipPath id="squeeze-fill-clip">
-            <path d="M74 16h12l4 16h10v18l14 18v12h8c10 0 18 8 18 18v136c0 11-8 19-19 19H39c-11 0-19-8-19-19V98c0-10 8-18 18-18h8V68l14-18V32h10z" />
-          </clipPath>
-        </defs>
-
-        <path
-          d="M74 16h12l4 16h10v18l14 18v12h8c10 0 18 8 18 18v136c0 11-8 19-19 19H39c-11 0-19-8-19-19V98c0-10 8-18 18-18h8V68l14-18V32h10z"
-          fill="#ffffff"
-          stroke="#cfcfcf"
-          strokeWidth="4"
-        />
-
-        <g clipPath="url(#squeeze-fill-clip)">
-          {segments.map((s) => (
-            <rect
-              key={s.label}
-              x="18"
-              y={252 - (s.bottom + s.heightPercent) * 1.75}
-              width="124"
-              height={Math.max(0, s.heightPercent * 1.75)}
-              fill={s.color}
-            />
-          ))}
-        </g>
-
-        <path d="M78 2h4v14h-4z" fill="#111" />
-        <circle cx="80" cy="2" r="3" fill="#111" />
-      </svg>
-    );
-  }
+  // if (bottleType === "SQUEEZE") {
+  //   return (
+  //     <svg
+  //       className="volume-bottle-svg"
+  //       viewBox="0 0 160 270"
+  //       role="img"
+  //       aria-label="Squeeze bottle volume breakdown"
+  //     >
+  //       <defs>
+  //         <clipPath id="squeeze-fill-clip">
+  //           <path d="M74 16h12l4 16h10v18l14 18v12h8c10 0 18 8 18 18v136c0 11-8 19-19 19H39c-11 0-19-8-19-19V98c0-10 8-18 18-18h8V68l14-18V32h10z" />
+  //         </clipPath>
+  //       </defs>
+  //
+  //       <path
+  //         d="M74 16h12l4 16h10v18l14 18v12h8c10 0 18 8 18 18v136c0 11-8 19-19 19H39c-11 0-19-8-19-19V98c0-10 8-18 18-18h8V68l14-18V32h10z"
+  //         fill="#ffffff"
+  //         stroke="#cfcfcf"
+  //         strokeWidth="4"
+  //       />
+  //
+  //       <g clipPath="url(#squeeze-fill-clip)">
+  //         {segments.map((s) => (
+  //           <rect
+  //             key={s.label}
+  //             x="18"
+  //             y={252 - (s.bottom + s.heightPercent) * 1.75}
+  //             width="124"
+  //             height={Math.max(0, s.heightPercent * 1.75)}
+  //             fill={s.color}
+  //           />
+  //         ))}
+  //       </g>
+  //
+  //       <path d="M78 2h4v14h-4z" fill="#111" />
+  //       <circle cx="80" cy="2" r="3" fill="#111" />
+  //     </svg>
+  //   );
+  // }
 
   return (
     <svg

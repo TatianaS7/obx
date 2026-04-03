@@ -45,4 +45,4 @@ class BottleSize(Enum):
 
 class BottleType(Enum):
     DROPPER = "DROPPER"
-    SQUEEZE = "SQUEEZE"
+    # SQUEEZE = "SQUEEZE"

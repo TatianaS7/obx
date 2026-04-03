@@ -15,7 +15,7 @@ const SECTIONS = [
         name: "Dropper Bottle",
         desc: "Precise control for targeted application.",
       },
-      { name: "Squeeze Bottle", desc: "Easy for direct scalp application." },
+      // { name: "Squeeze Bottle", desc: "Easy for direct scalp application." },
     ],
   },
   {

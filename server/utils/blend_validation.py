@@ -41,82 +41,55 @@ def calculate_volume(ingredients: dict, bottle_size: str, bottle_type: str, blen
     secondary_oils = ingredients.get("secondary_oil", [])
     add_ons = ingredients.get("add_on_oil", [])
 
+    if blend_category == BlendCategory.BASE_CUSTOM.value:
+        specs = base_custom_specs.get(bottle_size)
+        if not specs:
+            raise ValidationError("Invalid bottle size.")
 
-    if bottle_type == BottleType.SQUEEZE.value:
-        if blend_category == BlendCategory.BASE_CUSTOM.value:
-            specs = base_custom_specs[bottle_size]
-            total_volume = specs["capacity"]
-            max_secondary_count = specs["max_secondary_count"]
-            max_add_ons = specs["max_add_ons"]
+        max_secondary_count = specs["max_secondary_count"]
+        max_add_ons = specs["max_add_ons"]
+        secondary_volume = specs["capacity"] * specs["secondary_pct"]
 
-            # Calculate volumes
-            base_volume = specs["capacity"] * specs["base_pct"]
-            secondary_volume = specs["capacity"] * specs["secondary_pct"]
+        adjusted_base_volume, add_on_total_volume = calculate_adjusted_base_volume(
+            specs["base_pct"], specs["capacity"], specs["add_on_volume"], add_ons
+        )
 
-            add_on_total_volume = len(add_ons) * 1 # Complimentary volume for base custom oil is 1 mL
+        if len(base_oil) > 1:
+            raise ValidationError("Too many base oils. Maximum allowed is 1.")
+        if len(secondary_oils) > max_secondary_count:
+            raise ValidationError(f"Too many secondary oils. Maximum allowed is {max_secondary_count}.")
+        if len(add_ons) > max_add_ons:
+            raise ValidationError(f"Too many add-ons. Maximum allowed is {max_add_ons}.")
 
-            # Get adjusted base volume and add-on total volume
-            adjusted_base_volume, add_on_total_volume = calculate_adjusted_base_volume(
-                specs["base_pct"], specs["capacity"], specs["add_on_volume"], add_ons
-            )
-            
-            # Validate ingredient counts
-            if len(base_oil) > 1:
-                raise ValidationError("Too many base oils. Maximum allowed is 1.")
-            if len(secondary_oils) > max_secondary_count:
-                raise ValidationError(f"Too many secondary oils. Maximum allowed is {max_secondary_count}.")
-            if len(add_ons) > max_add_ons:
-                raise ValidationError(f"Too many add-ons. Maximum allowed is {max_add_ons}.")
+        total_volume = adjusted_base_volume + secondary_volume + add_on_total_volume
 
-            # Calculate total volume
-            total_volume = adjusted_base_volume + secondary_volume + add_on_total_volume
+    elif blend_category == BlendCategory.FULLY_CUSTOM.value:
+        specs = fully_custom_specs.get(bottle_size)
+        if not specs:
+            raise ValidationError("Invalid bottle size.")
 
-        elif blend_category == BlendCategory.FULLY_CUSTOM.value:
-            specs = fully_custom_specs[bottle_size]
-            total_volume = specs["capacity"]
-            base_volume = specs["base_volume"]
-            secondary_volume = specs["secondary_volume"]
-            max_add_ons = specs["max_add_ons"]
+        secondary_volume = specs["secondary_volume"]
+        max_add_ons = specs["max_add_ons"]
 
-            add_on_total_volume = len(add_ons) * 3 # Each add-on is 3 mL
+        if len(add_ons) > max_add_ons:
+            raise ValidationError(f"Too many add-ons. Maximum allowed is {max_add_ons}.")
 
-            # Check if the add-on volume exceeds the total bottle capacity
-            if add_on_total_volume > specs["capacity"]:
-                raise ValidationError(f"Add-ons exceed the total bottle capacity of {specs['capacity']} mL.")
+        base_pct = specs["base_volume"] / specs["capacity"]
+        adjusted_base_volume, add_on_total_volume = calculate_adjusted_base_volume(
+            base_pct, specs["capacity"], specs["add_on_volume"], add_ons
+        )
 
-            # available_volume = specs["capacity"] - base_volume - secondary_volume
-            # if add_on_total_volume > available_volume:
-            #     raise ValidationError(f"Add-ons exceed the available volume of {available_volume} mL.")
-            
-            base_pct = base_volume / specs["capacity"]
-            add_on_volume = specs["add_on_volume"]
-            
-            # Get adjusted base volume and add-on total volume
-            adjusted_base_volume, add_on_total_volume = calculate_adjusted_base_volume(
-                base_pct, specs["capacity"], add_on_volume, add_ons
-            )
+        total_volume = adjusted_base_volume + secondary_volume + add_on_total_volume
 
-            # print(f"Adjusted base volume: {adjusted_base_volume}")
-            print(f"Add-on total volume: {add_on_total_volume}")
-            print(f"Secondary volume: {secondary_volume}")            
+    else:
+        raise ValidationError("Invalid bottle type or blend category.")
 
+    if total_volume > specs["capacity"]:
+        raise ValidationError(f"Total volume ({total_volume} mL) exceeds bottle capacity ({specs['capacity']} mL).")
 
-            # Validate ingredient counts
-            if len(add_ons) > max_add_ons:
-                raise ValidationError(f"Too many add-ons. Maximum allowed is {max_add_ons}.")
-
-            # Calculate total volume
-            total_volume = adjusted_base_volume + secondary_volume + add_on_total_volume
-
-        # Final volume validation after adjustments
-        if total_volume > specs["capacity"]:
-            raise ValidationError(f"Total volume ({total_volume} mL) exceeds bottle capacity ({specs['capacity']} mL).")            
-
-        return {
-            "base_volume": adjusted_base_volume,
-            "secondary_volume": secondary_volume,
-            "add_on_volume": add_on_total_volume,
-            "total_volume": total_volume
-        }
-
-    raise ValidationError("Invalid bottle type or blend category.")
+    return {
+        "base_volume": adjusted_base_volume,
+        "secondary_volume": secondary_volume,
+        "add_on_volume": add_on_total_volume,
+        "total_volume": total_volume
+    }

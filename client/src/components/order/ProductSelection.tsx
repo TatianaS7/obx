@@ -20,7 +20,7 @@ export default function ProductSelection({
   setNewBlendCard: React.Dispatch<React.SetStateAction<NewBlendCard>>;
 }) {
   const [product_type, setProductType] = useState("");
-  const [bottle_type, setBottleType] = useState("");
+  const [bottle_type, setBottleType] = useState("DROPPER");
   const [bottle_size, setBottleSize] = useState("");
 
   useEffect(() => {
@@ -42,27 +42,31 @@ export default function ProductSelection({
           <InputLabel id="product-type-label">Product Type</InputLabel>
           <Select
             label="Product Type"
+            value={product_type}
             onChange={(e) => {
-              setProductType(e.target.value as string);
+              const selectedProductType = e.target.value as string;
+              setProductType(selectedProductType);
+              if (selectedProductType === "HAIR_OIL") {
+                setBottleType("DROPPER");
+              }
             }}
             sx={{ backgroundColor: "white" }}
           >
-            <MenuItem value="HAIR">Hair Oil</MenuItem>
-            <MenuItem value="FRAGRANCE">Fragrance Oil</MenuItem>
+            <MenuItem value="HAIR_OIL">Hair Oil</MenuItem>
+            <MenuItem value="FRAGRANCE_OIL">Fragrance Oil</MenuItem>
           </Select>
         </FormControl>
 
-        {product_type === "HAIR" && (
+        {product_type === "HAIR_OIL" && (
           <FormControl fullWidth margin="normal">
             <InputLabel>Bottle Type</InputLabel>
             <Select
               label="Bottle Type"
-              onChange={(e) => {
-                setBottleType(e.target.value as string);
-              }}
+              value={bottle_type}
+              disabled
               sx={{ backgroundColor: "white" }}
             >
-              <MenuItem value="SQUEEZE">Squeeze</MenuItem>
+              {/* <MenuItem value="SQUEEZE">Squeeze</MenuItem> */}
               <MenuItem value="DROPPER">Dropper</MenuItem>
             </Select>
           </FormControl>

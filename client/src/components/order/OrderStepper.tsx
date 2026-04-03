@@ -5,6 +5,7 @@ import ProductSelection from "./ProductSelection";
 import CreateBlend, { type BlendData } from "./CreateBlend";
 import ReviewOrder from "./ReviewOrder";
 import CheckoutSubmit from "./CheckoutSubmit";
+import BlendCardResult from "./BlendCardResult";
 
 const steps = [
   "User Information",
@@ -12,6 +13,7 @@ const steps = [
   "Create Oil Blend",
   "Review Order",
   "Checkout",
+  "Blend Card",
 ];
 
 interface NewBlendCard {
@@ -78,10 +80,21 @@ export default function OrderStepper({
         return (
           <CheckoutSubmit newBlendCard={newBlendCard} blendData={blendData} />
         );
+      case 5:
+        return (
+          <BlendCardResult newBlendCard={newBlendCard} blendData={blendData} />
+        );
       default:
         return <UserInformation />;
     }
   };
+
+  const nextButtonLabel =
+    activeStep === 4
+      ? "Submit Order"
+      : activeStep === steps.length - 1
+        ? "Finish"
+        : "Next";
 
   return (
     <Box sx={{ width: "100%", marginBottom: "2em" }}>
@@ -122,7 +135,7 @@ export default function OrderStepper({
             </button>
             <Box sx={{ flex: "1 1 auto" }} />
             <button className="btn-primary" onClick={handleNext}>
-              {activeStep === steps.length - 1 ? "Submit Order" : "Next"}
+              {nextButtonLabel}
             </button>
           </Box>
         </React.Fragment>
