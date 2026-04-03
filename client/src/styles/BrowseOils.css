@@ -7,30 +7,87 @@
   padding: 3rem 8vw 5rem;
 }
 
-/* Search bar */
-.browse-search-bar {
-  margin-bottom: 2.5rem;
-  text-align: center;
+.browse-oils-layout {
+  display: grid;
+  grid-template-columns: minmax(240px, 290px) minmax(0, 1fr);
+  gap: 2rem;
+  align-items: start;
 }
 
-.browse-search-input {
-  width: 100%;
-  max-width: 500px;
-  padding: 0.7rem 1rem;
-  font-size: 0.95rem;
-  border: 1.5px solid #d6d6d6;
-  border-radius: 6px;
-  outline: none;
+.browse-oils-sidebar {
+  min-width: 0;
+}
+
+.browse-oils-content {
+  min-width: 0;
+}
+
+.browse-active-filters {
+  margin-bottom: 1rem;
+  border: 1px solid #ece8e1;
+  background: #fcfcfb;
+  border-radius: 14px;
+  padding: 0.9rem 1rem;
+}
+
+.browse-active-filters-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.browse-active-filters-title {
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #6a6a6a;
+}
+
+.browse-active-filters-clear {
+  border: none;
+  background: transparent;
+  color: var(--accent);
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0;
+}
+
+.browse-active-filters-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.browse-active-filter-pill {
+  border: 1px solid #ddd5c7;
+  background: #fff;
+  color: #4a4030;
+  border-radius: 999px;
+  padding: 0.38rem 0.72rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
   transition:
     border-color 0.18s,
-    box-shadow 0.18s;
-  color: #111;
-  background: #fff;
+    color 0.18s,
+    background 0.18s;
 }
 
-.browse-search-input:focus {
+.browse-active-filter-pill:hover {
   border-color: var(--accent);
-  box-shadow: 0 0 0 3px var(--accent-light);
+  color: var(--accent);
+  background: var(--accent-light);
+}
+
+.browse-results-count {
+  margin: 0 0 1.25rem;
+  color: #666;
+  font-size: 0.85rem;
 }
 
 /* Oil grid */
@@ -45,4 +102,10 @@
   color: #888;
   font-size: 0.95rem;
   padding: 2rem 0;
+}
+
+@media (max-width: 900px) {
+  .browse-oils-layout {
+    grid-template-columns: 1fr;
+  }
 }

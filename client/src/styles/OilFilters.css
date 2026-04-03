@@ -1,0 +1,173 @@
+.oil-filters {
+  background: var(--accent-light);
+  border: 1px solid #ece8e1;
+  border-radius: 16px;
+  padding: 1.25rem;
+  position: sticky;
+  top: 1.5rem;
+}
+
+.oil-filters-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.oil-filters-title {
+  margin: 0;
+  font-size: 1rem;
+  color: #1c1c1c;
+}
+
+.oil-filters-search-row {
+  margin-bottom: 1rem;
+}
+
+.oil-filters-search-input {
+  width: 100%;
+  max-width: 500px;
+  padding: 0.7rem 1rem;
+  font-size: 0.95rem;
+  border: 1.5px solid #d6d6d6;
+  border-radius: 6px;
+  outline: none;
+  transition: border-color 0.18s, box-shadow 0.18s;
+  color: #111;
+  background: #fff;
+}
+
+.oil-filters-search-input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-light);
+}
+
+.oil-filters-controls-column {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.oil-filters-control-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  min-width: 0;
+}
+
+.oil-filters-label {
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #6a6a6a;
+  font-weight: 700;
+}
+
+.oil-filters-select {
+  border: 1.5px solid #d6d6d6;
+  border-radius: 6px;
+  padding: 0.6rem 0.75rem;
+  font-size: 0.92rem;
+  color: #111;
+  background: #fff;
+  min-height: 40px;
+}
+
+.oil-filters-select:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-light);
+}
+
+.oil-filters-tags-group {
+  min-width: 0;
+}
+
+.oil-filters-tag-dropdown {
+  position: relative;
+}
+
+.oil-filters-tag-summary {
+  border: 1.5px solid #d6d6d6;
+  border-radius: 6px;
+  padding: 0.6rem 0.75rem;
+  font-size: 0.92rem;
+  color: #111;
+  background: #fff;
+  cursor: pointer;
+  list-style: none;
+  display: flex;
+  align-items: center;
+}
+
+.oil-filters-tag-summary::-webkit-details-marker {
+  display: none;
+}
+
+.oil-filters-tag-dropdown[open] .oil-filters-tag-summary {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-light);
+}
+
+.oil-filters-tag-panel {
+  margin-top: 0.4rem;
+  border: 1px solid #e1e1e1;
+  border-radius: 8px;
+  background: #fff;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.08);
+  padding: 0.5rem;
+  max-height: 220px;
+  overflow-y: auto;
+}
+
+.oil-filters-tag-option {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.35rem 0.4rem;
+  border-radius: 6px;
+  cursor: pointer;
+  color: #444;
+  font-size: 0.84rem;
+}
+
+.oil-filters-tag-option:hover {
+  background: #f7f7f7;
+}
+
+.oil-filters-tag-option input {
+  accent-color: var(--accent);
+}
+
+.oil-filters-clear-button {
+  border: 1px solid #cfcfcf;
+  background: #fff;
+  color: #333;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  padding: 0.55rem 0.85rem;
+  cursor: pointer;
+  transition: border-color 0.18s, color 0.18s, background 0.18s;
+  min-height: 40px;
+  white-space: nowrap;
+}
+
+.oil-filters-clear-button:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: #fafafa;
+}
+
+@media (max-width: 640px) {
+  .oil-filters {
+    position: static;
+    padding: 1rem;
+  }
+
+  .oil-filters-header {
+    align-items: stretch;
+    flex-direction: column;
+  }
+}
