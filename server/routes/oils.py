@@ -16,6 +16,10 @@ def create_oil():
         oil = Oil(
             name=data['name'],
             description=data['description'],
+            origin_country=data.get('origin_country'),
+            source=data.get('source'),
+            extraction_method=data.get('extraction_method'),
+            tags=data.get('tags', []),
             oil_type=OilType(data['oil_type']),
             is_active=data.get('is_active', True),
         )
@@ -60,6 +64,10 @@ def update_oil(oil_id):
 
         oil.name = data['name'] if 'name' in data else oil.name
         oil.description = data['description'] if 'description' in data else oil.description
+        oil.origin_country = data['origin_country'] if 'origin_country' in data else oil.origin_country
+        oil.source = data['source'] if 'source' in data else oil.source
+        oil.extraction_method = data['extraction_method'] if 'extraction_method' in data else oil.extraction_method
+        oil.tags = data['tags'] if 'tags' in data else oil.tags
         oil.oil_type = OilType(data['oil_type']) if 'oil_type' in data else oil.oil_type
         oil.is_active = data.get('is_active', True) if 'is_active' in data else oil.is_active
 

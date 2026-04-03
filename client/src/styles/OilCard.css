@@ -47,3 +47,53 @@
   color: #555;
   line-height: 1.65;
 }
+
+.oil-card-details {
+  margin: 0.25rem 0 0;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  row-gap: 0.4rem;
+  column-gap: 0.6rem;
+}
+
+.oil-card-detail-row {
+  display: contents;
+}
+
+.oil-card-detail-row dt {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: black;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+  align-self: baseline;
+}
+
+.oil-card-detail-row dd {
+  font-size: 0.82rem;
+  color: #444;
+  font-weight: 400;
+  margin: 0;
+  align-self: baseline;
+  text-transform: uppercase;
+}
+
+.oil-card-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin-top: 0.5rem;
+}
+
+.oil-card-tag {
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: capitalize;
+  color: var(--accent);
+  background: var(--accent-light);
+  padding: 0.2em 0.6em;
+  border-radius: 20px;
+  white-space: nowrap;
+}

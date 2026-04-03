@@ -12,6 +12,10 @@ def populate_oils():
                 oil = Oil(
                     name=oil_data['name'],
                     description=oil_data['description'],
+                    origin_country=oil_data.get('origin_country'),
+                    source=oil_data.get('source'),
+                    extraction_method=oil_data.get('extraction_method'),
+                    tags=oil_data.get('tags', []),
                     oil_type=oil_data['oil_type'],
                     is_active=oil_data['is_active']
                 )
