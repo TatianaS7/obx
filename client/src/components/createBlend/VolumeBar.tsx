@@ -1,3 +1,5 @@
+import { formatGrams } from "./utils";
+
 function getStackedSegments(
   segments: Array<{ label: string; ml: number; color: string }>,
   capacity: number,
@@ -155,7 +157,7 @@ export default function VolumeBar({
               className="volume-legend-dot"
               style={{ background: s.color }}
             />
-            {s.label} - {s.ml.toFixed(1)} mL
+            {s.label} - {formatGrams(s.ml)}
           </span>
         ))}
       </div>

@@ -1,5 +1,6 @@
 import OilSlotSelect from "./OilSlotSelect";
 import VolumeBar from "./VolumeBar";
+import { formatGrams } from "./utils";
 import { type OilOption } from "./types";
 
 interface FullyCustomSpec {
@@ -57,6 +58,9 @@ export default function FullyCustomBlendSection({
   setAddOnSlots,
 }: FullyCustomBlendSectionProps) {
   const addOnCount = addOnSlots.filter((id) => id !== null).length;
+  const selectedSecondaryCount = secSlots.filter((id) => id !== null).length;
+  const secondaryPerOil = fcSpec.secVol / Math.max(selectedSecondaryCount, 1);
+  const secondaryLabel = selectedSecondaryCount > 1 ? "each" : "total";
 
   return (
     <>
@@ -64,8 +68,7 @@ export default function FullyCustomBlendSection({
         <div className="blend-section-header">
           <h3 className="blend-section-title">Base Oils</h3>
           <span className="blend-section-badge">
-            {(fcSpec.baseVol - addOnCount * fcSpec.addOnVol).toFixed(1)} mL
-            total
+            {formatGrams(fcSpec.baseVol - addOnCount * fcSpec.addOnVol)} total
           </span>
         </div>
         <p className="blend-section-sub">
@@ -103,16 +106,12 @@ export default function FullyCustomBlendSection({
         <div className="blend-section-header">
           <h3 className="blend-section-title">Secondary Oils</h3>
           <span className="blend-section-badge">
-            {(
-              fcSpec.secVol /
-              Math.max(secSlots.filter((id) => id !== null).length, 1)
-            ).toFixed(1)}{" "}
-            mL each
+            {formatGrams(secondaryPerOil)} {secondaryLabel}
           </span>
         </div>
         <p className="blend-section-sub">
-          Enhancing oils - {fcSpec.secVol} mL total, split equally among
-          selections.
+          Enhancing oils - {formatGrams(fcSpec.secVol)} total, split equally
+          among selections.
         </p>
         {secSlots.map((val, i) => (
           <div key={i} className="slot-row">
@@ -145,7 +144,9 @@ export default function FullyCustomBlendSection({
       <section className="blend-section">
         <div className="blend-section-header">
           <h3 className="blend-section-title">Add-On Oils</h3>
-          <span className="blend-section-badge">{fcSpec.addOnVol} mL each</span>
+          <span className="blend-section-badge">
+            {formatGrams(fcSpec.addOnVol)} each
+          </span>
         </div>
         <p className="blend-section-sub">
           Premium or specialty oils. Max {fcSpec.maxAddOns} - displaces base
@@ -183,7 +184,7 @@ export default function FullyCustomBlendSection({
       <section className="blend-section blend-section-volume">
         <h3 className="blend-section-title">Volume Breakdown</h3>
         <p className="full-allowed-volume">
-          Full Allowed Volume: <strong>{capacity} mL</strong>
+          Full Allowed Volume: <strong>{formatGrams(capacity)}</strong>
         </p>
         <VolumeBar
           baseVol={fcSpec.baseVol}

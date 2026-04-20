@@ -1,4 +1,4 @@
-import { formatSpecValue } from "./utils";
+import { formatBottleSizeOz, formatSpecValue } from "./utils";
 
 interface ProductSpecOverviewProps {
   productType: string;
@@ -40,7 +40,7 @@ export default function ProductSpecOverview({
         <div className="product-spec-item">
           <span className="product-spec-label">Bottle Size</span>
           <span className="product-spec-value">
-            {bottleSize || "Not selected"}
+            {formatBottleSizeOz(bottleSize)}
           </span>
         </div>
       </div>

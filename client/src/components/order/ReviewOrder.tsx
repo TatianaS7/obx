@@ -1,6 +1,7 @@
 import { useMemo } from "react";
 import { useApi } from "../../api/ApiContext";
 import { type BlendData } from "./CreateBlend";
+import { formatBottleSizeOz, formatGrams } from "../createBlend/utils";
 import "../../styles/ReviewOrder.css";
 
 interface NewBlendCard {
@@ -99,12 +100,12 @@ export default function ReviewOrder({
           <div>
             <span className="review-label">Bottle Size</span>
             <span className="review-value">
-              {newBlendCard.bottle_size || "Not selected"}
+              {formatBottleSizeOz(newBlendCard.bottle_size)}
             </span>
           </div>
         </div>
         <p className="review-capacity">
-          Full Allowed Volume: <strong>{fullAllowedVolume} mL</strong>
+          Full Allowed Volume: <strong>{formatGrams(fullAllowedVolume)}</strong>
         </p>
       </section>
 

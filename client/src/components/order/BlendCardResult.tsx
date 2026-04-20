@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
 import { useApi } from "../../api/ApiContext";
 import { BASE_CUSTOM_SPECS, FULLY_CUSTOM_SPECS } from "../createBlend/specs";
+import { formatBottleSizeOz, mlToGrams } from "../createBlend/utils";
 import { type BlendData } from "./CreateBlend";
 import "../../styles/BlendCardResult.css";
 
@@ -21,7 +22,7 @@ interface BlendCardResultProps {
 interface BlendCardOilRow {
   oil_id: number;
   oil_type: string;
-  amount_ml: number;
+  amount_grams: number;
   name: string;
   description: string;
 }
@@ -131,21 +132,21 @@ export default function BlendCardResult({
       ...grouped.BASE.map((oil) => ({
         ...oil,
         oil_type: "BASE",
-        amount_ml: rounded(basePer),
+        amount_grams: mlToGrams(basePer),
         name: oilsById.get(oil.oil_id)?.name ?? `Oil #${oil.oil_id}`,
         description: oilsById.get(oil.oil_id)?.description ?? "",
       })),
       ...grouped.SECONDARY.map((oil) => ({
         ...oil,
         oil_type: "SECONDARY",
-        amount_ml: rounded(secondaryPer),
+        amount_grams: mlToGrams(secondaryPer),
         name: oilsById.get(oil.oil_id)?.name ?? `Oil #${oil.oil_id}`,
         description: oilsById.get(oil.oil_id)?.description ?? "",
       })),
       ...grouped.ADD_ON.map((oil) => ({
         ...oil,
         oil_type: "ADD_ON",
-        amount_ml: rounded(addOnPer),
+        amount_grams: mlToGrams(addOnPer),
         name: oilsById.get(oil.oil_id)?.name ?? `Oil #${oil.oil_id}`,
         description: oilsById.get(oil.oil_id)?.description ?? "",
       })),
@@ -170,6 +171,7 @@ export default function BlendCardResult({
         bottle_size: newBlendCard.bottle_size,
         bottle_type: newBlendCard.bottle_type,
         category: newBlendCard.category,
+        amount_unit: "g",
         oils: blendRows,
       };
 
@@ -196,11 +198,13 @@ export default function BlendCardResult({
       <p className="blend-card-result-eyebrow">Order Submitted</p>
       {/* </header> */}
       <div>
-        {" "}
-        <h3>Your Blend Card</h3>
+        <div className="blend-card-title-row">
+          <h3>Your Blend Card</h3>
+          <span className="blend-card-unit-pill">Amounts in grams (g)</span>
+        </div>
         <p>
           This card captures your custom formula with each selected oil and its
-          amount.
+          amount. Values are stored in grams.
         </p>
       </div>
 
@@ -220,7 +224,7 @@ export default function BlendCardResult({
           <div className="blend-card-meta-item">
             <span className="blend-card-label">Bottle</span>
             <strong>
-              {newBlendCard.bottle_size || "Not set"}{" "}
+              {formatBottleSizeOz(newBlendCard.bottle_size)}{" "}
               {newBlendCard.bottle_type || ""}
             </strong>
           </div>
@@ -259,7 +263,7 @@ export default function BlendCardResult({
                       <li key={`${oil.oil_type}-${oil.oil_id}`}>
                         <div className="blend-card-oil-head">
                           <strong>{oil.name}</strong>
-                          <span>{oil.amount_ml} mL</span>
+                          <span>{rounded(oil.amount_grams)} g</span>
                         </div>
                         <div className="blend-card-oil-meta">
                           <p>

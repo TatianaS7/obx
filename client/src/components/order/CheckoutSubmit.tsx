@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import apiClient from "../../api/httpClient";
+import { formatBottleSizeOz } from "../createBlend/utils";
 import { type BlendData } from "./CreateBlend";
 import "../../styles/CheckoutSubmit.css";
 
@@ -166,7 +167,7 @@ export default function CheckoutSubmit({
           <div>
             <span className="checkout-label">Bottle Size</span>
             <span className="checkout-value">
-              {formatSpecValue(newBlendCard.bottle_size)}
+              {formatBottleSizeOz(newBlendCard.bottle_size)}
             </span>
           </div>
           <div>

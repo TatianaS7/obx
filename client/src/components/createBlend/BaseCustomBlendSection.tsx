@@ -1,6 +1,6 @@
 import OilSlotSelect from "./OilSlotSelect";
 import VolumeBar from "./VolumeBar";
-import { secSpec } from "./utils";
+import { formatGrams, secSpec } from "./utils";
 import { type OilOption } from "./types";
 
 interface BaseCustomSpec {
@@ -59,6 +59,12 @@ export default function BaseCustomBlendSection({
   setAddOnSlots,
 }: BaseCustomBlendSectionProps) {
   const addOnCount = addOnSlots.filter((id) => id !== null).length;
+  const selectedSecondaryCount = secSlots.filter((id) => id !== null).length;
+  const secondaryAmount =
+    selectedSecondaryCount > 0
+      ? secSpec(baseSpec.secVol, selectedSecondaryCount)
+      : baseSpec.secVol;
+  const secondaryLabel = selectedSecondaryCount > 1 ? "each" : "total";
 
   return (
     <>
@@ -66,7 +72,7 @@ export default function BaseCustomBlendSection({
         <div className="blend-section-header">
           <h3 className="blend-section-title">Base Oil</h3>
           <span className="blend-section-badge">
-            {baseSpec.baseVol - addOnCount * baseSpec.addOnVol} mL
+            {formatGrams(baseSpec.baseVol - addOnCount * baseSpec.addOnVol)}
           </span>
         </div>
         <p className="blend-section-sub">
@@ -85,14 +91,7 @@ export default function BaseCustomBlendSection({
         <div className="blend-section-header">
           <h3 className="blend-section-title">Secondary Oils</h3>
           <span className="blend-section-badge">
-            {(secSlots.filter((id) => id !== null).length > 0
-              ? secSpec(
-                  baseSpec.secVol,
-                  secSlots.filter((id) => id !== null).length,
-                )
-              : baseSpec.secVol
-            ).toFixed(1)}{" "}
-            mL total
+            {formatGrams(secondaryAmount)} {secondaryLabel}
           </span>
         </div>
         <p className="blend-section-sub">
@@ -134,7 +133,7 @@ export default function BaseCustomBlendSection({
         <div className="blend-section-header">
           <h3 className="blend-section-title">Add-On</h3>
           <span className="blend-section-badge">
-            {baseSpec.addOnVol} mL each
+            {formatGrams(baseSpec.addOnVol)} each
           </span>
         </div>
         <p className="blend-section-sub">
@@ -173,7 +172,7 @@ export default function BaseCustomBlendSection({
       <section className="blend-section blend-section-volume">
         <h3 className="blend-section-title">Volume Breakdown</h3>
         <p className="full-allowed-volume">
-          Full Allowed Volume: <strong>{capacity} mL</strong>
+          Full Allowed Volume: <strong>{formatGrams(capacity)}</strong>
         </p>
         <VolumeBar
           baseVol={baseSpec.baseVol}
