@@ -7,17 +7,30 @@ import FullyCustomBlendSection from "../createBlend/FullyCustomBlendSection";
 import { BASE_CUSTOM_SPECS, FULLY_CUSTOM_SPECS } from "../createBlend/specs";
 import {
   type BlendData,
+  type NewBlendCard,
   type OilOption,
   type SelectedOil,
-  type CreateBlendProps,
 } from "../createBlend/types";
+import type {
+  QuizHairProfile,
+  QuizOilSuggestions,
+} from "../quiz/quizRecommendations";
 import "../../styles/CreateBlend.css";
 
 export type { BlendData };
 
+interface CreateBlendProps {
+  newBlendCard: NewBlendCard;
+  onChange: (data: BlendData) => void;
+  quizSuggestions?: QuizOilSuggestions;
+  quizProfile?: QuizHairProfile;
+}
+
 export default function CreateBlend({
   newBlendCard,
   onChange,
+  quizSuggestions,
+  quizProfile,
 }: CreateBlendProps) {
   const { allOils, fetchOils } = useApi();
 
@@ -26,6 +39,7 @@ export default function CreateBlend({
   const [baseSlots, setBaseSlots] = useState<(number | null)[]>([null]);
   const [secSlots, setSecSlots] = useState<(number | null)[]>([null]);
   const [addOnSlots, setAddOnSlots] = useState<(number | null)[]>([]);
+  const [didAutofillFromQuiz, setDidAutofillFromQuiz] = useState(false);
 
   useEffect(() => {
     if (allOils.length === 0) fetchOils();
@@ -37,6 +51,7 @@ export default function CreateBlend({
     setAddOnSlots([]);
     setBlendName("");
     setBlendDesc("");
+    setDidAutofillFromQuiz(false);
   }, [newBlendCard.category, newBlendCard.bottle_size]);
 
   const oilsByType = useMemo(() => {
@@ -76,6 +91,75 @@ export default function CreateBlend({
   const bottleSize = newBlendCard.bottle_size;
   const baseSpec = BASE_CUSTOM_SPECS[bottleSize];
   const fcSpec = FULLY_CUSTOM_SPECS[bottleSize];
+
+  useEffect(() => {
+    if (!quizSuggestions || didAutofillFromQuiz) return;
+    if (allOils.length === 0) return;
+    if (category !== "BASE_CUSTOM" && category !== "FULLY_CUSTOM") return;
+
+    const availableBase = new Set(oilsByType.BASE.map((o) => o.id));
+    const availableSecondary = new Set(oilsByType.SECONDARY.map((o) => o.id));
+    const availableAddOn = new Set(addOnOptions.map((o) => o.id));
+
+    const baseIds = quizSuggestions.baseOilIds.filter((id) =>
+      availableBase.has(id),
+    );
+    const secondaryIds = quizSuggestions.secondaryOilIds.filter((id) =>
+      availableSecondary.has(id),
+    );
+    const addOnIds = quizSuggestions.addOnOilIds.filter((id) =>
+      availableAddOn.has(id),
+    );
+
+    if (category === "BASE_CUSTOM" && baseSpec) {
+      const secondaryTarget = Math.min(
+        baseSpec.maxSecondary,
+        secondaryIds.length,
+      );
+      const addOnTarget = Math.min(baseSpec.maxAddOns, addOnIds.length);
+
+      setBaseSlots([baseIds[0] ?? null]);
+      setSecSlots(
+        secondaryTarget > 0 ? secondaryIds.slice(0, secondaryTarget) : [null],
+      );
+      setAddOnSlots(addOnIds.slice(0, addOnTarget));
+    }
+
+    if (category === "FULLY_CUSTOM" && fcSpec) {
+      const maxSecondary = Math.max(1, Math.min(3, secondaryIds.length));
+      const maxBase = Math.max(1, Math.min(2, baseIds.length));
+
+      setBaseSlots(maxBase > 0 ? baseIds.slice(0, maxBase) : [null]);
+      setSecSlots(
+        maxSecondary > 0 ? secondaryIds.slice(0, maxSecondary) : [null],
+      );
+      setAddOnSlots(addOnIds.slice(0, fcSpec.maxAddOns));
+    }
+
+    if (!blendName && quizSuggestions.blendNameSuggestion) {
+      setBlendName(quizSuggestions.blendNameSuggestion);
+    }
+    if (!blendDesc && quizSuggestions.blendDescriptionSuggestion) {
+      setBlendDesc(quizSuggestions.blendDescriptionSuggestion);
+    } else if (!blendDesc && quizProfile?.summary) {
+      setBlendDesc(quizProfile.summary);
+    }
+
+    setDidAutofillFromQuiz(true);
+  }, [
+    addOnOptions,
+    allOils.length,
+    baseSpec,
+    blendDesc,
+    blendName,
+    category,
+    didAutofillFromQuiz,
+    fcSpec,
+    oilsByType.BASE,
+    oilsByType.SECONDARY,
+    quizProfile,
+    quizSuggestions,
+  ]);
 
   useEffect(() => {
     const oils: SelectedOil[] = [

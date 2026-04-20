@@ -6,6 +6,7 @@ import CreateBlend, { type BlendData } from "./CreateBlend";
 import ReviewOrder from "./ReviewOrder";
 import CheckoutSubmit from "./CheckoutSubmit";
 import BlendCardResult from "./BlendCardResult";
+import type { QuizRecommendationResult } from "../quiz/quizRecommendations";
 
 const steps = [
   "User Information",
@@ -28,11 +29,13 @@ interface NewBlendCard {
 interface OrderStepperProps {
   newBlendCard: NewBlendCard;
   setNewBlendCard: React.Dispatch<React.SetStateAction<NewBlendCard>>;
+  quizResult?: QuizRecommendationResult;
 }
 
 export default function OrderStepper({
   newBlendCard,
   setNewBlendCard,
+  quizResult,
 }: OrderStepperProps) {
   const [activeStep, setActiveStep] = useState(0);
   const [blendData, setBlendData] = useState<BlendData>({
@@ -66,7 +69,12 @@ export default function OrderStepper({
         );
       case 2:
         return (
-          <CreateBlend newBlendCard={newBlendCard} onChange={setBlendData} />
+          <CreateBlend
+            newBlendCard={newBlendCard}
+            onChange={setBlendData}
+            quizSuggestions={quizResult?.suggestions}
+            quizProfile={quizResult?.profile}
+          />
         );
       case 3:
         return (

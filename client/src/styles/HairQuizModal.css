@@ -72,6 +72,7 @@
   justify-content: flex-end;
   gap: 0.6rem;
   margin-top: 0.5rem;
+  flex-wrap: wrap;
 }
 
 .btn-ghost-dark {
@@ -194,4 +195,39 @@
   margin: 0;
   color: #3b2045;
   line-height: 1.5;
+}
+
+.quiz-results-subtitle {
+  margin-bottom: 0.4rem;
+}
+
+.quiz-result-group {
+  border: 1px solid #e8e8e8;
+  border-radius: 8px;
+  padding: 0.7rem 0.8rem;
+  background: #fcfcfc;
+}
+
+.quiz-result-group h4 {
+  margin: 0 0 0.3rem;
+  font-size: 0.9rem;
+  color: #333;
+}
+
+.quiz-result-list {
+  margin: 0;
+  padding-left: 1.1rem;
+  color: #444;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.quiz-save-message {
+  margin: 0.2rem 0 0;
+  color: #2b6e3f;
+  background: #edf9f0;
+  border: 1px solid #c5ebd0;
+  border-radius: 6px;
+  padding: 0.5rem 0.65rem;
+  font-size: 0.86rem;
 }

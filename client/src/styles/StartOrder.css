@@ -7,6 +7,27 @@
   padding: 3rem 8vw 5rem;
 }
 
+.quiz-profile-card {
+  margin: 1.25rem 8vw 0;
+  padding: 1rem 1.2rem;
+  border-radius: 10px;
+  border: 1px solid #e4d5ea;
+  background: linear-gradient(180deg, #fbf7fd 0%, #f6eef9 100%);
+}
+
+.quiz-profile-card h2 {
+  margin: 0 0 0.45rem;
+  font-size: 1.05rem;
+  color: #3f2450;
+}
+
+.quiz-profile-card p {
+  margin: 0.35rem 0;
+  color: #4f3b5f;
+  font-size: 0.92rem;
+  line-height: 1.55;
+}
+
 /* ── MUI Stepper accent overrides ── */
 .MuiStepIcon-root.Mui-active,
 .MuiStepIcon-root.Mui-completed {

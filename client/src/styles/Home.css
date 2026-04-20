@@ -60,19 +60,35 @@
 
 /* ── Hero ── */
 .home-hero {
+  position: relative;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  background: #111;
+  justify-content: center;
   color: #fff;
   padding: 3rem 8vw 5rem;
   min-height: 88vh;
-  gap: 3rem;
+  background: url(../../public/argan-oil.webp) no-repeat center center;
+  background-size: cover;
+}
+
+.home-hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.65);
+  z-index: 0;
+}
+
+.home-hero > * {
+  position: relative;
+  z-index: 1;
 }
 
 .home-hero-content {
-  flex: 1;
-  max-width: 560px;
+  flex: none;
+  max-width: 680px;
+  width: 100%;
+  text-align: center;
 }
 
 .home-hero-eyebrow {
@@ -97,12 +113,15 @@
   line-height: 1.7;
   margin-bottom: 2.25rem;
   max-width: 460px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .home-hero-actions {
   display: flex;
   gap: 1rem;
   flex-wrap: wrap;
+  justify-content: center;
 }
 
 .home-hero-quiz {
@@ -111,6 +130,7 @@
   font-size: 0.95rem;
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 0.4rem;
   flex-wrap: wrap;
 }
@@ -131,15 +151,9 @@
   color: #ffffff;
 }
 
-/* Hero visual */
+/* Hero visual — hidden; image used as background */
 .home-hero-visual {
-  flex-shrink: 0;
-  position: relative;
-  width: 220px;
-  height: 300px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  display: none;
 }
 
 .home-hero-blob {
@@ -153,12 +167,14 @@
   border-radius: 50%;
 }
 
-.home-hero-bottle svg {
-  width: 140px;
+.home-hero-bottle img {
+  width: min(100%, 540px);
   height: auto;
+  object-fit: contain;
   filter: drop-shadow(0 8px 32px rgba(156, 39, 176, 0.35));
   position: relative;
   z-index: 1;
+  border-radius: 1em;
 }
 
 /* ── Features ── */
@@ -281,9 +297,8 @@
     min-height: unset;
   }
 
-  .home-hero-visual {
-    width: 160px;
-    height: 220px;
+  .home-hero-content {
+    max-width: 100%;
   }
 
   .home-steps {

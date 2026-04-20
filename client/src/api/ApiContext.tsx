@@ -32,7 +32,7 @@ interface ApiContextType {
   setLoading: (loading: boolean) => void;
   error: string | null;
   allOils: any[];
-  fetchOils: () => Promise<void>;
+  fetchOils: () => Promise<any[]>;
   authToken: string | null;
   currentUser: AuthUser | null;
   registerUser: (payload: RegisterPayload) => Promise<void>;
@@ -86,9 +86,11 @@ export const ApiProvider = ({ children }: ApiProviderProps) => {
       const res = await apiClient.get("/oils/all");
       console.log(res.data);
       setAllOils(res.data);
+      return res.data;
     } catch (err) {
       setError("Failed to fetch oils");
       console.error(err);
+      return [];
     } finally {
       setLoading(false);
     }

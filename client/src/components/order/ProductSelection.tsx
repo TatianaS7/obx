@@ -19,18 +19,36 @@ export default function ProductSelection({
   newBlendCard: NewBlendCard;
   setNewBlendCard: React.Dispatch<React.SetStateAction<NewBlendCard>>;
 }) {
-  const [product_type, setProductType] = useState("");
-  const [bottle_type, setBottleType] = useState("DROPPER");
-  const [bottle_size, setBottleSize] = useState("");
+  const [product_type, setProductType] = useState(
+    newBlendCard.product_type || "",
+  );
+  const [bottle_type, setBottleType] = useState(
+    newBlendCard.bottle_type || "DROPPER",
+  );
+  const [bottle_size, setBottleSize] = useState(newBlendCard.bottle_size || "");
+  const [category, setCategory] = useState(newBlendCard.category || "");
 
   useEffect(() => {
-    setNewBlendCard({
-      ...newBlendCard,
+    setProductType(newBlendCard.product_type || "");
+    setBottleType(newBlendCard.bottle_type || "DROPPER");
+    setBottleSize(newBlendCard.bottle_size || "");
+    setCategory(newBlendCard.category || "");
+  }, [
+    newBlendCard.product_type,
+    newBlendCard.bottle_type,
+    newBlendCard.bottle_size,
+    newBlendCard.category,
+  ]);
+
+  useEffect(() => {
+    setNewBlendCard((prev) => ({
+      ...prev,
       product_type,
       bottle_type,
       bottle_size,
-    });
-  }, [product_type, bottle_type, bottle_size]);
+      category,
+    }));
+  }, [product_type, bottle_type, bottle_size, category, setNewBlendCard]);
 
   return (
     <div className="product-selection-layout">
@@ -76,6 +94,7 @@ export default function ProductSelection({
           <InputLabel>Bottle Size</InputLabel>
           <Select
             label="Bottle Size"
+            value={bottle_size}
             onChange={(e) => {
               setBottleSize(e.target.value as string);
             }}
@@ -91,11 +110,9 @@ export default function ProductSelection({
           <InputLabel>Blend Category</InputLabel>
           <Select
             label="Blend Category"
+            value={category}
             onChange={(e) => {
-              setNewBlendCard({
-                ...newBlendCard,
-                category: e.target.value as string,
-              });
+              setCategory(e.target.value as string);
             }}
             sx={{ backgroundColor: "white" }}
           >

@@ -2,15 +2,19 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../../styles/Footer.css";
 import HairQuizModal, { type QuizAnswers } from "../quiz/HairQuizModal";
+import type { QuizRecommendationResult } from "../quiz/quizRecommendations";
 
 export default function Footer() {
   const navigate = useNavigate();
   const year = new Date().getFullYear();
   const [quizOpen, setQuizOpen] = useState(false);
 
-  function handleQuizBuild(quizAnswers: QuizAnswers) {
+  function handleQuizBuild(
+    quizAnswers: QuizAnswers,
+    quizResult: QuizRecommendationResult,
+  ) {
     setQuizOpen(false);
-    navigate("/start-order", { state: { quizAnswers } });
+    navigate("/start-order", { state: { quizAnswers, quizResult } });
   }
 
   return (

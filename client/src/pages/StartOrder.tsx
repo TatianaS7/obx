@@ -1,7 +1,10 @@
 import React, { useState } from "react";
+import { useLocation } from "react-router-dom";
 import "../styles/StartOrder.css";
 
 import OrderStepper from "../components/order/OrderStepper";
+import type { QuizAnswers } from "../components/quiz/HairQuizModal";
+import type { QuizRecommendationResult } from "../components/quiz/quizRecommendations";
 
 interface NewBlendCard {
   name: string;
@@ -13,14 +16,25 @@ interface NewBlendCard {
 }
 
 export default function StartOrder() {
-  const [newBlendCard, setNewBlendCard] = useState<NewBlendCard>({
+  const location = useLocation();
+  const state = (location.state as {
+    quizAnswers?: QuizAnswers;
+    quizResult?: QuizRecommendationResult;
+  }) ?? {
+    quizAnswers: undefined,
+    quizResult: undefined,
+  };
+
+  const quizResult = state.quizResult;
+
+  const [newBlendCard, setNewBlendCard] = useState<NewBlendCard>(() => ({
     name: "",
     description: "",
-    product_type: "",
-    category: "",
-    bottle_size: "",
+    product_type: quizResult?.profile.suggestedProductType ?? "",
+    category: quizResult?.profile.recommendedCategory ?? "",
+    bottle_size: quizResult?.profile.recommendedBottleSize ?? "",
     bottle_type: "DROPPER",
-  });
+  }));
 
   return (
     <div className="start-order-page">
@@ -33,10 +47,40 @@ export default function StartOrder() {
         </p>
       </header>
 
+      {quizResult && (
+        <section className="quiz-profile-card" aria-label="Quiz profile">
+          <h2>{quizResult.profile.title}</h2>
+          <p>{quizResult.profile.summary}</p>
+          {quizResult.profile.priorities.length > 0 && (
+            <p>
+              <strong>Focus Areas:</strong>{" "}
+              {quizResult.profile.priorities.slice(0, 4).join(" • ")}
+            </p>
+          )}
+          {[
+            ...quizResult.suggestions.baseRecommendations,
+            ...quizResult.suggestions.secondaryRecommendations,
+            ...quizResult.suggestions.addOnRecommendations,
+          ].length > 0 && (
+            <p>
+              <strong>Suggested Oils:</strong>{" "}
+              {[
+                ...quizResult.suggestions.baseRecommendations,
+                ...quizResult.suggestions.secondaryRecommendations,
+                ...quizResult.suggestions.addOnRecommendations,
+              ]
+                .map((oil) => oil.name)
+                .join(", ")}
+            </p>
+          )}
+        </section>
+      )}
+
       <section className="start-order-body">
         <OrderStepper
           newBlendCard={newBlendCard}
           setNewBlendCard={setNewBlendCard}
+          quizResult={quizResult}
         />
       </section>
     </div>
