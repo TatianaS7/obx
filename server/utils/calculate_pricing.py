@@ -3,6 +3,60 @@ from marshmallow import ValidationError
 from .._types import BottleSize, BottleType, BlendCategory, DiscountCode
 from ..models import User, Order
 
+
+def _normalize_oil_type(oil_type: str) -> str:
+    return str(oil_type or "").strip().upper()
+
+
+def calculate_custom_blend_subtotal(blend: dict) -> float:
+    """
+    Pricing rules for custom blends:
+      - $9 base price includes first base oil
+      - +$1.50 for each additional base or secondary oil
+            - Essential add-ons (OTHER):
+                - Standard dilution (1% / 0.5g): +$1.50 each
+                - Intense dilution (2% / 1.0g): +$3.00 each
+            - +$3.00 for each premium add-on oil (PREMIUM)
+    """
+    oils = blend.get("oils", []) if isinstance(blend, dict) else []
+
+    if oils:
+        base_count = sum(1 for oil in oils if _normalize_oil_type(oil.get("oil_type")) == "BASE")
+        secondary_count = sum(1 for oil in oils if _normalize_oil_type(oil.get("oil_type")) == "SECONDARY")
+        essential_standard_count = sum(
+            1
+            for oil in oils
+            if _normalize_oil_type(oil.get("oil_type")) in {"OTHER", "ADD_ON"}
+            and str(oil.get("essential_dilution", "STANDARD")).strip().upper() != "INTENSE"
+        )
+        essential_intense_count = sum(
+            1
+            for oil in oils
+            if _normalize_oil_type(oil.get("oil_type")) in {"OTHER", "ADD_ON"}
+            and str(oil.get("essential_dilution", "STANDARD")).strip().upper() == "INTENSE"
+        )
+        premium_add_on_count = sum(
+            1 for oil in oils if _normalize_oil_type(oil.get("oil_type")) == "PREMIUM"
+        )
+    else:
+        ingredients = blend.get("ingredients", {}) if isinstance(blend, dict) else {}
+        base_count = len(ingredients.get("base_oil", []))
+        secondary_count = len(ingredients.get("secondary_oil", []))
+        essential_standard_count = len(ingredients.get("add_on_oil", []))
+        essential_intense_count = 0
+        premium_add_on_count = 0
+
+    base_price = 9.0
+    additional_blend_oils = max(base_count - 1, 0) + secondary_count
+    subtotal = (
+        base_price
+        + additional_blend_oils * 1.5
+        + essential_standard_count * 1.5
+        + essential_intense_count * 3.0
+        + premium_add_on_count * 3.0
+    )
+    return round(subtotal, 2)
+
 def is_refill_exhange(user_id: int) -> bool:
     """
     Check if the user is eligible for refill exchange discount
@@ -114,10 +168,11 @@ def calculate_blend_price(blend: dict, user_id:int) -> float:
     """
     Main function to calculate the price of a blend based on its ingredients and eligible discounts.
     """
-    base_price = blend.bottle_size.get_base_price(blend['blend_category'])
-    add_on_price = calculate_add_on_price(blend)
-
-    subtotal = base_price + add_on_price
+    blend_category = str(blend.get("blend_category", "CUSTOM")).upper()
+    if blend_category == BlendCategory.PREMADE.value:
+        subtotal = 9.0
+    else:
+        subtotal = calculate_custom_blend_subtotal(blend)
 
     discounts = get_user_discounts(user_id)
     applied = validate_discount_stack(discounts)
@@ -128,8 +183,8 @@ def calculate_blend_price(blend: dict, user_id:int) -> float:
     final_total = round(max(applied_exclusive - applied["reward_dollars"], 0), 2)
     
     return {
-        "base_price": base_price,
-        "add_on_price": add_on_price,
+        "base_price": subtotal,
+        "add_on_price": 0.0,
         "subtotal": subtotal,
         "applied_discounts": applied,
         "final_total": final_total,

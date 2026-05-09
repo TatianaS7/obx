@@ -77,11 +77,28 @@
   background: linear-gradient(180deg, #fff, #f6faf8);
 }
 
+.pricing-breakdown-list {
+  border: 1px solid #e3ebe5;
+  border-radius: 10px;
+  padding: 0.55rem 0.7rem;
+  background: #fbfdfc;
+  margin-bottom: 0.65rem;
+}
+
 .total-row {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin: 0.35rem 0;
+}
+
+.total-row-sub span {
+  color: #334155;
+  font-size: 0.92rem;
+}
+
+.total-row-sub strong {
+  color: #111827;
 }
 
 .total-row-final {

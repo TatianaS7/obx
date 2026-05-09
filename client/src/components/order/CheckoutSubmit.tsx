@@ -27,29 +27,116 @@ interface BackendDiscount {
   expires_at: string | null;
 }
 
-const PRICING_TABLE: Record<string, Record<string, number>> = {
-  "60ML": { PREMADE: 9, BASE_CUSTOM: 11, FULLY_CUSTOM: 15 },
-  "120ML": { PREMADE: 13, BASE_CUSTOM: 16, FULLY_CUSTOM: 20 },
-  "240ML": { PREMADE: 18, BASE_CUSTOM: 20, FULLY_CUSTOM: 24 },
-};
-
-function normalizeBottleSize(value: string): string {
-  const normalized = value.trim().toUpperCase();
-
-  if (normalized === "SMALL") return "60ML";
-  if (normalized === "MEDIUM") return "120ML";
-  if (normalized === "LARGE") return "240ML";
-
-  return normalized.replace(/\s+/g, "");
+interface PricingBreakdown {
+  baseCount: number;
+  secondaryCount: number;
+  essentialStandardCount: number;
+  essentialIntenseCount: number;
+  essentialAddOnCount: number;
+  premiumAddOnCount: number;
+  basePrice: number;
+  additionalBlendOils: number;
+  additionalBlendOilPrice: number;
+  essentialStandardPrice: number;
+  essentialIntensePrice: number;
+  essentialAddOnPrice: number;
+  premiumAddOnPrice: number;
+  subtotal: number;
 }
 
-function getPrice(newBlendCard: NewBlendCard): number {
-  const sizeKey = normalizeBottleSize(newBlendCard.bottle_size);
+function getPricingBreakdown(
+  newBlendCard: NewBlendCard,
+  blendData: BlendData,
+): PricingBreakdown {
   const categoryKey = newBlendCard.category.trim().toUpperCase();
+  const basePrice = 9;
 
-  const bySize = PRICING_TABLE[sizeKey];
-  if (!bySize) return 0;
-  return bySize[categoryKey] ?? 0;
+  const baseCount = blendData.oils.filter((o) => o.oil_type === "BASE").length;
+  const secondaryCount = blendData.oils.filter(
+    (o) => o.oil_type === "SECONDARY",
+  ).length;
+  const essentialAddOnCount = blendData.oils.filter(
+    (o) => o.oil_type === "OTHER",
+  ).length;
+  const essentialStandardCount = blendData.oils.filter(
+    (o) => o.oil_type === "OTHER" && o.essential_dilution !== "INTENSE",
+  ).length;
+  const essentialIntenseCount = blendData.oils.filter(
+    (o) => o.oil_type === "OTHER" && o.essential_dilution === "INTENSE",
+  ).length;
+  const premiumAddOnCount = blendData.oils.filter(
+    (o) => o.oil_type === "PREMIUM",
+  ).length;
+
+  if (categoryKey === "PREMADE") {
+    return {
+      baseCount,
+      secondaryCount,
+      essentialStandardCount,
+      essentialIntenseCount,
+      essentialAddOnCount,
+      premiumAddOnCount,
+      basePrice,
+      additionalBlendOils: 0,
+      additionalBlendOilPrice: 0,
+      essentialStandardPrice: 0,
+      essentialIntensePrice: 0,
+      essentialAddOnPrice: 0,
+      premiumAddOnPrice: 0,
+      subtotal: basePrice,
+    };
+  }
+
+  if (categoryKey !== "CUSTOM") {
+    return {
+      baseCount,
+      secondaryCount,
+      essentialStandardCount,
+      essentialIntenseCount,
+      essentialAddOnCount,
+      premiumAddOnCount,
+      basePrice: 0,
+      additionalBlendOils: 0,
+      additionalBlendOilPrice: 0,
+      essentialStandardPrice: 0,
+      essentialIntensePrice: 0,
+      essentialAddOnPrice: 0,
+      premiumAddOnPrice: 0,
+      subtotal: 0,
+    };
+  }
+
+  const additionalBlendOils = Math.max(baseCount - 1, 0) + secondaryCount;
+  const additionalBlendOilPrice = +(additionalBlendOils * 1.5).toFixed(2);
+  const essentialStandardPrice = +(essentialStandardCount * 1.5).toFixed(2);
+  const essentialIntensePrice = +(essentialIntenseCount * 3).toFixed(2);
+  const essentialAddOnPrice = +(
+    essentialStandardPrice + essentialIntensePrice
+  ).toFixed(2);
+  const premiumAddOnPrice = +(premiumAddOnCount * 3).toFixed(2);
+  const subtotal = +(
+    basePrice +
+    additionalBlendOilPrice +
+    essentialAddOnPrice +
+    premiumAddOnPrice
+  ).toFixed(2);
+
+  return {
+    baseCount,
+    secondaryCount,
+    essentialStandardCount,
+    essentialIntenseCount,
+    essentialAddOnCount,
+    premiumAddOnCount,
+    basePrice,
+    additionalBlendOils,
+    additionalBlendOilPrice,
+    essentialStandardPrice,
+    essentialIntensePrice,
+    essentialAddOnPrice,
+    premiumAddOnPrice,
+    subtotal,
+  };
 }
 
 function formatSpecValue(value: string) {
@@ -99,7 +186,11 @@ export default function CheckoutSubmit({
     };
   }, []);
 
-  const subtotal = useMemo(() => getPrice(newBlendCard), [newBlendCard]);
+  const pricing = useMemo(
+    () => getPricingBreakdown(newBlendCard, blendData),
+    [newBlendCard, blendData],
+  );
+  const subtotal = pricing.subtotal;
   const discountRate = appliedDiscount?.percentage_off ?? 0;
   const discountAmount = +(subtotal * discountRate).toFixed(2);
   const total = +(subtotal - discountAmount).toFixed(2);
@@ -216,6 +307,49 @@ export default function CheckoutSubmit({
       </section>
 
       <section className="checkout-card total-card">
+        <h4>Pricing Breakdown</h4>
+        <div className="pricing-breakdown-list" aria-label="Pricing breakdown">
+          <div className="total-row total-row-sub">
+            <span>
+              Base Blend Price
+              {newBlendCard.category.trim().toUpperCase() === "CUSTOM"
+                ? " (includes first base oil)"
+                : ""}
+            </span>
+            <strong>${pricing.basePrice.toFixed(2)}</strong>
+          </div>
+          {newBlendCard.category.trim().toUpperCase() === "CUSTOM" && (
+            <>
+              <div className="total-row total-row-sub">
+                <span>
+                  Additional Base/Secondary Oils ({pricing.additionalBlendOils}{" "}
+                  x $1.50)
+                </span>
+                <strong>${pricing.additionalBlendOilPrice.toFixed(2)}</strong>
+              </div>
+              <div className="total-row total-row-sub">
+                <span>
+                  Essential Add-Ons Standard ({pricing.essentialStandardCount} x
+                  $1.50, 0.5g each)
+                </span>
+                <strong>${pricing.essentialStandardPrice.toFixed(2)}</strong>
+              </div>
+              <div className="total-row total-row-sub">
+                <span>
+                  Essential Add-Ons Intense ({pricing.essentialIntenseCount} x
+                  $3.00, 1.0g each)
+                </span>
+                <strong>${pricing.essentialIntensePrice.toFixed(2)}</strong>
+              </div>
+              <div className="total-row total-row-sub">
+                <span>
+                  Premium Add-Ons ({pricing.premiumAddOnCount} x $3.00)
+                </span>
+                <strong>${pricing.premiumAddOnPrice.toFixed(2)}</strong>
+              </div>
+            </>
+          )}
+        </div>
         <div className="total-row">
           <span>Subtotal</span>
           <strong>${subtotal.toFixed(2)}</strong>

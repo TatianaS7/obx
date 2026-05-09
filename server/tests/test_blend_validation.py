@@ -86,7 +86,7 @@ def test_invalid_bottle_type():
             ingredients,
             BottleSize.SMALL.value,
             "INVALID_TYPE",
-            BlendCategory.BASE_CUSTOM.value
+            BlendCategory.CUSTOM.value
         )
 
 def test_invalid_blend_category():
@@ -102,4 +102,42 @@ def test_invalid_blend_category():
             BottleSize.SMALL.value,
             BottleType.DROPPER.value,
             "INVALID_CATEGORY"
+        )
+
+
+def test_custom_requires_at_least_one_base_oil():
+    ingredients = {
+        "base_oil": [],
+        "secondary_oil": ["oil2"],
+        "add_on_oil": []
+    }
+
+    with pytest.raises(
+        ValidationError,
+        match="At least one base oil is required for custom blends.",
+    ):
+        calculate_volume(
+            ingredients,
+            BottleSize.SMALL.value,
+            BottleType.DROPPER.value,
+            BlendCategory.CUSTOM.value,
+        )
+
+
+def test_custom_requires_one_additional_oil_beyond_base():
+    ingredients = {
+        "base_oil": ["oil1"],
+        "secondary_oil": [],
+        "add_on_oil": []
+    }
+
+    with pytest.raises(
+        ValidationError,
+        match="Select at least one additional oil \(secondary or add-on\) for custom blends.",
+    ):
+        calculate_volume(
+            ingredients,
+            BottleSize.SMALL.value,
+            BottleType.DROPPER.value,
+            BlendCategory.CUSTOM.value,
         )

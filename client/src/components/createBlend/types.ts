@@ -8,6 +8,7 @@ export interface OilOption {
 export interface SelectedOil {
   oil_id: number;
   oil_type: string;
+  essential_dilution?: "STANDARD" | "INTENSE";
 }
 
 export interface BlendData {

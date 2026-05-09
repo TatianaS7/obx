@@ -177,10 +177,13 @@ export default function BaseCustomBlendSection({
         <VolumeBar
           baseVol={baseSpec.baseVol}
           secVol={baseSpec.secVol}
-          addOnVol={baseSpec.addOnVol}
-          addOnCount={addOnCount}
+          premiumAddOnVol={baseSpec.addOnVol}
+          essentialAddOnCount={0}
+          premiumAddOnCount={addOnCount}
+          essentialDilution="STANDARD"
           totalCapacity={capacity}
           bottleType={bottleType}
+          selectedSecondaryCount={0}
         />
       </section>
     </>

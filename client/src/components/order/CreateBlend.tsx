@@ -2,9 +2,8 @@ import { useState, useEffect, useMemo } from "react";
 import { useApi } from "../../api/ApiContext";
 import ProductSpecOverview from "../createBlend/ProductSpecOverview";
 import BlendIdentitySection from "../createBlend/BlendIdentitySection";
-import BaseCustomBlendSection from "../createBlend/BaseCustomBlendSection";
 import FullyCustomBlendSection from "../createBlend/FullyCustomBlendSection";
-import { BASE_CUSTOM_SPECS, FULLY_CUSTOM_SPECS } from "../createBlend/specs";
+import { CUSTOM_SPECS } from "../createBlend/specs";
 import {
   type BlendData,
   type NewBlendCard,
@@ -22,6 +21,7 @@ export type { BlendData };
 interface CreateBlendProps {
   newBlendCard: NewBlendCard;
   onChange: (data: BlendData) => void;
+  onValidationChange?: (isValid: boolean) => void;
   quizSuggestions?: QuizOilSuggestions;
   quizProfile?: QuizHairProfile;
 }
@@ -29,6 +29,7 @@ interface CreateBlendProps {
 export default function CreateBlend({
   newBlendCard,
   onChange,
+  onValidationChange,
   quizSuggestions,
   quizProfile,
 }: CreateBlendProps) {
@@ -38,7 +39,15 @@ export default function CreateBlend({
   const [blendDesc, setBlendDesc] = useState("");
   const [baseSlots, setBaseSlots] = useState<(number | null)[]>([null]);
   const [secSlots, setSecSlots] = useState<(number | null)[]>([null]);
-  const [addOnSlots, setAddOnSlots] = useState<(number | null)[]>([]);
+  const [essentialAddOnSlots, setEssentialAddOnSlots] = useState<
+    (number | null)[]
+  >([]);
+  const [premiumAddOnSlots, setPremiumAddOnSlots] = useState<(number | null)[]>(
+    [],
+  );
+  const [essentialDilution, setEssentialDilution] = useState<
+    "STANDARD" | "INTENSE"
+  >("STANDARD");
   const [didAutofillFromQuiz, setDidAutofillFromQuiz] = useState(false);
 
   useEffect(() => {
@@ -48,7 +57,9 @@ export default function CreateBlend({
   useEffect(() => {
     setBaseSlots([null]);
     setSecSlots([null]);
-    setAddOnSlots([]);
+    setEssentialAddOnSlots([]);
+    setPremiumAddOnSlots([]);
+    setEssentialDilution("STANDARD");
     setBlendName("");
     setBlendDesc("");
     setDidAutofillFromQuiz(false);
@@ -81,25 +92,31 @@ export default function CreateBlend({
     return groups;
   }, [allOils]);
 
-  const addOnOptions = [...oilsByType.OTHER, ...oilsByType.PREMIUM];
-  const allSelectedIds = [...baseSlots, ...secSlots, ...addOnSlots].filter(
-    (id): id is number => id !== null,
-  );
+  const essentialAddOnOptions = oilsByType.OTHER;
+  const premiumAddOnOptions = oilsByType.PREMIUM;
+  const allSelectedIds = [
+    ...baseSlots,
+    ...secSlots,
+    ...essentialAddOnSlots,
+    ...premiumAddOnSlots,
+  ].filter((id): id is number => id !== null);
 
-  const capacity = parseInt(newBlendCard.bottle_size) || 60;
   const category = newBlendCard.category;
   const bottleSize = newBlendCard.bottle_size;
-  const baseSpec = BASE_CUSTOM_SPECS[bottleSize];
-  const fcSpec = FULLY_CUSTOM_SPECS[bottleSize];
+  const customSpec = CUSTOM_SPECS[bottleSize];
+  const capacity = customSpec ? customSpec.baseVol + customSpec.secVol : 55;
 
   useEffect(() => {
     if (!quizSuggestions || didAutofillFromQuiz) return;
     if (allOils.length === 0) return;
-    if (category !== "BASE_CUSTOM" && category !== "FULLY_CUSTOM") return;
+    if (category !== "CUSTOM") return;
 
     const availableBase = new Set(oilsByType.BASE.map((o) => o.id));
     const availableSecondary = new Set(oilsByType.SECONDARY.map((o) => o.id));
-    const availableAddOn = new Set(addOnOptions.map((o) => o.id));
+    const availableEssentialAddOn = new Set(
+      essentialAddOnOptions.map((o) => o.id),
+    );
+    const availablePremiumAddOn = new Set(premiumAddOnOptions.map((o) => o.id));
 
     const baseIds = quizSuggestions.baseOilIds.filter((id) =>
       availableBase.has(id),
@@ -107,25 +124,14 @@ export default function CreateBlend({
     const secondaryIds = quizSuggestions.secondaryOilIds.filter((id) =>
       availableSecondary.has(id),
     );
-    const addOnIds = quizSuggestions.addOnOilIds.filter((id) =>
-      availableAddOn.has(id),
+    const essentialAddOnIds = quizSuggestions.addOnOilIds.filter((id) =>
+      availableEssentialAddOn.has(id),
+    );
+    const premiumAddOnIds = quizSuggestions.addOnOilIds.filter((id) =>
+      availablePremiumAddOn.has(id),
     );
 
-    if (category === "BASE_CUSTOM" && baseSpec) {
-      const secondaryTarget = Math.min(
-        baseSpec.maxSecondary,
-        secondaryIds.length,
-      );
-      const addOnTarget = Math.min(baseSpec.maxAddOns, addOnIds.length);
-
-      setBaseSlots([baseIds[0] ?? null]);
-      setSecSlots(
-        secondaryTarget > 0 ? secondaryIds.slice(0, secondaryTarget) : [null],
-      );
-      setAddOnSlots(addOnIds.slice(0, addOnTarget));
-    }
-
-    if (category === "FULLY_CUSTOM" && fcSpec) {
+    if (category === "CUSTOM" && customSpec) {
       const maxSecondary = Math.max(1, Math.min(3, secondaryIds.length));
       const maxBase = Math.max(1, Math.min(2, baseIds.length));
 
@@ -133,7 +139,16 @@ export default function CreateBlend({
       setSecSlots(
         maxSecondary > 0 ? secondaryIds.slice(0, maxSecondary) : [null],
       );
-      setAddOnSlots(addOnIds.slice(0, fcSpec.maxAddOns));
+
+      const essentialSlice = essentialAddOnIds.slice(0, customSpec.maxAddOns);
+      const remainingAddOnSlots = Math.max(
+        customSpec.maxAddOns - essentialSlice.length,
+        0,
+      );
+      const premiumSlice = premiumAddOnIds.slice(0, remainingAddOnSlots);
+
+      setEssentialAddOnSlots(essentialSlice);
+      setPremiumAddOnSlots(premiumSlice);
     }
 
     if (!blendName && quizSuggestions.blendNameSuggestion) {
@@ -147,14 +162,14 @@ export default function CreateBlend({
 
     setDidAutofillFromQuiz(true);
   }, [
-    addOnOptions,
+    essentialAddOnOptions,
     allOils.length,
-    baseSpec,
     blendDesc,
     blendName,
     category,
+    customSpec,
     didAutofillFromQuiz,
-    fcSpec,
+    premiumAddOnOptions,
     oilsByType.BASE,
     oilsByType.SECONDARY,
     quizProfile,
@@ -169,12 +184,16 @@ export default function CreateBlend({
       ...secSlots
         .filter((id): id is number => id !== null)
         .map((id) => ({ oil_id: id, oil_type: "SECONDARY" })),
-      ...addOnSlots
+      ...essentialAddOnSlots
         .filter((id): id is number => id !== null)
-        .map((id) => {
-          const match = addOnOptions.find((o) => o.id === id);
-          return { oil_id: id, oil_type: match?.oil_type ?? "OTHER" };
-        }),
+        .map((id) => ({
+          oil_id: id,
+          oil_type: "OTHER",
+          essential_dilution: essentialDilution,
+        })),
+      ...premiumAddOnSlots
+        .filter((id): id is number => id !== null)
+        .map((id) => ({ oil_id: id, oil_type: "PREMIUM" })),
     ];
 
     onChange({ name: blendName, description: blendDesc, oils });
@@ -183,9 +202,32 @@ export default function CreateBlend({
     blendDesc,
     baseSlots,
     secSlots,
-    addOnSlots,
-    addOnOptions,
+    essentialAddOnSlots,
+    premiumAddOnSlots,
+    essentialDilution,
     onChange,
+  ]);
+
+  useEffect(() => {
+    const selectedBaseCount = baseSlots.filter((id) => id !== null).length;
+    const selectedSecondaryCount = secSlots.filter((id) => id !== null).length;
+    const essentialAddOnCount = essentialAddOnSlots.filter(
+      (id) => id !== null,
+    ).length;
+    const premiumAddOnCount = premiumAddOnSlots.filter(
+      (id) => id !== null,
+    ).length;
+    const additionalOilCount =
+      selectedSecondaryCount + essentialAddOnCount + premiumAddOnCount;
+
+    const isValid = selectedBaseCount > 0 && additionalOilCount > 0;
+    onValidationChange?.(isValid);
+  }, [
+    baseSlots,
+    secSlots,
+    essentialAddOnSlots,
+    premiumAddOnSlots,
+    onValidationChange,
   ]);
 
   function updateSlot(
@@ -227,7 +269,7 @@ export default function CreateBlend({
     );
   }
 
-  if (category === "BASE_CUSTOM" && baseSpec) {
+  if (category === "CUSTOM" && customSpec) {
     return (
       <div className="create-blend">
         <ProductSpecOverview
@@ -235,46 +277,7 @@ export default function CreateBlend({
           category={category}
           bottleType={newBlendCard.bottle_type}
           bottleSize={bottleSize}
-          allowedRules={`Allowed: 1 base oil, up to ${baseSpec.maxSecondary} secondary oil${baseSpec.maxSecondary > 1 ? "s" : ""}, up to ${baseSpec.maxAddOns} add-on.`}
-        />
-
-        <BlendIdentitySection
-          blendName={blendName}
-          blendDesc={blendDesc}
-          onNameChange={setBlendName}
-          onDescChange={setBlendDesc}
-        />
-
-        <BaseCustomBlendSection
-          baseSpec={baseSpec}
-          capacity={capacity}
-          bottleType={newBlendCard.bottle_type}
-          oilsByType={oilsByType}
-          addOnOptions={addOnOptions}
-          allSelectedIds={allSelectedIds}
-          baseSlots={baseSlots}
-          secSlots={secSlots}
-          addOnSlots={addOnSlots}
-          onUpdateSlot={updateSlot}
-          onAddSlot={addSlot}
-          onRemoveSlot={removeSlot}
-          setBaseSlots={setBaseSlots}
-          setSecSlots={setSecSlots}
-          setAddOnSlots={setAddOnSlots}
-        />
-      </div>
-    );
-  }
-
-  if (category === "FULLY_CUSTOM" && fcSpec) {
-    return (
-      <div className="create-blend">
-        <ProductSpecOverview
-          productType={newBlendCard.product_type}
-          category={category}
-          bottleType={newBlendCard.bottle_type}
-          bottleSize={bottleSize}
-          allowedRules={`Allowed: flexible base/secondary oils, up to ${fcSpec.maxAddOns} add-on oils.`}
+          allowedRules={`Allowed: flexible base/secondary oils, up to ${customSpec.maxAddOns} add-on oils.`}
         />
 
         <BlendIdentitySection
@@ -285,21 +288,26 @@ export default function CreateBlend({
         />
 
         <FullyCustomBlendSection
-          fcSpec={fcSpec}
+          fcSpec={customSpec}
           capacity={capacity}
           bottleType={newBlendCard.bottle_type}
           oilsByType={oilsByType}
-          addOnOptions={addOnOptions}
+          essentialAddOnOptions={essentialAddOnOptions}
+          premiumAddOnOptions={premiumAddOnOptions}
           allSelectedIds={allSelectedIds}
           baseSlots={baseSlots}
           secSlots={secSlots}
-          addOnSlots={addOnSlots}
+          essentialAddOnSlots={essentialAddOnSlots}
+          premiumAddOnSlots={premiumAddOnSlots}
+          essentialDilution={essentialDilution}
           onUpdateSlot={updateSlot}
           onAddSlot={addSlot}
           onRemoveSlot={removeSlot}
           setBaseSlots={setBaseSlots}
           setSecSlots={setSecSlots}
-          setAddOnSlots={setAddOnSlots}
+          setEssentialAddOnSlots={setEssentialAddOnSlots}
+          setPremiumAddOnSlots={setPremiumAddOnSlots}
+          setEssentialDilution={setEssentialDilution}
         />
       </div>
     );

@@ -1,4 +1,10 @@
-import { formatGrams } from "./utils";
+import { formatGrams, OIL_DENSITY_G_PER_ML } from "./utils";
+import dropperBottleImage from "../../assets/dropper-bottle.png";
+
+const ESSENTIAL_DILUTION_GRAMS = {
+  STANDARD: 0.5,
+  INTENSE: 1,
+} as const;
 
 function getStackedSegments(
   segments: Array<{ label: string; ml: number; color: string }>,
@@ -71,73 +77,81 @@ function BottleFillVisual({
   // }
 
   return (
-    <svg
-      className="volume-bottle-svg"
-      viewBox="0 0 160 270"
+    <div
+      className="volume-bottle-visual"
       role="img"
-      aria-label="Dropper bottle volume breakdown"
+      aria-label={
+        bottleType === "DROPPER"
+          ? "Dropper bottle volume overlay"
+          : "Bottle volume overlay"
+      }
     >
-      <defs>
-        <clipPath id="dropper-fill-clip">
-          <path d="M52 70h56v20h14c10 0 18 8 18 18v126c0 11-8 19-19 19H39c-11 0-19-8-19-19V108c0-10 8-18 18-18h14z" />
-        </clipPath>
-      </defs>
-
-      <rect x="58" y="4" width="44" height="30" rx="12" fill="#111" />
-      <rect x="66" y="30" width="28" height="20" rx="8" fill="#2a2a2a" />
-      <path
-        d="M80 50c5 7 8 16 8 22 0 6-4 10-8 10s-8-4-8-10c0-6 3-15 8-22z"
-        fill="#bdbdbd"
+      <img
+        className="volume-bottle-image"
+        src={dropperBottleImage}
+        alt=""
+        aria-hidden="true"
       />
-      <path
-        d="M52 70h56v20h14c10 0 18 8 18 18v126c0 11-8 19-19 19H39c-11 0-19-8-19-19V108c0-10 8-18 18-18h14z"
-        fill="#ffffff"
-        stroke="#cfcfcf"
-        strokeWidth="4"
-      />
-
-      <g clipPath="url(#dropper-fill-clip)">
+      <div className="volume-overlay-window" aria-hidden="true">
         {segments.map((s) => (
-          <rect
+          <div
             key={s.label}
-            x="18"
-            y={252 - (s.bottom + s.heightPercent) * 1.75}
-            width="124"
-            height={Math.max(0, s.heightPercent * 1.75)}
-            fill={s.color}
+            className="volume-overlay-segment"
+            style={{
+              bottom: `${s.bottom}%`,
+              height: `${Math.max(0, s.heightPercent)}%`,
+              background: s.color,
+            }}
           />
         ))}
-      </g>
-    </svg>
+      </div>
+    </div>
   );
 }
 
 interface VolumeBarProps {
   baseVol: number;
   secVol: number;
-  addOnVol: number;
-  addOnCount: number;
+  premiumAddOnVol: number;
+  essentialAddOnCount: number;
+  premiumAddOnCount: number;
+  essentialDilution: "STANDARD" | "INTENSE";
   totalCapacity: number;
   bottleType: string;
+  selectedSecondaryCount: number;
 }
 
 export default function VolumeBar({
   baseVol,
   secVol,
-  addOnVol,
-  addOnCount,
+  premiumAddOnVol,
+  essentialAddOnCount,
+  premiumAddOnCount,
+  essentialDilution,
   totalCapacity,
   bottleType,
+  selectedSecondaryCount,
 }: VolumeBarProps) {
-  const usedAddOn = addOnVol * addOnCount;
-  const adjustedBase = baseVol - usedAddOn;
+  const essentialGramsPerOil = ESSENTIAL_DILUTION_GRAMS[essentialDilution];
+  const essentialTotalGrams = essentialAddOnCount * essentialGramsPerOil;
+  const essentialTotalMl = essentialTotalGrams / OIL_DENSITY_G_PER_ML;
+
+  const premiumTotalMl = premiumAddOnCount * premiumAddOnVol;
+  const premiumTotalGrams = premiumTotalMl * OIL_DENSITY_G_PER_ML;
+
+  const usedAddOn = essentialTotalMl + premiumTotalMl;
+  const secondaryMl = selectedSecondaryCount > 0 ? secVol : 0;
+  const basePoolMl = selectedSecondaryCount > 0 ? baseVol : totalCapacity;
+  const adjustedBase = basePoolMl - usedAddOn;
+  const baseMl = adjustedBase > 0 ? adjustedBase : 0;
+
   const segments = [
     {
       label: "Base",
-      ml: adjustedBase > 0 ? adjustedBase : 0,
+      ml: baseMl,
       color: "#9c27b0",
     },
-    { label: "Secondary", ml: secVol, color: "#ce93d8" },
+    { label: "Secondary", ml: secondaryMl, color: "#ce93d8" },
     ...(usedAddOn > 0
       ? [{ label: "Add-Ons", ml: usedAddOn, color: "#f3e5f5" }]
       : []),
@@ -157,7 +171,9 @@ export default function VolumeBar({
               className="volume-legend-dot"
               style={{ background: s.color }}
             />
-            {s.label} - {formatGrams(s.ml)}
+            {s.label === "Add-Ons"
+              ? `${s.label} - ${essentialTotalGrams > 0 ? `${essentialTotalGrams.toFixed(1)} g essential` : ""}${essentialTotalGrams > 0 && premiumTotalGrams > 0 ? " + " : ""}${premiumTotalGrams > 0 ? `${premiumTotalGrams.toFixed(1)} g premium` : ""}`
+              : `${s.label} - ${formatGrams(s.ml)}`}
           </span>
         ))}
       </div>

@@ -23,12 +23,8 @@ const SECTIONS = [
     items: [
       { name: "Premade", desc: "Curated by our team — ready to go." },
       {
-        name: "Base Custom",
-        desc: "1 base oil + your choice of secondary oils.",
-      },
-      {
-        name: "Fully Custom",
-        desc: "Crafted entirely to your specifications, within size limits.",
+        name: "Custom",
+        desc: "Build your own formula with base, secondary, and add-on oils within size limits.",
       },
     ],
   },

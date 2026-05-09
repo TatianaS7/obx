@@ -42,6 +42,22 @@
   line-height: 1.5;
 }
 
+.blend-requirement-note {
+  margin-top: -0.2rem;
+  border-radius: 6px;
+  padding: 0.45rem 0.65rem;
+}
+
+.blend-requirement-note.is-valid {
+  color: #1d7a39;
+  background: #effaf2;
+}
+
+.blend-requirement-note.is-invalid {
+  color: #9a3412;
+  background: #fff7ed;
+}
+
 /* ── Product specification overview ── */
 .product-spec-overview {
   background: #fafafa;
@@ -202,6 +218,14 @@
   border-color: #c0392b;
 }
 
+.add-on-subsection-title-premium {
+  margin-top: 1rem;
+}
+
+.dilution-select-wrap {
+  margin-bottom: 0.7rem;
+}
+
 /* ── Volume bar ── */
 .blend-section-volume {
   border-color: var(--accent-light, #f3e5f5);
@@ -230,10 +254,37 @@
   padding: 0.25rem 0 0.5rem;
 }
 
-.volume-bottle-svg {
-  width: clamp(110px, 24vw, 150px);
+.volume-bottle-visual {
+  position: relative;
+  width: clamp(100px, 21vw, 136px);
+  transform: scaleY(1.06);
+  transform-origin: center;
+}
+
+.volume-bottle-image {
+  width: 100%;
   height: auto;
+  display: block;
   filter: drop-shadow(0 8px 20px rgba(0, 0, 0, 0.1));
+}
+
+.volume-overlay-window {
+  position: absolute;
+  left: 21%;
+  right: 21%;
+  top: 38%;
+  bottom: 4%;
+  border-radius: 18px 18px 10px 10px;
+  overflow: hidden;
+  pointer-events: none;
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.volume-overlay-segment {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  opacity: 0.68;
 }
 
 .volume-bar {

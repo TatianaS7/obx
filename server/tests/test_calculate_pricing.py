@@ -10,7 +10,8 @@ from server.utils.calculate_pricing import (
     validate_discount_stack,
     is_refill_exhange,
     is_first_purchase,
-    get_user_discounts
+    get_user_discounts,
+    calculate_custom_blend_subtotal,
 )
 
 # Create a mock user
@@ -60,3 +61,41 @@ def test_validate_discount_stack():
     assert result["refill_discount"] == 0.1
     assert result["exclusive_discount"] == 0.2
     assert result["reward_dollars"] == 2.765
+
+
+def test_calculate_custom_blend_subtotal_single_base_only():
+    blend = {
+        "oils": [
+            {"oil_type": "BASE"},
+        ]
+    }
+
+    assert calculate_custom_blend_subtotal(blend) == 9.0
+
+
+def test_calculate_custom_blend_subtotal_with_additional_oils():
+    blend = {
+        "oils": [
+            {"oil_type": "BASE"},
+            {"oil_type": "BASE"},
+            {"oil_type": "SECONDARY"},
+            {"oil_type": "OTHER"},
+            {"oil_type": "PREMIUM"},
+        ]
+    }
+
+    # 9 + (1 additional base + 1 secondary)*1.5 + (1 essential)*1.5 + (1 premium)*3
+    assert calculate_custom_blend_subtotal(blend) == 16.5
+
+
+def test_calculate_custom_blend_subtotal_with_intense_essential_add_on():
+    blend = {
+        "oils": [
+            {"oil_type": "BASE"},
+            {"oil_type": "SECONDARY"},
+            {"oil_type": "OTHER", "essential_dilution": "INTENSE"},
+        ]
+    }
+
+    # 9 + (1 secondary)*1.5 + (1 essential intense)*3
+    assert calculate_custom_blend_subtotal(blend) == 13.5

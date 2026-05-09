@@ -1,6 +1,7 @@
 import { useMemo } from "react";
 import { useApi } from "../../api/ApiContext";
 import { type BlendData } from "./CreateBlend";
+import { CUSTOM_SPECS } from "../createBlend/specs";
 import { formatBottleSizeOz, formatGrams } from "../createBlend/utils";
 import "../../styles/ReviewOrder.css";
 
@@ -62,7 +63,29 @@ export default function ReviewOrder({
     return groups;
   }, [blendData, oilMap]);
 
-  const fullAllowedVolume = parseInt(newBlendCard.bottle_size) || 60;
+  const essentialDilutionLabel = useMemo(() => {
+    const hasIntense = blendData.oils.some(
+      (oil) => oil.oil_type === "OTHER" && oil.essential_dilution === "INTENSE",
+    );
+    const hasStandard = blendData.oils.some(
+      (oil) => oil.oil_type === "OTHER" && oil.essential_dilution !== "INTENSE",
+    );
+
+    if (!hasIntense && !hasStandard) return "";
+    if (hasIntense) return "2% - Intense";
+    return "1% - Standard";
+  }, [blendData.oils]);
+
+  const fullAllowedVolume = useMemo(() => {
+    if (newBlendCard.category === "CUSTOM") {
+      const customSpec = CUSTOM_SPECS[newBlendCard.bottle_size];
+      if (customSpec) {
+        return customSpec.baseVol + customSpec.secVol;
+      }
+    }
+
+    return parseInt(newBlendCard.bottle_size) || 60;
+  }, [newBlendCard.bottle_size, newBlendCard.category]);
 
   return (
     <div className="review-order">
@@ -129,6 +152,12 @@ export default function ReviewOrder({
               {blendData.description || "No description"}
             </span>
           </div>
+          {essentialDilutionLabel && (
+            <div>
+              <span className="review-label">Essential Dilution</span>
+              <span className="review-value">{essentialDilutionLabel}</span>
+            </div>
+          )}
         </div>
       </section>
 

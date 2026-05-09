@@ -117,8 +117,7 @@ export default function ProductSelection({
             sx={{ backgroundColor: "white" }}
           >
             <MenuItem value="PREMADE">Premade</MenuItem>
-            <MenuItem value="BASE_CUSTOM">Base Custom</MenuItem>
-            <MenuItem value="FULLY_CUSTOM">Fully Custom</MenuItem>
+            <MenuItem value="CUSTOM">Custom</MenuItem>
           </Select>
         </FormControl>
       </div>

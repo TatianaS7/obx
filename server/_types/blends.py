@@ -7,8 +7,9 @@ class ProductType(Enum):
 
 class BlendCategory(Enum):
     PREMADE = "PREMADE"
-    BASE_CUSTOM= "BASE_CUSTOM"
-    FULLY_CUSTOM = "FULLY_CUSTOM"
+    CUSTOM = "CUSTOM"
+    BASE_CUSTOM = "CUSTOM"
+    FULLY_CUSTOM = "CUSTOM"
 
 class BottleSize(Enum):
     SMALL = "60mL"  
@@ -24,24 +25,11 @@ class BottleSize(Enum):
             return 240
     
     def get_base_price(self, blend_category: BlendCategory):
-        if self == BottleSize.SMALL and BlendCategory.PREMADE:
+        if blend_category in (BlendCategory.CUSTOM, BlendCategory.BASE_CUSTOM, BlendCategory.FULLY_CUSTOM):
             return 9
-        elif self == BottleSize.SMALL and BlendCategory.BASE_CUSTOM:
-            return 11
-        elif self == BottleSize.SMALL and BlendCategory.FULLY_CUSTOM:
-            return 15
-        elif self == BottleSize.MEDIUM and BlendCategory.PREMADE:
-            return 13
-        elif self == BottleSize.MEDIUM and BlendCategory.BASE_CUSTOM:
-            return 16
-        elif self == BottleSize.MEDIUM and BlendCategory.FULLY_CUSTOM:
-            return 20
-        elif self == BottleSize.LARGE and BlendCategory.PREMADE:
-            return 18
-        elif self == BottleSize.LARGE and BlendCategory.BASE_CUSTOM:
-            return 20
-        elif self == BottleSize.LARGE and BlendCategory.FULLY_CUSTOM:
-            return 24
+        if blend_category == BlendCategory.PREMADE:
+            return 9
+        return 9
 
 class BottleType(Enum):
     DROPPER = "DROPPER"

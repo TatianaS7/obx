@@ -262,10 +262,7 @@ export function buildQuizRecommendation(
       summary,
       priorities,
       suggestedProductType: "HAIR_OIL",
-      recommendedCategory:
-        answers.goal === "scalp" || answers.goal === "length-retention"
-          ? "FULLY_CUSTOM"
-          : "BASE_CUSTOM",
+      recommendedCategory: "CUSTOM",
       recommendedBottleSize: "120mL",
     },
     suggestions: {

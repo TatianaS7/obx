@@ -1,7 +1,12 @@
 import OilSlotSelect from "./OilSlotSelect";
 import VolumeBar from "./VolumeBar";
-import { formatGrams } from "./utils";
+import { formatGrams, OIL_DENSITY_G_PER_ML } from "./utils";
 import { type OilOption } from "./types";
+
+const ESSENTIAL_DILUTION_OPTIONS = {
+  STANDARD: { label: "1% - Standard", gramsPerOil: 0.5 },
+  INTENSE: { label: "2% - Intense", gramsPerOil: 1 },
+} as const;
 
 interface FullyCustomSpec {
   maxAddOns: number;
@@ -15,11 +20,14 @@ interface FullyCustomBlendSectionProps {
   capacity: number;
   bottleType: string;
   oilsByType: Record<string, OilOption[]>;
-  addOnOptions: OilOption[];
+  essentialAddOnOptions: OilOption[];
+  premiumAddOnOptions: OilOption[];
   allSelectedIds: number[];
   baseSlots: (number | null)[];
   secSlots: (number | null)[];
-  addOnSlots: (number | null)[];
+  essentialAddOnSlots: (number | null)[];
+  premiumAddOnSlots: (number | null)[];
+  essentialDilution: "STANDARD" | "INTENSE";
   onUpdateSlot: (
     slots: (number | null)[],
     setSlots: (s: (number | null)[]) => void,
@@ -37,7 +45,9 @@ interface FullyCustomBlendSectionProps {
   ) => void;
   setBaseSlots: (s: (number | null)[]) => void;
   setSecSlots: (s: (number | null)[]) => void;
-  setAddOnSlots: (s: (number | null)[]) => void;
+  setEssentialAddOnSlots: (s: (number | null)[]) => void;
+  setPremiumAddOnSlots: (s: (number | null)[]) => void;
+  setEssentialDilution: (value: "STANDARD" | "INTENSE") => void;
 }
 
 export default function FullyCustomBlendSection({
@@ -45,22 +55,55 @@ export default function FullyCustomBlendSection({
   capacity,
   bottleType,
   oilsByType,
-  addOnOptions,
+  essentialAddOnOptions,
+  premiumAddOnOptions,
   allSelectedIds,
   baseSlots,
   secSlots,
-  addOnSlots,
+  essentialAddOnSlots,
+  premiumAddOnSlots,
+  essentialDilution,
   onUpdateSlot,
   onAddSlot,
   onRemoveSlot,
   setBaseSlots,
   setSecSlots,
-  setAddOnSlots,
+  setEssentialAddOnSlots,
+  setPremiumAddOnSlots,
+  setEssentialDilution,
 }: FullyCustomBlendSectionProps) {
-  const addOnCount = addOnSlots.filter((id) => id !== null).length;
+  const essentialAddOnCount = essentialAddOnSlots.filter(
+    (id) => id !== null,
+  ).length;
+  const premiumAddOnCount = premiumAddOnSlots.filter(
+    (id) => id !== null,
+  ).length;
+  const addOnCount = essentialAddOnCount + premiumAddOnCount;
+  const essentialGramsPerOil =
+    ESSENTIAL_DILUTION_OPTIONS[essentialDilution].gramsPerOil;
+  const essentialAddOnVolumeMl =
+    (essentialAddOnCount * essentialGramsPerOil) / OIL_DENSITY_G_PER_ML;
+  const premiumAddOnVolumeMl = premiumAddOnCount * fcSpec.addOnVol;
+  const usedAddOnVolumeMl = essentialAddOnVolumeMl + premiumAddOnVolumeMl;
+  const selectedBaseCount = baseSlots.filter((id) => id !== null).length;
   const selectedSecondaryCount = secSlots.filter((id) => id !== null).length;
-  const secondaryPerOil = fcSpec.secVol / Math.max(selectedSecondaryCount, 1);
+  const basePoolMl =
+    selectedSecondaryCount > 0
+      ? fcSpec.baseVol
+      : fcSpec.baseVol + fcSpec.secVol;
+  const basePerOil =
+    (basePoolMl - usedAddOnVolumeMl) / Math.max(selectedBaseCount, 1);
+  const baseLabel = selectedBaseCount > 1 ? "each" : "total";
+  const hasRequiredBase = selectedBaseCount > 0;
+  const additionalOilCount = selectedSecondaryCount + addOnCount;
+  const hasRequiredAdditionalOil = additionalOilCount > 0;
+  const meetsMinimumSelection = hasRequiredBase && hasRequiredAdditionalOil;
+  const secondaryPerOil =
+    selectedSecondaryCount > 0
+      ? fcSpec.secVol / Math.max(selectedSecondaryCount, 1)
+      : 0;
   const secondaryLabel = selectedSecondaryCount > 1 ? "each" : "total";
+  const canAddMoreAddOns = addOnCount < fcSpec.maxAddOns;
 
   return (
     <>
@@ -68,7 +111,7 @@ export default function FullyCustomBlendSection({
         <div className="blend-section-header">
           <h3 className="blend-section-title">Base Oils</h3>
           <span className="blend-section-badge">
-            {formatGrams(fcSpec.baseVol - addOnCount * fcSpec.addOnVol)} total
+            {formatGrams(basePerOil)} {baseLabel}
           </span>
         </div>
         <p className="blend-section-sub">
@@ -113,6 +156,12 @@ export default function FullyCustomBlendSection({
           Enhancing oils - {formatGrams(fcSpec.secVol)} total, split equally
           among selections.
         </p>
+        {!meetsMinimumSelection && (
+          <p className="blend-section-sub blend-requirement-note is-invalid">
+            Minimum required: 1 base oil + at least 1 additional oil (secondary
+            or add-on).
+          </p>
+        )}
         {secSlots.map((val, i) => (
           <div key={i} className="slot-row">
             <OilSlotSelect
@@ -122,7 +171,7 @@ export default function FullyCustomBlendSection({
               value={val}
               onSelect={(id) => onUpdateSlot(secSlots, setSecSlots, i, id)}
             />
-            {secSlots.length > 1 && (
+            {val !== null && (
               <button
                 className="slot-remove-btn"
                 onClick={() => onRemoveSlot(secSlots, setSecSlots, i)}
@@ -145,38 +194,111 @@ export default function FullyCustomBlendSection({
         <div className="blend-section-header">
           <h3 className="blend-section-title">Add-On Oils</h3>
           <span className="blend-section-badge">
-            {formatGrams(fcSpec.addOnVol)} each
+            Max {fcSpec.maxAddOns} total slots
           </span>
         </div>
         <p className="blend-section-sub">
-          Premium or specialty oils. Max {fcSpec.maxAddOns} - displaces base
-          volume.
+          Max {fcSpec.maxAddOns} total add-ons across essential and premium -
+          displaces base volume.
         </p>
-        {addOnSlots.map((val, i) => (
-          <div key={i} className="slot-row">
+        {!meetsMinimumSelection && (
+          <p className="blend-section-sub blend-requirement-note is-invalid">
+            Minimum required: 1 base oil + at least 1 additional oil (secondary
+            or add-on).
+          </p>
+        )}
+
+        <h4 className="blend-section-title">Essential Oils</h4>
+        <div className="dilution-select-wrap">
+          <label className="oil-slot-label" htmlFor="essential-dilution-select">
+            Essential Dilution
+          </label>
+          <select
+            id="essential-dilution-select"
+            className="oil-slot-select"
+            value={essentialDilution}
+            onChange={(e) =>
+              setEssentialDilution(e.target.value as "STANDARD" | "INTENSE")
+            }
+          >
+            <option value="STANDARD">1% - Standard (0.5 g, $1.50)</option>
+            <option value="INTENSE">2% - Intense (1.0 g, $3.00)</option>
+          </select>
+        </div>
+        <p className="blend-section-sub">
+          Highly concentrated oils known for targeted benefits. Current setting:{" "}
+          {ESSENTIAL_DILUTION_OPTIONS[essentialDilution].label} (
+          {essentialGramsPerOil.toFixed(1)}g each).
+        </p>
+        {essentialAddOnSlots.map((val, i) => (
+          <div key={`essential-${i}`} className="slot-row">
             <OilSlotSelect
-              label={`Add-On ${addOnSlots.length > 1 ? i + 1 : ""}`}
-              options={addOnOptions}
+              label={`Essential Add-On ${essentialAddOnSlots.length > 1 ? i + 1 : ""}`}
+              options={essentialAddOnOptions}
               excludeIds={allSelectedIds.filter((id) => id !== val)}
               value={val}
-              onSelect={(id) => onUpdateSlot(addOnSlots, setAddOnSlots, i, id)}
+              onSelect={(id) =>
+                onUpdateSlot(essentialAddOnSlots, setEssentialAddOnSlots, i, id)
+              }
               optional
             />
             <button
               className="slot-remove-btn"
-              onClick={() => onRemoveSlot(addOnSlots, setAddOnSlots, i)}
-              aria-label="Remove add-on"
+              onClick={() =>
+                onRemoveSlot(essentialAddOnSlots, setEssentialAddOnSlots, i)
+              }
+              aria-label="Remove essential add-on"
             >
               ✕
             </button>
           </div>
         ))}
-        {addOnSlots.length < fcSpec.maxAddOns && (
+        {canAddMoreAddOns && (
           <button
             className="slot-add-btn"
-            onClick={() => onAddSlot(addOnSlots, setAddOnSlots)}
+            onClick={() =>
+              onAddSlot(essentialAddOnSlots, setEssentialAddOnSlots)
+            }
           >
-            + Add Add-On Oil
+            + Add Essential Oil
+          </button>
+        )}
+
+        <h4 className="blend-section-title add-on-subsection-title-premium">
+          Premium Oils
+        </h4>
+        <p className="blend-section-sub">
+          Rare or luxury oils with unique properties.
+        </p>
+        {premiumAddOnSlots.map((val, i) => (
+          <div key={`premium-${i}`} className="slot-row">
+            <OilSlotSelect
+              label={`Premium Oil ${premiumAddOnSlots.length > 1 ? i + 1 : ""}`}
+              options={premiumAddOnOptions}
+              excludeIds={allSelectedIds.filter((id) => id !== val)}
+              value={val}
+              onSelect={(id) =>
+                onUpdateSlot(premiumAddOnSlots, setPremiumAddOnSlots, i, id)
+              }
+              optional
+            />
+            <button
+              className="slot-remove-btn"
+              onClick={() =>
+                onRemoveSlot(premiumAddOnSlots, setPremiumAddOnSlots, i)
+              }
+              aria-label="Remove premium add-on"
+            >
+              ✕
+            </button>
+          </div>
+        ))}
+        {canAddMoreAddOns && (
+          <button
+            className="slot-add-btn"
+            onClick={() => onAddSlot(premiumAddOnSlots, setPremiumAddOnSlots)}
+          >
+            + Add Premium Oil
           </button>
         )}
       </section>
@@ -189,10 +311,13 @@ export default function FullyCustomBlendSection({
         <VolumeBar
           baseVol={fcSpec.baseVol}
           secVol={fcSpec.secVol}
-          addOnVol={fcSpec.addOnVol}
-          addOnCount={addOnCount}
+          premiumAddOnVol={fcSpec.addOnVol}
+          essentialAddOnCount={essentialAddOnCount}
+          premiumAddOnCount={premiumAddOnCount}
+          essentialDilution={essentialDilution}
           totalCapacity={capacity}
           bottleType={bottleType}
+          selectedSecondaryCount={selectedSecondaryCount}
         />
       </section>
     </>

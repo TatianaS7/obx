@@ -43,6 +43,7 @@ export default function OrderStepper({
     description: "",
     oils: [],
   });
+  const [isBlendValid, setIsBlendValid] = useState(false);
 
   const handleNext = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
@@ -72,6 +73,7 @@ export default function OrderStepper({
           <CreateBlend
             newBlendCard={newBlendCard}
             onChange={setBlendData}
+            onValidationChange={setIsBlendValid}
             quizSuggestions={quizResult?.suggestions}
             quizProfile={quizResult?.profile}
           />
@@ -142,7 +144,11 @@ export default function OrderStepper({
               Back
             </button>
             <Box sx={{ flex: "1 1 auto" }} />
-            <button className="btn-primary" onClick={handleNext}>
+            <button
+              className="btn-primary"
+              disabled={activeStep === 2 && !isBlendValid}
+              onClick={handleNext}
+            >
               {nextButtonLabel}
             </button>
           </Box>

@@ -17,13 +17,25 @@ interface NewBlendCard {
 
 export default function StartOrder() {
   const location = useLocation();
-  const state = (location.state as {
+  const routeState = (location.state as {
     quizAnswers?: QuizAnswers;
     quizResult?: QuizRecommendationResult;
   }) ?? {
     quizAnswers: undefined,
     quizResult: undefined,
   };
+
+  const navEntry =
+    typeof window !== "undefined"
+      ? (window.performance.getEntriesByType("navigation").at(0) as
+          | PerformanceNavigationTiming
+          | undefined)
+      : undefined;
+  const isPageReload = navEntry?.type === "reload";
+
+  const state = isPageReload
+    ? { quizAnswers: undefined, quizResult: undefined }
+    : routeState;
 
   const quizResult = state.quizResult;
 

@@ -1,7 +1,11 @@
 import { useMemo, useState } from "react";
 import { useApi } from "../../api/ApiContext";
-import { BASE_CUSTOM_SPECS, FULLY_CUSTOM_SPECS } from "../createBlend/specs";
-import { formatBottleSizeOz, mlToGrams } from "../createBlend/utils";
+import { CUSTOM_SPECS } from "../createBlend/specs";
+import {
+  formatBottleSizeOz,
+  mlToGrams,
+  OIL_DENSITY_G_PER_ML,
+} from "../createBlend/utils";
 import { type BlendData } from "./CreateBlend";
 import "../../styles/BlendCardResult.css";
 
@@ -53,6 +57,10 @@ function formatRole(value: string) {
     .join(" ");
 }
 
+function getEssentialGrams(dilution: string | undefined) {
+  return dilution === "INTENSE" ? 1 : 0.5;
+}
+
 export default function BlendCardResult({
   newBlendCard,
   blendData,
@@ -92,39 +100,32 @@ export default function BlendCardResult({
 
     let basePer = 0;
     let secondaryPer = 0;
-    let addOnPer = 0;
+    let premiumAddOnPer = 0;
 
-    if (category === "BASE_CUSTOM") {
-      const spec = BASE_CUSTOM_SPECS[size];
+    if (category === "CUSTOM") {
+      const spec = CUSTOM_SPECS[size];
       if (spec) {
-        const adjustedBaseTotal = Math.max(
-          spec.baseVol - grouped.ADD_ON.length * spec.addOnVol,
-          0,
-        );
+        const addOnTotalMl = grouped.ADD_ON.reduce((total, oil) => {
+          const kind = normalizeOilType(oil.oil_type);
+          if (kind === "PREMIUM") return total + spec.addOnVol;
+          return (
+            total +
+            getEssentialGrams(oil.essential_dilution) / OIL_DENSITY_G_PER_ML
+          );
+        }, 0);
+
+        const basePoolMl =
+          grouped.SECONDARY.length > 0
+            ? spec.baseVol
+            : spec.baseVol + spec.secVol;
+        const adjustedBaseTotal = Math.max(basePoolMl - addOnTotalMl, 0);
         basePer =
           grouped.BASE.length > 0 ? adjustedBaseTotal / grouped.BASE.length : 0;
         secondaryPer =
           grouped.SECONDARY.length > 0
             ? spec.secVol / grouped.SECONDARY.length
             : 0;
-        addOnPer = spec.addOnVol;
-      }
-    }
-
-    if (category === "FULLY_CUSTOM") {
-      const spec = FULLY_CUSTOM_SPECS[size];
-      if (spec) {
-        const adjustedBaseTotal = Math.max(
-          spec.baseVol - grouped.ADD_ON.length * spec.addOnVol,
-          0,
-        );
-        basePer =
-          grouped.BASE.length > 0 ? adjustedBaseTotal / grouped.BASE.length : 0;
-        secondaryPer =
-          grouped.SECONDARY.length > 0
-            ? spec.secVol / grouped.SECONDARY.length
-            : 0;
-        addOnPer = spec.addOnVol;
+        premiumAddOnPer = spec.addOnVol;
       }
     }
 
@@ -146,7 +147,10 @@ export default function BlendCardResult({
       ...grouped.ADD_ON.map((oil) => ({
         ...oil,
         oil_type: "ADD_ON",
-        amount_grams: mlToGrams(addOnPer),
+        amount_grams:
+          normalizeOilType(oil.oil_type) === "PREMIUM"
+            ? mlToGrams(premiumAddOnPer)
+            : getEssentialGrams(oil.essential_dilution),
         name: oilsById.get(oil.oil_id)?.name ?? `Oil #${oil.oil_id}`,
         description: oilsById.get(oil.oil_id)?.description ?? "",
       })),
@@ -200,11 +204,10 @@ export default function BlendCardResult({
       <div>
         <div className="blend-card-title-row">
           <h3>Your Blend Card</h3>
-          <span className="blend-card-unit-pill">Amounts in grams (g)</span>
         </div>
         <p>
           This card captures your custom formula with each selected oil and its
-          amount. Values are stored in grams.
+          amount.
         </p>
       </div>
 
