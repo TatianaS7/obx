@@ -8,6 +8,7 @@
     "extraction_method": "Cold Pressed",
     "tags": ["MOISTURE", "CONDITIONING", "SHINE", "SCALP_CARE"],
     "oil_type": "BASE",
+    "product_usage": "BOTH",
     "is_active": true
   },
   {
@@ -19,7 +20,8 @@
     "extraction_method": "Solvent Extracted",
     "tags": ["LIGHTWEIGHT", "MOISTURE", "FRIZZ_CONTROL", "SCALP_BALANCE"],
     "oil_type": "BASE",
-    "is_active": true
+    "product_usage": "BOTH",
+    "is_active": false
   },
   {
     "id": 3,
@@ -30,6 +32,7 @@
     "extraction_method": "Expeller Pressed",
     "tags": ["GROWTH", "STRENGTH", "MOISTURE"],
     "oil_type": "BASE",
+    "product_usage": "HAIR",
     "is_active": true
   },
   {
@@ -41,6 +44,7 @@
     "extraction_method": "Expeller Pressed",
     "tags": ["DEEP_MOISTURE", "REPAIR", "ELASTICITY", "DRY_SCALP"],
     "oil_type": "BASE",
+    "product_usage": "BOTH",
     "is_active": true
   },
   {
@@ -52,7 +56,8 @@
     "extraction_method": "Cold Pressed",
     "tags": ["SENSITIVE_SCALP", "MOISTURE", "BARRIER_SUPPORT", "LIGHTWEIGHT"],
     "oil_type": "BASE",
-    "is_active": true
+    "product_usage": "BOTH",
+    "is_active": false
   },
   {
     "id": 6,
@@ -63,7 +68,8 @@
     "extraction_method": "Mechanical Pressed",
     "tags": ["DEEP_MOISTURE", "SHINE", "SCALP_CARE", "CONDITIONING"],
     "oil_type": "SECONDARY",
-    "is_active": true
+    "product_usage": "BOTH",
+    "is_active": false
   },
   {
     "id": 7,
@@ -74,6 +80,7 @@
     "extraction_method": "Expeller Pressed",
     "tags": ["SHINE", "FRIZZ_CONTROL", "MOISTURE", "STRENGTH"],
     "oil_type": "SECONDARY",
+    "product_usage": "BOTH",
     "is_active": true
   },
   {
@@ -85,6 +92,7 @@
     "extraction_method": "Cold Pressed",
     "tags": ["SCALP_BALANCE", "ITCH_RELIEF", "MOISTURE", "LIGHTWEIGHT"],
     "oil_type": "SECONDARY",
+    "product_usage": "BOTH",
     "is_active": true
   },
   {
@@ -96,7 +104,8 @@
     "extraction_method": "Expeller Pressed",
     "tags": ["MOISTURE", "STRENGTH", "SHINE", "BARRIER_SUPPORT"],
     "oil_type": "SECONDARY",
-    "is_active": true
+    "product_usage": "BOTH",
+    "is_active": false
   },
   {
     "id": 10,
@@ -107,6 +116,7 @@
     "extraction_method": "Cold Pressed",
     "tags": ["SCALP_BALANCE", "ITCH_RELIEF", "LIGHTWEIGHT", "CALMING"],
     "oil_type": "SECONDARY",
+    "product_usage": "BOTH",
     "is_active": true
   },
   {
@@ -118,7 +128,8 @@
     "extraction_method": "Cold Pressed",
     "tags": ["SCALP_CARE", "MOISTURE", "ELASTICITY", "ITCH_RELIEF"],
     "oil_type": "SECONDARY",
-    "is_active": true
+    "product_usage": "BOTH",
+    "is_active": false
   },
   {
     "id": 12,
@@ -129,7 +140,8 @@
     "extraction_method": "Cold Pressed",
     "tags": ["REPAIR", "SCALP_CARE", "SHINE", "ANTIOXIDANT"],
     "oil_type": "PREMIUM",
-    "is_active": true
+    "product_usage": "BOTH",
+    "is_active": false
   },
   {
     "id": 13,
@@ -140,7 +152,8 @@
     "extraction_method": "Cold Pressed",
     "tags": ["DEEP_MOISTURE", "ELASTICITY", "REPAIR", "DRY_SCALP"],
     "oil_type": "PREMIUM",
-    "is_active": true
+    "product_usage": "BOTH",
+    "is_active": false
   },
   {
     "id": 14,
@@ -151,7 +164,8 @@
     "extraction_method": "Cold Pressed",
     "tags": ["ANTIOXIDANT", "SHINE", "MOISTURE", "LIGHTWEIGHT"],
     "oil_type": "PREMIUM",
-    "is_active": true
+    "product_usage": "BOTH",
+    "is_active": false
   },
   {
     "id": 15,
@@ -162,7 +176,8 @@
     "extraction_method": "Cold Pressed",
     "tags": ["GROWTH", "STRENGTH", "SCALP_CARE", "BREAKAGE_SUPPORT"],
     "oil_type": "PREMIUM",
-    "is_active": true
+    "product_usage": "HAIR",
+    "is_active": false
   },
   {
     "id": 16,
@@ -173,6 +188,7 @@
     "extraction_method": "Steam Distilled",
     "tags": ["ITCH_RELIEF", "CLARIFYING", "SCALP_CARE", "DANDRUFF_SUPPORT"],
     "oil_type": "OTHER",
+    "product_usage": "HAIR",
     "is_active": true
   },
   {
@@ -184,6 +200,7 @@
     "extraction_method": "Steam Distilled",
     "tags": ["GROWTH", "SCALP_STIMULATING", "STRENGTH", "ITCH_RELIEF"],
     "oil_type": "OTHER",
+    "product_usage": "HAIR",
     "is_active": true
   },
   {
@@ -195,7 +212,8 @@
     "extraction_method": "Steam Distilled",
     "tags": ["COOLING", "ITCH_RELIEF", "SCALP_STIMULATING", "GROWTH"],
     "oil_type": "OTHER",
-    "is_active": true
+    "product_usage": "HAIR",
+    "is_active": false
   },
   {
     "id": 19,
@@ -206,7 +224,8 @@
     "extraction_method": "Cold Pressed",
     "tags": ["NOURISHING", "ANTIOXIDANT", "SCALP_CARE", "MOISTURE"],
     "oil_type": "PREMIUM",
-    "is_active": true
+    "product_usage": "BOTH",
+    "is_active": false
   },
   {
     "id": 20,
@@ -217,6 +236,7 @@
     "extraction_method": "N/A",
     "tags": ["ANTIOXIDANT", "REPAIR", "MOISTURE", "BARRIER_SUPPORT"],
     "oil_type": "PREMIUM",
+    "product_usage": "BOTH",
     "is_active": true
   },
   {
@@ -228,6 +248,19 @@
     "extraction_method": "Cold Pressed",
     "tags": ["NOURISHING", "STRENGTH", "SCALP_CARE", "MOISTURE"],
     "oil_type": "PREMIUM",
+    "product_usage": "BOTH",
+    "is_active": false
+  },
+  {
+    "id": 22,
+    "name": "Castor",
+    "description": "A thick, viscous oil known for its ability to promote hair growth and provide deep hydration to skin and scalp.",
+    "origin_country": "India",
+    "source": "Castor Seeds",
+    "extraction_method": "Cold Pressed",
+    "tags": ["GROWTH", "STRENGTH", "MOISTURE", "SCALP_CARE"],
+    "oil_type": "BASE",
+    "product_usage": "BOTH",
     "is_active": true
   }
 ]

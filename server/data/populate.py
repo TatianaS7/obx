@@ -1,6 +1,7 @@
 from server.models import Oil, Discount
 from datetime import datetime
 from server.connection import db
+from server._types import ProductUsage
 import json
 
 
@@ -17,6 +18,7 @@ def populate_oils():
                     extraction_method=oil_data.get('extraction_method'),
                     tags=oil_data.get('tags', []),
                     oil_type=oil_data['oil_type'],
+                    product_usage=ProductUsage(oil_data.get('product_usage', ProductUsage.BOTH.value)),
                     is_active=oil_data['is_active']
                 )
                 db.session.add(oil)

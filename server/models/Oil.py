@@ -1,6 +1,6 @@
 from ..connection import db
 from enum import Enum
-from .._types import OilType
+from .._types import OilType, ProductUsage
 
 class Oil(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -11,6 +11,7 @@ class Oil(db.Model):
     extraction_method = db.Column(db.String(120), nullable=True)
     tags = db.Column(db.JSON, nullable=False, default=list)
     oil_type = db.Column(db.Enum(OilType), nullable=False)
+    product_usage = db.Column(db.Enum(ProductUsage), nullable=False, default=ProductUsage.BOTH)
     is_active = db.Column(db.Boolean, default=True, nullable=False)
     created_at = db.Column(db.DateTime, nullable=False, default=db.func.current_timestamp())
 
@@ -24,6 +25,7 @@ class Oil(db.Model):
         source=None,
         extraction_method=None,
         tags=None,
+        product_usage=ProductUsage.BOTH,
     ):
         self.name = name
         self.description = description
@@ -33,6 +35,7 @@ class Oil(db.Model):
         self.source = source
         self.extraction_method = extraction_method
         self.tags = tags or []
+        self.product_usage = product_usage
 
     def serialize(self):
         return {
@@ -44,6 +47,7 @@ class Oil(db.Model):
             'extraction_method': self.extraction_method,
             'tags': self.tags or [],
             'oil_type': self.oil_type.value,
+            'product_usage': self.product_usage.value,
             'is_active': self.is_active,
             'created_at': self.created_at.isoformat()
         }

@@ -9,6 +9,12 @@ class OilType(Enum):
     PREMIUM = "PREMIUM"
 
 
+class ProductUsage(Enum):
+    HAIR = "HAIR"
+    SKIN = "SKIN"
+    BOTH = "BOTH"
+
+
 class OilTag(Enum):
     # ── Hydration ──────────────────────────────────────────────────────────
     MOISTURE        = "MOISTURE"        # general hydration (replaces: moisture, hydration)

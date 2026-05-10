@@ -1,5 +1,5 @@
 from marshmallow import fields, Schema
-from .._types import OilType, OilTag
+from .._types import OilType, OilTag, ProductUsage
 # from ..models import Oil
 
 
@@ -12,5 +12,6 @@ class OilSchema(Schema):
     extraction_method = fields.Str(required=False, allow_none=True)
     tags = fields.List(fields.Enum(OilTag, by_value=True), load_default=list)
     oil_type = fields.Enum(OilType, required=True)
+    product_usage = fields.Enum(ProductUsage, by_value=True, load_default=ProductUsage.BOTH.value)
     is_active = fields.Bool(missing=True)
     created_at = fields.DateTime(dump_only=True)

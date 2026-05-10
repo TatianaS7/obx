@@ -66,6 +66,12 @@ export default function CreateBlend({
   }, [newBlendCard.category, newBlendCard.bottle_size]);
 
   const oilsByType = useMemo(() => {
+    const usageForProductType =
+      newBlendCard.product_type === "CUTICLE_OIL" ||
+      newBlendCard.product_type === "CUTICLE"
+        ? "SKIN"
+        : "HAIR";
+
     const groups: Record<string, OilOption[]> = {
       BASE: [],
       SECONDARY: [],
@@ -74,6 +80,16 @@ export default function CreateBlend({
     };
 
     allOils.forEach((o) => {
+      if (o.is_active === false) return;
+
+      const usage =
+        typeof o.product_usage === "string"
+          ? o.product_usage.toUpperCase()
+          : "BOTH";
+
+      const matchesUsage = usage === "BOTH" || usage === usageForProductType;
+      if (!matchesUsage) return;
+
       const oilType =
         typeof o.oil_type === "object"
           ? ((o.oil_type as any).value ?? String(o.oil_type))
@@ -90,7 +106,7 @@ export default function CreateBlend({
     });
 
     return groups;
-  }, [allOils]);
+  }, [allOils, newBlendCard.product_type]);
 
   const essentialAddOnOptions = oilsByType.OTHER;
   const premiumAddOnOptions = oilsByType.PREMIUM;

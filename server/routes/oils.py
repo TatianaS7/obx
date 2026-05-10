@@ -2,7 +2,7 @@ from server.models import Oil
 from flask import Blueprint, jsonify, request
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from server.connection import db
-from server._types import OilType
+from server._types import OilType, ProductUsage
 
 oils = Blueprint('oils', __name__)
 
@@ -21,6 +21,7 @@ def create_oil():
             extraction_method=data.get('extraction_method'),
             tags=data.get('tags', []),
             oil_type=OilType(data['oil_type']),
+            product_usage=ProductUsage(data.get('product_usage', ProductUsage.BOTH.value)),
             is_active=data.get('is_active', True),
         )
         db.session.add(oil)
@@ -34,7 +35,7 @@ def create_oil():
 @oils.route('/all', methods=['GET'])
 def get_all_oils():
     try:
-        oils = Oil.query.all()
+        oils = Oil.query.filter(Oil.is_active.is_(True)).all()
         return jsonify([oil.serialize() for oil in oils]), 200
     except Exception as e:
         return jsonify({'error': str(e)}), 500
@@ -69,6 +70,7 @@ def update_oil(oil_id):
         oil.extraction_method = data['extraction_method'] if 'extraction_method' in data else oil.extraction_method
         oil.tags = data['tags'] if 'tags' in data else oil.tags
         oil.oil_type = OilType(data['oil_type']) if 'oil_type' in data else oil.oil_type
+        oil.product_usage = ProductUsage(data['product_usage']) if 'product_usage' in data else oil.product_usage
         oil.is_active = data.get('is_active', True) if 'is_active' in data else oil.is_active
 
         db.session.commit()
