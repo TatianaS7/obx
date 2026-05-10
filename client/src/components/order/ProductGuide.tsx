@@ -5,7 +5,7 @@ const SECTIONS = [
     title: "Product Types",
     items: [
       { name: "Hair Oil", desc: "Nourishes the scalp and promotes growth." },
-      { name: "Fragrance Oil", desc: "Lightweight scent designed for skin." },
+      { name: "Cuticle Oil", desc: "Hydrates and strengthens nails and cuticles." }
     ],
   },
   {
@@ -15,7 +15,10 @@ const SECTIONS = [
         name: "Dropper Bottle",
         desc: "Precise control for targeted application.",
       },
-      // { name: "Squeeze Bottle", desc: "Easy for direct scalp application." },
+      {
+        name: "Brush Bottle",
+        desc: "Even application across nails and cuticles.",
+      }
     ],
   },
   {

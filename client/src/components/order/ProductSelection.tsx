@@ -19,6 +19,9 @@ export default function ProductSelection({
   newBlendCard: NewBlendCard;
   setNewBlendCard: React.Dispatch<React.SetStateAction<NewBlendCard>>;
 }) {
+  const HAIR_BOTTLE_SIZES = ["60mL", "120mL", "240mL"];
+  const CUTICLE_BOTTLE_SIZES = ["5mL"];
+
   const [product_type, setProductType] = useState(
     newBlendCard.product_type || "",
   );
@@ -50,6 +53,31 @@ export default function ProductSelection({
     }));
   }, [product_type, bottle_type, bottle_size, category, setNewBlendCard]);
 
+  useEffect(() => {
+    const allowedBottleSizes =
+      product_type === "CUTICLE_OIL" ? CUTICLE_BOTTLE_SIZES : HAIR_BOTTLE_SIZES;
+
+    if (allowedBottleSizes.length === 0) return;
+
+    if (!bottle_size || !allowedBottleSizes.includes(bottle_size)) {
+      setBottleSize(allowedBottleSizes[0]);
+    }
+  }, [product_type, bottle_size]);
+
+  useEffect(() => {
+    if (product_type === "CUTICLE_OIL" && bottle_type !== "BRUSH") {
+      setBottleType("BRUSH");
+      return;
+    }
+
+    if (product_type === "HAIR_OIL" && bottle_type !== "DROPPER") {
+      setBottleType("DROPPER");
+    }
+  }, [product_type, bottle_type]);
+
+  const bottleSizeOptions =
+    product_type === "CUTICLE_OIL" ? CUTICLE_BOTTLE_SIZES : HAIR_BOTTLE_SIZES;
+
   return (
     <div className="product-selection-layout">
       <ProductGuide />
@@ -66,16 +94,21 @@ export default function ProductSelection({
               setProductType(selectedProductType);
               if (selectedProductType === "HAIR_OIL") {
                 setBottleType("DROPPER");
+                setBottleSize("60mL");
+              }
+              if (selectedProductType === "CUTICLE_OIL") {
+                setBottleType("BRUSH");
+                setBottleSize("5mL");
               }
             }}
             sx={{ backgroundColor: "white" }}
           >
             <MenuItem value="HAIR_OIL">Hair Oil</MenuItem>
-            <MenuItem value="FRAGRANCE_OIL">Fragrance Oil</MenuItem>
+            <MenuItem value="CUTICLE_OIL">Cuticle Oil</MenuItem>
           </Select>
         </FormControl>
 
-        {product_type === "HAIR_OIL" && (
+        {(product_type === "HAIR_OIL" || product_type === "CUTICLE_OIL") && (
           <FormControl fullWidth margin="normal">
             <InputLabel>Bottle Type</InputLabel>
             <Select
@@ -85,7 +118,11 @@ export default function ProductSelection({
               sx={{ backgroundColor: "white" }}
             >
               {/* <MenuItem value="SQUEEZE">Squeeze</MenuItem> */}
-              <MenuItem value="DROPPER">Dropper</MenuItem>
+              {product_type === "CUTICLE_OIL" ? (
+                <MenuItem value="BRUSH">Brush</MenuItem>
+              ) : (
+                <MenuItem value="DROPPER">Dropper</MenuItem>
+              )}
             </Select>
           </FormControl>
         )}
@@ -100,9 +137,18 @@ export default function ProductSelection({
             }}
             sx={{ backgroundColor: "white" }}
           >
-            <MenuItem value="60mL">2 oz</MenuItem>
-            <MenuItem value="120mL">4 oz</MenuItem>
-            <MenuItem value="240mL">8 oz</MenuItem>
+            {bottleSizeOptions.includes("5mL") && (
+              <MenuItem value="5mL">5 mL</MenuItem>
+            )}
+            {bottleSizeOptions.includes("60mL") && (
+              <MenuItem value="60mL">2 oz</MenuItem>
+            )}
+            {bottleSizeOptions.includes("120mL") && (
+              <MenuItem value="120mL">4 oz</MenuItem>
+            )}
+            {bottleSizeOptions.includes("240mL") && (
+              <MenuItem value="240mL">8 oz</MenuItem>
+            )}
           </Select>
         </FormControl>
 

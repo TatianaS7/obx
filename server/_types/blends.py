@@ -3,7 +3,7 @@ from marshmallow import Schema, fields
 
 class ProductType(Enum):
     HAIR = "HAIR"
-    FRAGRANCE = "FRAGRANCE"
+    CUTICLE = "CUTICLE"
 
 class BlendCategory(Enum):
     PREMADE = "PREMADE"
@@ -12,11 +12,14 @@ class BlendCategory(Enum):
     FULLY_CUSTOM = "CUSTOM"
 
 class BottleSize(Enum):
+    MINI = "5mL"
     SMALL = "60mL"  
     MEDIUM = "120mL"
     LARGE = "240mL"
 
     def to_ml(self):
+        if self == BottleSize.MINI:
+            return 5
         if self == BottleSize.SMALL:
             return 60
         elif self == BottleSize.MEDIUM:
@@ -33,4 +36,4 @@ class BottleSize(Enum):
 
 class BottleType(Enum):
     DROPPER = "DROPPER"
-    # SQUEEZE = "SQUEEZE"
+    BRUSH = "BRUSH"

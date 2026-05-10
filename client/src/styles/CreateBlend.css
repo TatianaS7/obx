@@ -259,6 +259,27 @@
   width: clamp(100px, 21vw, 136px);
   transform: scaleY(1.06);
   transform-origin: center;
+  --overlay-left: 21%;
+  --overlay-right: 21%;
+  --overlay-top: 38%;
+  --overlay-bottom: 4%;
+  --overlay-radius: 18px 18px 10px 10px;
+}
+
+.volume-bottle-visual--dropper {
+  --overlay-left: 21%;
+  --overlay-right: 21%;
+  --overlay-top: 38%;
+  --overlay-bottom: 4%;
+  --overlay-radius: 18px 18px 10px 10px;
+}
+
+.volume-bottle-visual--brush {
+  --overlay-left: 14%;
+  --overlay-right: 14.5%;
+  --overlay-top: 44.5%;
+  --overlay-bottom: 15%;
+  --overlay-radius: 16px 16px 25px 25px;
 }
 
 .volume-bottle-image {
@@ -270,11 +291,11 @@
 
 .volume-overlay-window {
   position: absolute;
-  left: 21%;
-  right: 21%;
-  top: 38%;
-  bottom: 4%;
-  border-radius: 18px 18px 10px 10px;
+  left: var(--overlay-left);
+  right: var(--overlay-right);
+  top: var(--overlay-top);
+  bottom: var(--overlay-bottom);
+  border-radius: var(--overlay-radius);
   overflow: hidden;
   pointer-events: none;
   background: rgba(255, 255, 255, 0.06);

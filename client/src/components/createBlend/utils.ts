@@ -17,6 +17,7 @@ export function formatBottleSizeOz(value: string) {
 
   const normalized = value.trim().toUpperCase().replace(/\s+/g, "");
 
+  if (normalized === "5ML" || normalized === "MINI") return "5 mL";
   if (normalized === "60ML" || normalized === "SMALL") return "2 oz";
   if (normalized === "120ML" || normalized === "MEDIUM") return "4 oz";
   if (normalized === "240ML" || normalized === "LARGE") return "8 oz";

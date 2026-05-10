@@ -4,6 +4,7 @@ from .._types import BottleSize, BottleType, BlendCategory
 OIL_DENSITY_G_PER_ML = 0.92
 
 custom_specs = {
+    BottleSize.MINI.value: {"unit": "g", "capacity": 5, "base_volume": 4, "secondary_volume": 1, "max_add_ons": 1, "add_on_volume": 0.5},
     BottleSize.SMALL.value: {"unit": "g", "capacity": 60, "base_volume": 48, "secondary_volume": 12, "max_add_ons": 2, "add_on_volume": 3},
     BottleSize.MEDIUM.value: {"unit": "g", "capacity": 120, "base_volume": 90, "secondary_volume": 30, "max_add_ons": 3, "add_on_volume": 3},
     BottleSize.LARGE.value: {"unit": "g", "capacity": 240, "base_volume": 168, "secondary_volume": 72, "max_add_ons": 4, "add_on_volume": 3}
