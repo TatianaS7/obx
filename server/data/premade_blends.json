@@ -1,0 +1,197 @@
+[
+  {
+    "id": 1,
+    "created_by": 1,
+    "name": "Moisture",
+    "description": "A hydrating blend designed to moisturize and nourish the cuticles, leaving them soft and healthy.",
+    "product_type": "CUTICLE",
+    "category": "PREMADE",
+    "bottle_size": "6mL",
+    "bottle_type": "ROLLERBALL",
+    "is_delete": false,
+    "is_premade": true,
+    "created_at": null,
+    "oils": [
+      {
+        "id": 8,
+        "name": "Jojoba",
+        "description": "Structurally similar to the skin's natural sebum, this oil helps regulate moisture and is great for all skin types.",
+        "origin_country": "Argentina",
+        "source": "Jojoba Plant Seed",
+        "extraction_method": "Cold Pressed",
+        "tags": ["SCALP_BALANCE", "ITCH_RELIEF", "MOISTURE", "LIGHTWEIGHT"],
+        "oil_type": "SECONDARY",
+        "product_usage": "BOTH",
+        "is_active": true
+      },
+      {
+        "id": 1,
+        "name": "Sweet Almond",
+        "description": "Lightweight and rich in vitamins A and E, this oil is great for moisturizing and soothing the skin.",
+        "origin_country": "Spain",
+        "source": "Almond Seed",
+        "extraction_method": "Cold Pressed",
+        "tags": ["MOISTURE", "CONDITIONING", "SHINE", "SCALP_CARE"],
+        "oil_type": "BASE",
+        "product_usage": "BOTH",
+        "is_active": true
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "created_by": 1,
+    "name": "Growth",
+    "description": "A blend formulated to promote nail growth and strengthen the cuticles, leaving them healthy and resilient.",
+    "product_type": "CUTICLE",
+    "category": "PREMADE",
+    "bottle_size": "6mL",
+    "bottle_type": "ROLLERBALL",
+    "is_delete": false,
+    "is_premade": true,
+    "created_at": null,
+    "oils": [
+      {
+        "id": 22,
+        "name": "Castor",
+        "description": "A thick, viscous oil known for its ability to promote hair growth and provide deep hydration to skin and scalp.",
+        "origin_country": "India",
+        "source": "Castor Seeds",
+        "extraction_method": "Cold Pressed",
+        "tags": ["GROWTH", "STRENGTH", "MOISTURE", "SCALP_CARE"],
+        "oil_type": "BASE",
+        "product_usage": "BOTH",
+        "is_active": true
+      },
+      {
+        "id": 7,
+        "name": "Argan",
+        "description": "Often called liquid gold, this oil is rich in fatty acids and vitamin E, making it perfect for hair and skin hydration.",
+        "origin_country": "Morocco",
+        "source": "Argan Tree Fruit Seeds",
+        "extraction_method": "Expeller Pressed",
+        "tags": ["SHINE", "FRIZZ_CONTROL", "MOISTURE", "STRENGTH"],
+        "oil_type": "SECONDARY",
+        "product_usage": "BOTH",
+        "is_active": true
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "created_by": 1,
+    "name": "Shine & Moisture",
+    "description": "A blend designed to provide intense moisture and hydration for hair.",
+    "product_type": "HAIR",
+    "category": "PREMADE",
+    "bottle_size": "60mL",
+    "bottle_type": "DROPPER",
+    "is_delete": false,
+    "is_premade": true,
+    "created_at": null,
+    "oils": [
+      {
+        "id": 8,
+        "name": "Jojoba",
+        "description": "Structurally similar to the skin's natural sebum, this oil helps regulate moisture and is great for all skin types.",
+        "origin_country": "Argentina",
+        "source": "Jojoba Plant Seed",
+        "extraction_method": "Cold Pressed",
+        "tags": ["SCALP_BALANCE", "ITCH_RELIEF", "MOISTURE", "LIGHTWEIGHT"],
+        "oil_type": "SECONDARY",
+        "product_usage": "BOTH",
+        "is_active": true
+      },
+      {
+        "id": 7,
+        "name": "Argan",
+        "description": "Often called liquid gold, this oil is rich in fatty acids and vitamin E, making it perfect for hair and skin hydration.",
+        "origin_country": "Morocco",
+        "source": "Argan Tree Fruit Seeds",
+        "extraction_method": "Expeller Pressed",
+        "tags": ["SHINE", "FRIZZ_CONTROL", "MOISTURE", "STRENGTH"],
+        "oil_type": "SECONDARY",
+        "product_usage": "BOTH",
+        "is_active": true
+      }
+    ]
+  },
+  {
+    "id": 4,
+    "created_by": 1,
+    "name": "Growth & Strength",
+    "description": "A blend designed to promote hair growth and strengthen hair strands.",
+    "product_type": "HAIR",
+    "category": "PREMADE",
+    "bottle_size": "60mL",
+    "bottle_type": "DROPPER",
+    "is_delete": false,
+    "is_premade": true,
+    "created_at": null,
+    "oils": [
+      {
+        "id": 3,
+        "name": "Jamaican Black Castor",
+        "description": "Thick and nourishing, this oil is known for its ability to promote hair growth and strengthen follicles.",
+        "origin_country": "Jamaica",
+        "source": "Roasted Castor Plant Seeds",
+        "extraction_method": "Expeller Pressed",
+        "tags": ["GROWTH", "STRENGTH", "MOISTURE"],
+        "oil_type": "BASE",
+        "product_usage": "HAIR",
+        "is_active": true
+      },
+      {
+        "id": 17,
+        "name": "Rosemary",
+        "description": "An invigorating oil often used to stimulate circulation and promotte hair and scalp vitality.",
+        "origin_country": "Tunisia",
+        "source": "Rosemary Leaves",
+        "extraction_method": "Steam Distilled",
+        "tags": ["GROWTH", "SCALP_STIMULATING", "STRENGTH", "ITCH_RELIEF"],
+        "oil_type": "OTHER",
+        "product_usage": "HAIR",
+        "is_active": true
+      }
+    ]
+  },
+  {
+    "id": 5,
+    "created_by": 1,
+    "name": "Scalp Therapy",
+    "description": "A blend specifically formulated to soothe and nourish the scalp.",
+    "product_type": "HAIR",
+    "category": "PREMADE",
+    "bottle_size": "60mL",
+    "bottle_type": "DROPPER",
+    "is_delete": false,
+    "is_premade": true,
+    "created_at": null,
+    "oils": [
+      {
+        "id": 16,
+        "name": "Tea Tree",
+        "description": "A naturally purifying oil with antimicrobial properties, tea tree is commonly used to help clarify skin and support scalp health.",
+        "origin_country": "Australia",
+        "source": "Melaleuca Leaves",
+        "extraction_method": "Steam Distilled",
+        "tags": ["ITCH_RELIEF", "CLARIFYING", "SCALP_CARE", "DANDRUFF_SUPPORT"],
+        "oil_type": "OTHER",
+        "product_usage": "HAIR",
+        "is_active": true
+      },
+      {
+        "id": 22,
+        "name": "Castor",
+        "description": "A thick, viscous oil known for its ability to promote hair growth and provide deep hydration to skin and scalp.",
+        "origin_country": "India",
+        "source": "Castor Seeds",
+        "extraction_method": "Cold Pressed",
+        "tags": ["GROWTH", "STRENGTH", "MOISTURE", "SCALP_CARE"],
+        "oil_type": "BASE",
+        "product_usage": "BOTH",
+        "is_active": true
+      }
+    ]
+  }
+]

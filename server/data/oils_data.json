@@ -3,7 +3,7 @@
     "id": 1,
     "name": "Sweet Almond",
     "description": "Lightweight and rich in vitamins A and E, this oil is great for moisturizing and soothing the skin.",
-    "origin_country": "Spain",
+    "origin_country": "Mediterranean Region",
     "source": "Almond Seed",
     "extraction_method": "Cold Pressed",
     "tags": ["MOISTURE", "CONDITIONING", "SHINE", "SCALP_CARE"],
@@ -177,7 +177,7 @@
     "tags": ["GROWTH", "STRENGTH", "SCALP_CARE", "BREAKAGE_SUPPORT"],
     "oil_type": "PREMIUM",
     "product_usage": "HAIR",
-    "is_active": false
+    "is_active": true
   },
   {
     "id": 16,
@@ -195,7 +195,7 @@
     "id": 17,
     "name": "Rosemary",
     "description": "An invigorating oil often used to stimulate circulation and promotte hair and scalp vitality.",
-    "origin_country": "Tunisia",
+    "origin_country": "Spain",
     "source": "Rosemary Leaves",
     "extraction_method": "Steam Distilled",
     "tags": ["GROWTH", "SCALP_STIMULATING", "STRENGTH", "ITCH_RELIEF"],

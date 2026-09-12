@@ -9,6 +9,7 @@ import type { QuizRecommendationResult } from "../components/quiz/quizRecommenda
 interface NewBlendCard {
   name: string;
   description: string;
+  customer_tier: string;
   product_type: string;
   category: string;
   bottle_size: string;
@@ -42,6 +43,7 @@ export default function StartOrder() {
   const [newBlendCard, setNewBlendCard] = useState<NewBlendCard>(() => ({
     name: "",
     description: "",
+    customer_tier: "INDIVIDUAL",
     product_type: quizResult?.profile.suggestedProductType ?? "",
     category: quizResult?.profile.recommendedCategory ?? "",
     bottle_size: quizResult?.profile.recommendedBottleSize ?? "",

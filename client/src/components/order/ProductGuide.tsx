@@ -5,7 +5,10 @@ const SECTIONS = [
     title: "Product Types",
     items: [
       { name: "Hair Oil", desc: "Nourishes the scalp and promotes growth." },
-      { name: "Cuticle Oil", desc: "Hydrates and strengthens nails and cuticles." }
+      {
+        name: "Cuticle Oil",
+        desc: "Hydrates and strengthens nails and cuticles.",
+      },
     ],
   },
   {
@@ -16,9 +19,9 @@ const SECTIONS = [
         desc: "Precise control for targeted application.",
       },
       {
-        name: "Brush Bottle",
+        name: "Rollerball Bottle",
         desc: "Even application across nails and cuticles.",
-      }
+      },
     ],
   },
   {

@@ -33,6 +33,8 @@ interface ApiContextType {
   error: string | null;
   allOils: any[];
   fetchOils: () => Promise<any[]>;
+  allBlendCards: any[];
+  fetchBlendCards: () => Promise<any[]>;
   authToken: string | null;
   currentUser: AuthUser | null;
   registerUser: (payload: RegisterPayload) => Promise<void>;
@@ -52,6 +54,7 @@ export const ApiProvider = ({ children }: ApiProviderProps) => {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const [allOils, setAllOils] = useState<any[]>([]);
+  const [allBlendCards, setAllBlendCards] = useState<any[]>([]);
   const [authToken, setAuthToken] = useState<string | null>(
     localStorage.getItem("authToken"),
   );
@@ -89,6 +92,23 @@ export const ApiProvider = ({ children }: ApiProviderProps) => {
       return res.data;
     } catch (err) {
       setError("Failed to fetch oils");
+      console.error(err);
+      return [];
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Fetch all blend cards
+  const fetchBlendCards = async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const res = await apiClient.get("/blend_cards/all");
+      setAllBlendCards(res.data);
+      return res.data;
+    } catch (err) {
+      setError("Failed to fetch blend cards");
       console.error(err);
       return [];
     } finally {
@@ -151,6 +171,8 @@ export const ApiProvider = ({ children }: ApiProviderProps) => {
     <ApiContext.Provider
       value={{
         allOils,
+        fetchBlendCards,
+        allBlendCards,
         loading,
         setLoading,
         error,

@@ -1,6 +1,6 @@
 import React from "react";
 import dropperBottle from "../../assets/dropper-bottle.png";
-import brushBottle from "../../assets/brush-bottle.jpg";
+import rollerballBottle from "../../assets/brush-bottle.jpg";
 
 interface NewBlendCard {
   bottle_type: string;
@@ -11,20 +11,22 @@ export default function ProductVisual({
 }: {
   newBlendCard: NewBlendCard;
 }) {
-  const isDropperOrBrush =
+  const isDropperOrRollerball =
     newBlendCard.bottle_type === "DROPPER" ||
-    newBlendCard.bottle_type === "BRUSH";
+    newBlendCard.bottle_type === "ROLLERBALL";
 
   return (
     <div>
-      {isDropperOrBrush && (
+      {isDropperOrRollerball && (
         <img
           src={
-            newBlendCard.bottle_type === "BRUSH" ? brushBottle : dropperBottle
+            newBlendCard.bottle_type === "ROLLERBALL"
+              ? rollerballBottle
+              : dropperBottle
           }
           alt={
-            newBlendCard.bottle_type === "BRUSH"
-              ? "Brush Bottle"
+            newBlendCard.bottle_type === "ROLLERBALL"
+              ? "Rollerball Bottle"
               : "Dropper Bottle"
           }
           className="product-image"

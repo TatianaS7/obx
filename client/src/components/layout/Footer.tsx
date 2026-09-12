@@ -21,7 +21,14 @@ export default function Footer() {
     <footer className="footer">
       <div className="footer-inner">
         <div className="footer-brand">
-          <span className="footer-logo">OBX</span>
+          <button
+            type="button"
+            className="footer-logo-button"
+            onClick={() => navigate("/")}
+            aria-label="Go to home"
+          >
+            <img src="/logo.svg" alt="OBX Logo" className="footer-logo" />
+          </button>
           <p>Custom hair oils crafted precisely for you.</p>
         </div>
 
@@ -51,7 +58,9 @@ export default function Footer() {
           <h4>Contact</h4>
           <ul>
             <li>
-              <a href="mailto:hello@obx.com">hello@obx.com</a>
+              <a href="mailto:oilbarexperience@gmail.com">
+                oilbarexperience@gmail.com
+              </a>
             </li>
           </ul>
         </div>

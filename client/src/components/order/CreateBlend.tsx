@@ -3,6 +3,7 @@ import { useApi } from "../../api/ApiContext";
 import ProductSpecOverview from "../createBlend/ProductSpecOverview";
 import BlendIdentitySection from "../createBlend/BlendIdentitySection";
 import FullyCustomBlendSection from "../createBlend/FullyCustomBlendSection";
+import PremadeBlendSelection from "./PremadeBlendSelection";
 import { CUSTOM_SPECS } from "../createBlend/specs";
 import {
   type BlendData,
@@ -273,16 +274,7 @@ export default function CreateBlend({
   }
 
   if (category === "PREMADE") {
-    return (
-      <div className="create-blend-placeholder">
-        <span className="create-blend-placeholder-icon">🧴</span>
-        <h3>Premade Blends</h3>
-        <p>
-          Our team will select a curated blend for you based on your product
-          selections. This option will be fully available soon.
-        </p>
-      </div>
-    );
+    return <PremadeBlendSelection newBlendCard={newBlendCard} />;
   }
 
   if (category === "CUSTOM" && customSpec) {

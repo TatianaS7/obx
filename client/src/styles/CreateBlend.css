@@ -274,7 +274,7 @@
   --overlay-radius: 18px 18px 10px 10px;
 }
 
-.volume-bottle-visual--brush {
+.volume-bottle-visual--rollerball {
   --overlay-left: 14%;
   --overlay-right: 14.5%;
   --overlay-top: 44.5%;
@@ -359,18 +359,65 @@
   margin-bottom: 0.75rem;
 }
 
+.premade-blend-grid {
+  width: 100%;
+  margin: 1.25rem 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  gap: 0.85rem;
+}
+
+.premade-blend-button {
+  border: 1.5px solid var(--accent, #9c27b0);
+  background: #fff;
+  color: #222;
+  border-radius: 10px;
+  width: 100%;
+  text-align: left;
+  padding: 0.85rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 0.5rem;
+  cursor: pointer;
+  transition:
+    transform 0.14s ease,
+    box-shadow 0.14s ease,
+    background-color 0.14s ease;
+}
+
+.premade-blend-button:hover {
+  transform: translateY(-1px);
+  background: var(--accent-light, #f3e5f5);
+  box-shadow: 0 6px 16px rgba(156, 39, 176, 0.14);
+}
+
+.premade-blend-button:focus-visible {
+  outline: 2px solid var(--accent, #9c27b0);
+  outline-offset: 2px;
+}
+
+.premade-blend-title {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--accent, #9c27b0);
+  line-height: 1.25;
+}
+
+.premade-blend-description {
+  font-size: 0.8rem;
+  color: #555;
+  line-height: 1.45;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
 .create-blend-placeholder h3 {
   font-size: 1.1rem;
   font-weight: 700;
   color: #333;
   margin-bottom: 0.5rem;
-}
-
-.create-blend-placeholder p {
-  font-size: 0.9rem;
-  line-height: 1.6;
-  max-width: 400px;
-  margin: 0 auto;
 }
 
 @media (max-width: 700px) {

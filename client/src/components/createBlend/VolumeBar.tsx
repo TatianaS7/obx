@@ -1,6 +1,6 @@
 import { formatGrams, OIL_DENSITY_G_PER_ML } from "./utils";
 import dropperBottleImage from "../../assets/dropper-bottle.png";
-import brushBottleImage from "../../assets/brush-bottle.jpg";
+import rollerballBottleImage from "../../assets/brush-bottle.jpg";
 
 const ESSENTIAL_DILUTION_GRAMS = {
   STANDARD: 0.5,
@@ -38,8 +38,8 @@ function BottleFillVisual({
   }>;
 }) {
   const bottleClassName =
-    bottleType === "BRUSH"
-      ? "volume-bottle-visual volume-bottle-visual--brush"
+    bottleType === "ROLLERBALL"
+      ? "volume-bottle-visual volume-bottle-visual--rollerball"
       : "volume-bottle-visual volume-bottle-visual--dropper";
 
   return (
@@ -49,12 +49,16 @@ function BottleFillVisual({
       aria-label={
         bottleType === "DROPPER"
           ? "Dropper bottle volume overlay"
-          : "Brush bottle volume overlay"
+          : "Rollerball bottle volume overlay"
       }
     >
       <img
         className="volume-bottle-image"
-        src={bottleType === "BRUSH" ? brushBottleImage : dropperBottleImage}
+        src={
+          bottleType === "ROLLERBALL"
+            ? rollerballBottleImage
+            : dropperBottleImage
+        }
         alt=""
         aria-hidden="true"
       />

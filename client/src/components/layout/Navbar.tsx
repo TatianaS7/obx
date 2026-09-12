@@ -2,7 +2,6 @@ import { useState, useRef } from "react";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import { useNavigate } from "react-router-dom";
-import logo from "../../assets/dropper-bottle.png";
 import "../../styles/Navbar.css";
 import AuthModal from "../auth/AuthModal";
 
@@ -37,9 +36,14 @@ export default function Navbar() {
 
   return (
     <div className="navbar-wrapper background">
-      <h1 style={{ cursor: "pointer" }} onClick={() => navigate("/")}>
-        OBX
-      </h1>
+      <button
+        type="button"
+        className="navbar-logo-button"
+        onClick={() => navigate("/")}
+        aria-label="Go to home"
+      >
+        <img src="/logo.svg" alt="OBX Logo" className="navbar-logo" />
+      </button>
       <Tabs
         value={value}
         onChange={(event, newValue) => handleChange(newValue)}

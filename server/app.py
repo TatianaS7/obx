@@ -32,8 +32,13 @@ def create_app():
         db.create_all()
 
         # Populate database with initial data
-        from server.data.populate import populate_oils, populate_discounts
+        from server.data.populate import (
+            populate_oils,
+            populate_premade_blends,
+            populate_discounts,
+        )
         populate_oils()
+        populate_premade_blends()
         populate_discounts()
 
     return app

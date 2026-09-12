@@ -8,6 +8,7 @@ import "../../styles/ReviewOrder.css";
 interface NewBlendCard {
   name: string;
   description: string;
+  customer_tier: string;
   product_type: string;
   category: string;
   bottle_size: string;
@@ -112,6 +113,12 @@ export default function ReviewOrder({
             <span className="review-label">Blend Category</span>
             <span className="review-value">
               {formatSpecValue(newBlendCard.category)}
+            </span>
+          </div>
+          <div>
+            <span className="review-label">Customer Type</span>
+            <span className="review-value">
+              {formatSpecValue(newBlendCard.customer_tier || "INDIVIDUAL")}
             </span>
           </div>
           <div>

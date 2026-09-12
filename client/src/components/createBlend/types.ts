@@ -20,6 +20,7 @@ export interface BlendData {
 export interface NewBlendCard {
   name: string;
   description: string;
+  customer_tier: string;
   product_type: string;
   category: string;
   bottle_size: string;

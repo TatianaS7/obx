@@ -10,6 +10,30 @@
   flex-direction: column;
 }
 
+.customer-tier-toggle {
+  display: inline-flex;
+  align-items: center;
+  align-self: flex-start;
+  gap: 0.45rem;
+  padding: 0.35rem 0.6rem;
+  border: 1px solid var(--accent-light, #f3e5f5);
+  border-radius: 999px;
+  background: #fff;
+}
+
+.customer-tier-label {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #4a4a4a;
+}
+
+.customer-tier-note {
+  margin: 0.25rem 0 0.4rem;
+  font-size: 0.8rem;
+  color: #666;
+  line-height: 1.45;
+}
+
 @media (max-width: 700px) {
   .product-selection-layout {
     flex-direction: column;

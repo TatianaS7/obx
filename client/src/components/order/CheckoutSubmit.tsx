@@ -7,6 +7,7 @@ import "../../styles/CheckoutSubmit.css";
 interface NewBlendCard {
   name: string;
   description: string;
+  customer_tier: string;
   product_type: string;
   category: string;
   bottle_size: string;
@@ -265,6 +266,12 @@ export default function CheckoutSubmit({
             <span className="checkout-label">Blend Category</span>
             <span className="checkout-value">
               {formatSpecValue(newBlendCard.category)}
+            </span>
+          </div>
+          <div>
+            <span className="checkout-label">Customer Type</span>
+            <span className="checkout-value">
+              {formatSpecValue(newBlendCard.customer_tier || "INDIVIDUAL")}
             </span>
           </div>
           <div>
