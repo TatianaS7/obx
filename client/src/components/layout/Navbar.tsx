@@ -82,6 +82,15 @@ export default function Navbar() {
               className="navbar-dropdown-item"
               onClick={() => {
                 setMenuOpen(false);
+                navigate("/profile");
+              }}
+            >
+              Profile
+            </button>
+            <button
+              className="navbar-dropdown-item"
+              onClick={() => {
+                setMenuOpen(false);
                 setAuthModal("signin");
               }}
             >

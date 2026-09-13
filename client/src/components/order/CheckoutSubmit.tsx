@@ -358,11 +358,10 @@ export default function CheckoutSubmit({
                 : ""}
             </span>
             <strong>
-              ${
-                newBlendCard.category.trim().toUpperCase() === "PREMADE"
-                  ? subtotal.toFixed(2)
-                  : pricing.basePrice.toFixed(2)
-              }
+              $
+              {newBlendCard.category.trim().toUpperCase() === "PREMADE"
+                ? subtotal.toFixed(2)
+                : pricing.basePrice.toFixed(2)}
             </strong>
           </div>
           {newBlendCard.category.trim().toUpperCase() === "CUSTOM" && (

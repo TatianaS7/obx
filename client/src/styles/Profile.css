@@ -1,0 +1,111 @@
+.profile-page {
+  background: #fff;
+  min-height: 100vh;
+}
+
+.profile-body {
+  padding: 2rem 8vw 5rem;
+}
+
+.profile-layout {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.profile-layout {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  gap: 1rem;
+}
+
+.profile-sidebar,
+.profile-content-panel {
+  border: 1px solid #e8e8e8;
+  border-radius: 12px;
+  background: #fff;
+}
+
+.profile-sidebar {
+  padding: 1rem;
+}
+
+.profile-sidebar h2 {
+  margin: 0 0 0.8rem;
+  font-size: 1rem;
+}
+
+.profile-sidebar nav {
+  display: grid;
+  gap: 0.45rem;
+}
+
+.profile-nav-btn {
+  width: 100%;
+  text-align: left;
+  border: 1px solid #e2e2e2;
+  border-radius: 8px;
+  background: #fff;
+  color: #333;
+  font-weight: 600;
+  padding: 0.65rem 0.75rem;
+  cursor: pointer;
+  transition:
+    background-color 0.15s,
+    transform 0.15s,
+    border-color 0.15s;
+}
+
+.profile-nav-btn:hover {
+  background: #fafafa;
+  transform: translateX(2px);
+}
+
+.profile-nav-btn.is-active {
+  border-color: var(--accent, #9c27b0);
+  background: var(--accent-light, #f3e5f5);
+  color: var(--accent-dark, #7b1fa2);
+}
+
+.profile-content-panel {
+  padding: 1.1rem;
+}
+
+.profile-content-head h2 {
+  margin: 0;
+  font-size: 1.3rem;
+}
+
+.profile-content-head p {
+  margin: 0.3rem 0 1rem;
+  color: #666;
+}
+
+.profile-detail-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.8rem;
+}
+
+.profile-detail-card {
+  border: 1px solid #efefef;
+  border-radius: 10px;
+  background: #fafafa;
+  padding: 0.95rem;
+}
+
+.profile-detail-card p {
+  margin: 0;
+  color: #555;
+  font-size: 0.92rem;
+  line-height: 1.45;
+}
+
+@media (max-width: 900px) {
+  .profile-body {
+    padding: 1.5rem 5vw 4rem;
+  }
+
+  .profile-layout {
+    grid-template-columns: 1fr;
+  }
+}

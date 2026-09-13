@@ -8,6 +8,7 @@ import Footer from "./components/layout/Footer";
 import Home from "./pages/Home";
 import BrowseOils from "./pages/BrowseOils";
 import StartOrder from "./pages/StartOrder";
+import Profile from "./pages/Profile";
 
 export default function App() {
   return (
@@ -19,6 +20,7 @@ export default function App() {
           <Route path="/" element={<Home />} />
           <Route path="/browse-oils" element={<BrowseOils />} />
           <Route path="/start-order" element={<StartOrder />} />
+          <Route path="/profile" element={<Profile />} />
         </Routes>
         <Footer />
       </Router>
