@@ -92,6 +92,56 @@
   color: var(--accent, #9c27b0);
 }
 
+.review-premade-card {
+  border: 1px solid #ececec;
+  background: #fafafa;
+  border-radius: 8px;
+  padding: 0.8rem;
+  display: grid;
+  gap: 0.65rem;
+}
+
+.review-premade-card-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  color: #222;
+  font-size: 0.92rem;
+}
+
+.review-premade-card-head span {
+  color: #777;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.review-premade-ingredient-groups {
+  display: grid;
+  gap: 0.4rem;
+}
+
+.review-premade-ingredient-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+}
+
+.review-premade-group-label {
+  min-width: 5.5rem;
+  color: #8a8a8a;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.review-premade-group-value {
+  color: #555;
+  font-size: 0.88rem;
+  font-weight: 600;
+}
+
 .review-oils-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));

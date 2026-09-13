@@ -8,6 +8,46 @@ def _normalize_oil_type(oil_type: str) -> str:
     return str(oil_type or "").strip().upper()
 
 
+def _normalize_text(value: str) -> str:
+    return str(value or "").strip().upper()
+
+
+def _parse_quantity(value) -> int:
+    try:
+        quantity = int(value)
+    except (TypeError, ValueError):
+        return 1
+    return quantity if quantity > 0 else 1
+
+
+def _premade_cuticle_unit_price(customer_tier: str, quantity: int) -> float:
+    if customer_tier != "PROFESSIONAL":
+        return 8.0
+
+    if quantity >= 48:
+        return 5.0
+    if quantity >= 24:
+        return 5.5
+    if quantity >= 12:
+        return 6.0
+    if quantity >= 6:
+        return 6.5
+    return 8.0
+
+
+def calculate_premade_subtotal(blend: dict) -> tuple[float, float, int]:
+    product_type = _normalize_text(blend.get("product_type"))
+    customer_tier = _normalize_text(blend.get("customer_tier") or "INDIVIDUAL")
+    quantity = _parse_quantity(blend.get("quantity"))
+
+    unit_price = 9.0
+    if product_type in {"CUTICLE", "CUTICLE_OIL"}:
+        unit_price = _premade_cuticle_unit_price(customer_tier, quantity)
+
+    subtotal = round(unit_price * quantity, 2)
+    return subtotal, round(unit_price, 2), quantity
+
+
 def calculate_custom_blend_subtotal(blend: dict) -> float:
     """
     Pricing rules for custom blends:
@@ -170,9 +210,11 @@ def calculate_blend_price(blend: dict, user_id:int) -> float:
     """
     blend_category = str(blend.get("blend_category", "CUSTOM")).upper()
     if blend_category == BlendCategory.PREMADE.value:
-        subtotal = 9.0
+        subtotal, unit_price, quantity = calculate_premade_subtotal(blend)
     else:
         subtotal = calculate_custom_blend_subtotal(blend)
+        unit_price = subtotal
+        quantity = 1
 
     discounts = get_user_discounts(user_id)
     applied = validate_discount_stack(discounts)
@@ -183,7 +225,9 @@ def calculate_blend_price(blend: dict, user_id:int) -> float:
     final_total = round(max(applied_exclusive - applied["reward_dollars"], 0), 2)
     
     return {
-        "base_price": subtotal,
+        "base_price": unit_price,
+        "unit_price": unit_price,
+        "quantity": quantity,
         "add_on_price": 0.0,
         "subtotal": subtotal,
         "applied_discounts": applied,

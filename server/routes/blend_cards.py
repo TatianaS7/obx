@@ -97,3 +97,27 @@ def get_blend_card(blend_card_id):
         return jsonify(blend_card.serialize()), 200
     except Exception as e:
         return jsonify({"error": str(e)}), 400
+
+
+# Update active status for a Blend Card
+@blend_cards.route('/<int:blend_card_id>/status', methods=['PATCH'])
+def update_blend_card_status(blend_card_id):
+    try:
+        data = request.get_json() or {}
+        blend_card = BlendCard.query.get(blend_card_id)
+        if not blend_card:
+            return jsonify({"message": "Blend card not found"}), 404
+
+        if 'is_active' in data:
+            blend_card.is_deleted = not bool(data['is_active'])
+        elif 'is_deleted' in data:
+            blend_card.is_deleted = bool(data['is_deleted'])
+        else:
+            return jsonify({
+                "error": "Provide either is_active or is_deleted in request body"
+            }), 400
+
+        db.session.commit()
+        return jsonify(blend_card.serialize()), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 400

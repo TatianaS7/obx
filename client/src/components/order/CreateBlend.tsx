@@ -194,6 +194,8 @@ export default function CreateBlend({
   ]);
 
   useEffect(() => {
+    if (category !== "CUSTOM") return;
+
     const oils: SelectedOil[] = [
       ...baseSlots
         .filter((id): id is number => id !== null)
@@ -226,6 +228,8 @@ export default function CreateBlend({
   ]);
 
   useEffect(() => {
+    if (category !== "CUSTOM") return;
+
     const selectedBaseCount = baseSlots.filter((id) => id !== null).length;
     const selectedSecondaryCount = secSlots.filter((id) => id !== null).length;
     const essentialAddOnCount = essentialAddOnSlots.filter(
@@ -274,7 +278,13 @@ export default function CreateBlend({
   }
 
   if (category === "PREMADE") {
-    return <PremadeBlendSelection newBlendCard={newBlendCard} />;
+    return (
+      <PremadeBlendSelection
+        newBlendCard={newBlendCard}
+        onChange={onChange}
+        onValidationChange={onValidationChange}
+      />
+    );
   }
 
   if (category === "CUSTOM" && customSpec) {

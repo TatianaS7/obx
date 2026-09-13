@@ -21,6 +21,7 @@ interface NewBlendCard {
   name: string;
   description: string;
   customer_tier: string;
+  quantity: string;
   product_type: string;
   category: string;
   bottle_size: string;

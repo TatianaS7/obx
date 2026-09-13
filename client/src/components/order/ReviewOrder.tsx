@@ -1,6 +1,7 @@
 import { useMemo } from "react";
 import { useApi } from "../../api/ApiContext";
 import { type BlendData } from "./CreateBlend";
+import type { PremadeBlendSelection } from "../createBlend/types";
 import { CUSTOM_SPECS } from "../createBlend/specs";
 import { formatBottleSizeOz, formatGrams } from "../createBlend/utils";
 import "../../styles/ReviewOrder.css";
@@ -9,6 +10,7 @@ interface NewBlendCard {
   name: string;
   description: string;
   customer_tier: string;
+  quantity: string;
   product_type: string;
   category: string;
   bottle_size: string;
@@ -63,6 +65,40 @@ export default function ReviewOrder({
     });
     return groups;
   }, [blendData, oilMap]);
+
+  const premadeBlendBreakdown = useMemo(() => {
+    return (blendData.premade_blend_oils ?? [])
+      .filter((blend): blend is PremadeBlendSelection => Boolean(blend))
+      .map((blend) => {
+        const groupedOils: Record<string, string[]> = {
+          BASE: [],
+          SECONDARY: [],
+          OTHER: [],
+          PREMIUM: [],
+        };
+
+        blend.oils.forEach((oil) => {
+          const label =
+            oil.name || oilMap.get(oil.oil_id)?.name || `Oil #${oil.oil_id}`;
+          if (!groupedOils[oil.oil_type]) {
+            groupedOils[oil.oil_type] = [];
+          }
+          groupedOils[oil.oil_type].push(label);
+        });
+
+        return {
+          ...blend,
+          groupedOils,
+        };
+      });
+  }, [blendData.premade_blend_oils, oilMap]);
+
+  const hasPremadeBlendDetails = premadeBlendBreakdown.length > 0;
+  const premadeOilTypes = ["BASE", "SECONDARY", "OTHER", "PREMIUM"] as const;
+  const isPremadeCuticleBlend =
+    newBlendCard.category === "PREMADE" &&
+    (newBlendCard.product_type === "CUTICLE" ||
+      newBlendCard.product_type === "CUTICLE_OIL");
 
   const essentialDilutionLabel = useMemo(() => {
     const hasIntense = blendData.oils.some(
@@ -121,6 +157,12 @@ export default function ReviewOrder({
               {formatSpecValue(newBlendCard.customer_tier || "INDIVIDUAL")}
             </span>
           </div>
+          {newBlendCard.customer_tier === "PROFESSIONAL" && (
+            <div>
+              <span className="review-label">Order Quantity</span>
+              <span className="review-value">{newBlendCard.quantity}</span>
+            </div>
+          )}
           <div>
             <span className="review-label">Bottle Type</span>
             <span className="review-value">
@@ -165,51 +207,91 @@ export default function ReviewOrder({
               <span className="review-value">{essentialDilutionLabel}</span>
             </div>
           )}
+          {!isPremadeCuticleBlend &&
+            blendData.professional_allocations &&
+            blendData.professional_allocations.length > 0 && (
+              <div>
+                <span className="review-label">Professional Split</span>
+                <span className="review-value">
+                  {blendData.professional_allocations
+                    .map(
+                      (allocation) =>
+                        `${allocation.quantity} x ${allocation.blend_name ?? `Blend #${allocation.blend_id}`}`,
+                    )
+                    .join(", ")}
+                </span>
+              </div>
+            )}
+          {hasPremadeBlendDetails && (
+            <div>
+              <span className="review-label">Oils</span>
+              <div>
+                {premadeBlendBreakdown.map((blend) => (
+                  <article
+                    key={`${blend.blend_id}-${blend.blend_name ?? "blend"}`}
+                  >
+                    <div>
+                      <span className="review-value">
+                        {premadeOilTypes
+                          .reduce<string[]>((allNames, oilType) => {
+                            const names = blend.groupedOils[oilType] ?? [];
+                            return allNames.concat(names);
+                          }, [])
+                          .join(", ")}
+                      </span>
+                    </div>
+                  </article>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
       </section>
 
-      <section className="review-card">
-        <div className="review-card-header">
-          <h4>Selected Oils</h4>
-          <button className="review-edit-btn" onClick={() => onEditStep(2)}>
-            Edit
-          </button>
-        </div>
-        <div className="review-oils-grid">
-          <div className="review-oils-col">
-            <span className="review-label">Base Oils</span>
-            <ul>
-              {grouped.BASE.length > 0 ? (
-                grouped.BASE.map((name) => <li key={name}>{name}</li>)
-              ) : (
-                <li>None selected</li>
-              )}
-            </ul>
+      {!hasPremadeBlendDetails && (
+        <section className="review-card">
+          <div className="review-card-header">
+            <h4>Selected Oils</h4>
+            <button className="review-edit-btn" onClick={() => onEditStep(2)}>
+              Edit
+            </button>
           </div>
-          <div className="review-oils-col">
-            <span className="review-label">Secondary Oils</span>
-            <ul>
-              {grouped.SECONDARY.length > 0 ? (
-                grouped.SECONDARY.map((name) => <li key={name}>{name}</li>)
-              ) : (
-                <li>None selected</li>
-              )}
-            </ul>
+          <div className="review-oils-grid">
+            <div className="review-oils-col">
+              <span className="review-label">Base Oils</span>
+              <ul>
+                {grouped.BASE.length > 0 ? (
+                  grouped.BASE.map((name) => <li key={name}>{name}</li>)
+                ) : (
+                  <li>None selected</li>
+                )}
+              </ul>
+            </div>
+            <div className="review-oils-col">
+              <span className="review-label">Secondary Oils</span>
+              <ul>
+                {grouped.SECONDARY.length > 0 ? (
+                  grouped.SECONDARY.map((name) => <li key={name}>{name}</li>)
+                ) : (
+                  <li>None selected</li>
+                )}
+              </ul>
+            </div>
+            <div className="review-oils-col">
+              <span className="review-label">Add-On Oils</span>
+              <ul>
+                {[...grouped.OTHER, ...grouped.PREMIUM].length > 0 ? (
+                  [...grouped.OTHER, ...grouped.PREMIUM].map((name) => (
+                    <li key={name}>{name}</li>
+                  ))
+                ) : (
+                  <li>None selected</li>
+                )}
+              </ul>
+            </div>
           </div>
-          <div className="review-oils-col">
-            <span className="review-label">Add-On Oils</span>
-            <ul>
-              {[...grouped.OTHER, ...grouped.PREMIUM].length > 0 ? (
-                [...grouped.OTHER, ...grouped.PREMIUM].map((name) => (
-                  <li key={name}>{name}</li>
-                ))
-              ) : (
-                <li>None selected</li>
-              )}
-            </ul>
-          </div>
-        </div>
-      </section>
+        </section>
+      )}
     </div>
   );
 }

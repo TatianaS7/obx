@@ -12,6 +12,7 @@ from server.utils.calculate_pricing import (
     is_first_purchase,
     get_user_discounts,
     calculate_custom_blend_subtotal,
+    calculate_premade_subtotal,
 )
 
 # Create a mock user
@@ -99,3 +100,40 @@ def test_calculate_custom_blend_subtotal_with_intense_essential_add_on():
 
     # 9 + (1 secondary)*1.5 + (1 essential intense)*3
     assert calculate_custom_blend_subtotal(blend) == 13.5
+
+
+def test_calculate_premade_cuticle_individual_pricing():
+    blend = {
+        "blend_category": "PREMADE",
+        "product_type": "CUTICLE_OIL",
+        "customer_tier": "INDIVIDUAL",
+        "quantity": "1",
+    }
+
+    subtotal, unit_price, quantity = calculate_premade_subtotal(blend)
+    assert unit_price == 8.0
+    assert quantity == 1
+    assert subtotal == 8.0
+
+
+@pytest.mark.parametrize(
+    "quantity,expected_unit",
+    [
+        ("6", 6.5),
+        ("12", 6.0),
+        ("24", 5.5),
+        ("48", 5.0),
+    ],
+)
+def test_calculate_premade_cuticle_professional_tier_pricing(quantity, expected_unit):
+    blend = {
+        "blend_category": "PREMADE",
+        "product_type": "CUTICLE",
+        "customer_tier": "PROFESSIONAL",
+        "quantity": quantity,
+    }
+
+    subtotal, unit_price, parsed_quantity = calculate_premade_subtotal(blend)
+    assert unit_price == expected_unit
+    assert parsed_quantity == int(quantity)
+    assert subtotal == round(expected_unit * int(quantity), 2)

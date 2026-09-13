@@ -154,7 +154,7 @@ export default function BrowseOils() {
         <h1 className="page-hero-title">Browse Oils</h1>
         <p className="page-hero-sub">
           Discover our curated collection of carrier and essential oils, each
-          chosen for its unique hair and scalp benefits.
+          chosen for its unique benefits.
         </p>
       </header>
 

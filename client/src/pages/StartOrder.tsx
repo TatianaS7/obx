@@ -10,6 +10,7 @@ interface NewBlendCard {
   name: string;
   description: string;
   customer_tier: string;
+  quantity: string;
   product_type: string;
   category: string;
   bottle_size: string;
@@ -28,7 +29,7 @@ export default function StartOrder() {
 
   const navEntry =
     typeof window !== "undefined"
-      ? (window.performance.getEntriesByType("navigation").at(0) as
+      ? (window.performance.getEntriesByType("navigation")[0] as
           | PerformanceNavigationTiming
           | undefined)
       : undefined;
@@ -44,6 +45,7 @@ export default function StartOrder() {
     name: "",
     description: "",
     customer_tier: "INDIVIDUAL",
+    quantity: "1",
     product_type: quizResult?.profile.suggestedProductType ?? "",
     category: quizResult?.profile.recommendedCategory ?? "",
     bottle_size: quizResult?.profile.recommendedBottleSize ?? "",

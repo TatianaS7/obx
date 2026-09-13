@@ -8,6 +8,7 @@ interface NewBlendCard {
   name: string;
   description: string;
   customer_tier: string;
+  quantity: string;
   product_type: string;
   category: string;
   bottle_size: string;
@@ -45,12 +46,37 @@ interface PricingBreakdown {
   subtotal: number;
 }
 
+function parseQuantity(value: string): number {
+  const quantity = Number.parseInt(String(value ?? ""), 10);
+  return Number.isFinite(quantity) && quantity > 0 ? quantity : 1;
+}
+
+function getPremadeCuticleUnitPrice(
+  customerTier: string,
+  quantity: number,
+): number {
+  if (customerTier !== "PROFESSIONAL") return 8;
+  if (quantity >= 48) return 5;
+  if (quantity >= 24) return 5.5;
+  if (quantity >= 12) return 6;
+  if (quantity >= 6) return 6.5;
+  return 8;
+}
+
 function getPricingBreakdown(
   newBlendCard: NewBlendCard,
   blendData: BlendData,
 ): PricingBreakdown {
   const categoryKey = newBlendCard.category.trim().toUpperCase();
-  const basePrice = 9;
+  const productType = newBlendCard.product_type.trim().toUpperCase();
+  const customerTier = newBlendCard.customer_tier.trim().toUpperCase();
+  const quantity = parseQuantity(newBlendCard.quantity);
+  const isCuticleProduct =
+    productType === "CUTICLE" || productType === "CUTICLE_OIL";
+  const basePrice =
+    categoryKey === "PREMADE" && isCuticleProduct
+      ? getPremadeCuticleUnitPrice(customerTier, quantity)
+      : 9;
 
   const baseCount = blendData.oils.filter((o) => o.oil_type === "BASE").length;
   const secondaryCount = blendData.oils.filter(
@@ -84,7 +110,7 @@ function getPricingBreakdown(
       essentialIntensePrice: 0,
       essentialAddOnPrice: 0,
       premiumAddOnPrice: 0,
-      subtotal: basePrice,
+      subtotal: +(basePrice * quantity).toFixed(2),
     };
   }
 
@@ -274,6 +300,12 @@ export default function CheckoutSubmit({
               {formatSpecValue(newBlendCard.customer_tier || "INDIVIDUAL")}
             </span>
           </div>
+          {newBlendCard.customer_tier === "PROFESSIONAL" && (
+            <div>
+              <span className="checkout-label">Order Quantity</span>
+              <span className="checkout-value">{newBlendCard.quantity}</span>
+            </div>
+          )}
           <div>
             <span className="checkout-label">Selected Oils</span>
             <span className="checkout-value">{blendData.oils.length}</span>
@@ -318,12 +350,20 @@ export default function CheckoutSubmit({
         <div className="pricing-breakdown-list" aria-label="Pricing breakdown">
           <div className="total-row total-row-sub">
             <span>
-              Base Blend Price
+              {newBlendCard.category.trim().toUpperCase() === "PREMADE"
+                ? `Base Blend Price (${parseQuantity(newBlendCard.quantity)} x $${pricing.basePrice.toFixed(2)})`
+                : "Base Blend Price"}
               {newBlendCard.category.trim().toUpperCase() === "CUSTOM"
                 ? " (includes first base oil)"
                 : ""}
             </span>
-            <strong>${pricing.basePrice.toFixed(2)}</strong>
+            <strong>
+              ${
+                newBlendCard.category.trim().toUpperCase() === "PREMADE"
+                  ? subtotal.toFixed(2)
+                  : pricing.basePrice.toFixed(2)
+              }
+            </strong>
           </div>
           {newBlendCard.category.trim().toUpperCase() === "CUSTOM" && (
             <>
